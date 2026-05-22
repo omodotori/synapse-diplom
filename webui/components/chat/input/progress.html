@@ -1,0 +1,164 @@
+<html>
+<head>
+    <script type="module">
+        import { store as speechStore } from "/components/chat/speech/speech-store.js";
+        import { store as chatNavStore } from "/components/chat/navigation/chat-navigation-store.js";
+    </script>
+</head>
+<body>
+    <div id="progress-bar-box" x-data>
+        <x-extension id="chat-input-progress-start"></x-extension>
+
+        <!-- Hidden legacy progress-bar element (keeps JS updater happy, not displayed) -->
+        <span id="progress-bar" style="display:none;"></span>
+
+        <div id="progress-bar-right">
+            <h4 id="progress-bar-stop-speech" x-data x-cloak x-show="$store.speech.isSpeaking">
+                <span id="stop-speech" @click="$store.speech.stop()" title="Stop Speech" aria-label="Stop Speech">
+                    <span class="icon material-symbols-outlined notranslate" translate="no">volume_off</span>
+                    <span class="stop-speech-label">Stop speech</span>
+                </span>
+            </h4>
+
+            <x-extension id="chat-nav-after"></x-extension>
+        </div>
+
+        <x-extension id="chat-input-progress-end"></x-extension>
+    </div>
+
+    <style>
+    #progress-bar-box {
+        --syn-progress-bg: rgba(13, 19, 30, 0.74);
+        --syn-progress-border: rgba(148, 163, 184, 0.14);
+        --syn-progress-text: #e6edf7;
+        --syn-progress-muted: #95a3b8;
+        --syn-progress-chip-bg: rgba(255, 255, 255, 0.04);
+        --syn-progress-chip-hover: rgba(255, 255, 255, 0.08);
+        --syn-progress-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 14px 4px 14px;
+        box-sizing: border-box;
+        min-height: 0;
+        z-index: 1001;
+    }
+
+    .light-mode #progress-bar-box {
+        --syn-progress-bg: rgba(255, 255, 255, 0.78);
+        --syn-progress-border: rgba(100, 116, 139, 0.14);
+        --syn-progress-text: #1d2735;
+        --syn-progress-muted: #66768b;
+        --syn-progress-chip-bg: rgba(35, 49, 66, 0.04);
+        --syn-progress-chip-hover: rgba(35, 49, 66, 0.08);
+        --syn-progress-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    #progress-bar-box > x-extension {
+        display: contents;
+    }
+
+    #progress-bar-box h4 {
+        margin: 0;
+    }
+
+    #progress-bar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+    #progress-bar-right > x-extension {
+        display: contents;
+    }
+
+    #stop-speech {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 40px;
+        padding: 0 14px;
+        border-radius: 14px;
+        cursor: pointer;
+        color: var(--syn-progress-text);
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+            var(--syn-progress-bg);
+        border: 1px solid var(--syn-progress-border);
+        box-shadow: var(--syn-progress-shadow);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    #stop-speech:hover {
+        transform: translateY(-1px);
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
+            var(--syn-progress-chip-hover);
+        border-color: rgba(148, 163, 184, 0.22);
+    }
+
+    #stop-speech:active {
+        transform: translateY(0);
+    }
+
+    #stop-speech .material-symbols-outlined {
+        font-size: 1.05rem;
+        line-height: 1;
+        opacity: 0.92;
+    }
+
+    .stop-speech-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+    }
+
+    .shiny-text {
+        background: linear-gradient(
+            to right,
+            var(--syn-progress-muted) 20%,
+            var(--syn-progress-text) 40%,
+            var(--syn-progress-text) 60%,
+            var(--syn-progress-muted) 80%
+        );
+        background-size: 200% auto;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: shine 1.4s linear infinite;
+    }
+
+    @keyframes shine {
+        to { background-position: -200% center; }
+    }
+
+    @media (max-width: 768px) {
+        #progress-bar-box {
+            padding: 8px 12px 2px 12px;
+        }
+
+        #progress-bar-right {
+            gap: 8px;
+        }
+
+        #stop-speech {
+            min-height: 36px;
+            padding: 0 12px;
+            border-radius: 12px;
+        }
+
+        .stop-speech-label {
+            display: none;
+        }
+    }
+    </style>
+</body>
+</html>

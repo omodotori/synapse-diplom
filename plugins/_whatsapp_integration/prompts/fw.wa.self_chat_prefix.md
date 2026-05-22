@@ -1,0 +1,2 @@
+[🤖 Synapse]
+{{response_text}}

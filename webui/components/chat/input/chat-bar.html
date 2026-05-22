@@ -1,0 +1,209 @@
+<html>
+<head>
+    <script type="module">
+        import { store } from "/components/chat/input/input-store.js";
+        import { store as messageQueueStore } from "/components/chat/message-queue/message-queue-store.js";
+        import { store as composerBannerStore } from "/components/chat/input/composer-banner-store.js";
+    </script>
+</head>
+<body>
+    <div id="input-section" x-data>
+        <x-extension id="chat-input-start"></x-extension>
+        <template x-if="$store.chatInput">
+            <div style="width: 100%; display: contents;"
+                 x-init="$store.composerBanner?.init()"
+                 x-effect="$store.chats?.selected && $store.composerBanner?.refresh()">
+
+                <template x-if="$store.composerBanner && $store.composerBanner.hasMissingApiKeys">
+                    <div class="composer-banner composer-banner--danger" role="alert">
+                        <div class="composer-banner-icon-wrap">
+                            <span class="material-symbols-outlined composer-banner-icon notranslate" aria-hidden="true" translate="no">error</span>
+                        </div>
+
+                        <div class="composer-banner-text">
+                            <span class="composer-banner-title">API key required</span>
+                            <span class="composer-banner-detail" x-text="$store.composerBanner.missingApiKeysSummaryText"></span>
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-ok composer-banner-cta"
+                                @click="window.openModal('/plugins/_onboarding/webui/onboarding.html')">
+                            Open setup
+                        </button>
+                    </div>
+                </template>
+
+                <x-component path="chat/message-queue/message-queue.html"></x-component>
+
+                <div>
+                    <x-component path="chat/attachments/inputPreview.html" />
+                </div>
+
+                <x-component path="chat/input/chat-bar-input.html"></x-component>
+                <x-component path="chat/input/bottom-actions-bar.html"></x-component>
+            </div>
+        </template>
+        <x-extension id="chat-input-end"></x-extension>
+    </div>
+
+    <style>
+    #input-section {
+      --syn-input-bg: rgba(15, 22, 34, 0.88);
+      --syn-input-border: rgba(148, 163, 184, 0.14);
+      --syn-input-border-strong: rgba(148, 163, 184, 0.24);
+      --syn-input-text: #e8eef7;
+      --syn-input-muted: #97a4b8;
+      --syn-input-soft: #c2cede;
+      --syn-danger-bg: rgba(120, 56, 66, 0.16);
+      --syn-danger-border: rgba(187, 108, 124, 0.28);
+      --syn-danger-accent: #d3a2ab;
+      --syn-danger-icon-bg: rgba(187, 108, 124, 0.12);
+
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 16px 14px 14px;
+      align-items: stretch;
+      flex-shrink: 0;
+      overflow: visible;
+      z-index: 1001;
+      background:
+        linear-gradient(180deg, rgba(10, 15, 24, 0.92), rgba(12, 18, 29, 0.86));
+      border-top: 1px solid rgba(148, 163, 184, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .light-mode #input-section {
+      --syn-input-bg: rgba(255, 255, 255, 0.84);
+      --syn-input-border: rgba(100, 116, 139, 0.14);
+      --syn-input-border-strong: rgba(100, 116, 139, 0.22);
+      --syn-input-text: #1b2636;
+      --syn-input-muted: #66768b;
+      --syn-input-soft: #455468;
+      --syn-danger-bg: rgba(190, 104, 119, 0.10);
+      --syn-danger-border: rgba(190, 104, 119, 0.22);
+      --syn-danger-accent: #9d5863;
+      --syn-danger-icon-bg: rgba(190, 104, 119, 0.10);
+
+      background:
+        linear-gradient(180deg, rgba(246, 249, 253, 0.94), rgba(239, 244, 250, 0.88));
+      border-top: 1px solid rgba(100, 116, 139, 0.08);
+    }
+
+    @media (max-width: 768px) {
+      #input-section {
+        padding: 8px 12px 12px 12px;
+      }
+    }
+
+    .composer-banner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      margin-bottom: 2px;
+      border-radius: 16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+        var(--syn-input-bg);
+      border: 1px solid var(--syn-input-border);
+      box-sizing: border-box;
+      box-shadow:
+        0 10px 24px rgba(0,0,0,0.14),
+        inset 0 1px 0 rgba(255,255,255,0.025);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .composer-banner--danger {
+      border-color: var(--syn-danger-border);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
+        var(--syn-danger-bg);
+    }
+
+    .composer-banner-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--syn-danger-icon-bg);
+      border: 1px solid rgba(255,255,255,0.04);
+      flex-shrink: 0;
+    }
+
+    .composer-banner-icon {
+      color: var(--syn-danger-accent);
+      font-size: 1.1rem;
+    }
+
+    .composer-banner-text {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-align: left;
+    }
+
+    .composer-banner-title {
+      font-weight: 650;
+      font-size: 0.88rem;
+      letter-spacing: -0.01em;
+      color: var(--syn-input-text);
+    }
+
+    .composer-banner-detail {
+      font-size: 0.78rem;
+      color: var(--syn-input-muted);
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .composer-banner-cta {
+      flex-shrink: 0;
+      min-height: 38px;
+      padding: 0.5rem 0.9rem;
+      border-radius: 12px;
+      font-size: 0.79rem;
+      font-weight: 600;
+      border: 1px solid var(--syn-input-border-strong);
+      background: rgba(255,255,255,0.05);
+      color: var(--syn-input-soft);
+      transition: 0.2s ease;
+    }
+
+    .composer-banner-cta:hover {
+      transform: translateY(-1px);
+      border-color: var(--syn-danger-border);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+    }
+
+    .light-mode .composer-banner-cta:hover {
+      color: #1d2735;
+    }
+
+    @media (max-width: 768px) {
+      .composer-banner {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .composer-banner-icon-wrap {
+        width: 36px;
+        height: 36px;
+      }
+
+      .composer-banner-cta {
+        width: 100%;
+      }
+    }
+    </style>
+</body>
+</html>

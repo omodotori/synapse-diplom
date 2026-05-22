@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6EE7F9"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="360" rx="36" fill="#0B1020"/>
+  <g transform="translate(42,42)">
+    <rect width="276" height="276" rx="56" fill="#10182F"/>
+    <path d="M210 42c-19-15-43-24-70-24-51 0-88 27-88 65 0 32 22 51 65 60l43 9c23 5 34 12 34 23 0 16-18 26-46 26-27 0-52-9-75-27l-20 25c27 21 60 32 94 32 54 0 92-26 92-67 0-31-21-50-63-58l-43-9c-24-5-35-12-35-24 0-15 17-25 43-25 21 0 41 6 59 20z" fill="url(#g)" transform="translate(18,23) scale(1.08)"/>
+  </g>
+  <text x="360" y="216" font-family="Inter, Arial, Helvetica, sans-serif" font-size="124" font-weight="700" fill="#F5F7FB">Synapse</text>
+  <text x="366" y="268" font-family="Inter, Arial, Helvetica, sans-serif" font-size="30" fill="#9AA4B2" letter-spacing="3">AI WORKSPACE</text>
+</svg>

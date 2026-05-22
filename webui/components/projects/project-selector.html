@@ -1,0 +1,229 @@
+<html>
+<head>
+  <script type="module">
+    import { store as projectsStore } from "/components/projects/projects-store.js";
+    import { store as chatsStore } from "/components/sidebar/chats/chats-store.js";
+  </script>
+</head>
+<body>
+  <div x-data="{
+        open: false,
+        menuStyle: '',
+        updateMenuPosition() {
+          if (!this.$refs.trigger) return;
+          const r = this.$refs.trigger.getBoundingClientRect();
+          const menuWidth = 260;
+          const gap = 8;
+          let left = r.right - menuWidth;
+          if (left < 12) left = 12;
+          let top = r.bottom + gap;
+          this.menuStyle = `position:fixed; top:${top}px; left:${left}px; width:${menuWidth}px; z-index:2147483647;`;
+        },
+        toggleMenu() {
+          this.open = !this.open;
+          if (this.open) {
+            this.$nextTick(() => this.updateMenuPosition());
+          }
+        },
+        closeMenu() {
+          this.open = false;
+        }
+      }"
+      @click.outside="closeMenu()"
+      @keydown.escape.window="closeMenu()"
+      @resize.window="if (open) updateMenuPosition()"
+      class="project-dropdown-container">
+
+<template x-if="$store.projects && $store.chats"></template>
+      <div>
+        <button
+          x-ref="trigger"
+          @click.stop="toggleMenu()"
+          type="button"
+          class="button project-dropdown-button"
+        >
+          <template x-if="$store.chats.selectedContext.project?.name">
+            <span class="project-trigger-content">
+              <span class="project-color-ball"
+                    :style="$store.chats.selectedContext.project.color
+                      ? { backgroundColor: $store.chats.selectedContext.project.color }
+                      : { border: '1px solid var(--color-border)' }"></span>
+              <span x-text="$store.chats.selectedContext.project.title"></span>
+            </span>
+          </template>
+
+          <template x-if="!$store.chats.selectedContext.project?.name">
+            <span class="project-trigger-content">
+              <span>No project</span>
+            </span>
+          </template>
+
+          <span class="icon material-symbols-outlined notranslate" translate="no">arrow_drop_down</span>
+        </button>
+
+        <template x-teleport="body">
+          <div
+            x-show="open"
+            x-transition.opacity.duration.120ms
+            x-init="$store.projects.loadProjectsList()"
+            class="project-safe-menu"
+            :style="menuStyle"
+            @click.outside="closeMenu()"
+            style="display:none;"
+          >
+            <button type="button"
+                    @click="$store.projects.openProjectsModal(); closeMenu()"
+                    class="project-menu-item">
+              <span class="icon material-symbols-outlined notranslate" translate="no">snippet_folder</span>
+              <span>Projects</span>
+            </button>
+
+            <button type="button"
+                    x-show="$store.chats.selectedContext.project?.name"
+                    @click="$store.projects.editActiveProject(); closeMenu()"
+                    class="project-menu-item">
+              <span class="icon material-symbols-outlined notranslate" translate="no">edit</span>
+              <span>Edit <span x-text="$store.chats.selectedContext.project?.title"></span></span>
+            </button>
+
+            <button type="button"
+                    x-show="$store.chats.selectedContext.project?.name"
+                    @click="$store.projects.deactivateProject(); closeMenu()"
+                    class="project-menu-item">
+              <span class="icon material-symbols-outlined notranslate" translate="no">close</span>
+              <span>Deactivate</span>
+            </button>
+
+            <div x-show="$store.projects.projectList.length > 0" class="project-menu-separator"></div>
+            <div x-show="$store.projects.projectList.length > 0" class="project-menu-header">Switch Project</div>
+
+            <template x-for="project in $store.projects.projectList" :key="project.name">
+              <button type="button"
+                      @click="$store.projects.activateProject(project.name); closeMenu()"
+                      class="project-menu-item">
+                <span class="project-color-ball"
+                      :style="project.color
+                        ? { backgroundColor: project.color }
+                        : { border: '1px solid var(--color-border)' }"></span>
+                <span x-text="project.title"></span>
+              </button>
+            </template>
+          </div>
+        </template>
+      </div>
+    </template>
+  </div>
+
+  <style>
+    .project-dropdown-container {
+      position: relative;
+      z-index: 10;
+    }
+
+    .project-dropdown-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0 0.8rem;
+      min-height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+        rgba(18, 26, 40, 0.56);
+      color: #eef3fa;
+      box-shadow:
+        0 10px 24px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .project-dropdown-button:hover {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
+        rgba(18, 26, 40, 0.72);
+      border-color: rgba(148, 163, 184, 0.22);
+    }
+
+    .project-trigger-content {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .project-safe-menu {
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,0.12);
+      background:
+        linear-gradient(180deg, rgba(16,22,35,0.98), rgba(18,25,39,0.97));
+      box-shadow: 0 18px 44px rgba(0,0,0,0.24);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 6px;
+    }
+
+    .project-menu-item {
+      width: 100%;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      color: #e7edf7;
+      text-align: left;
+      opacity: 1;
+    }
+
+    .project-menu-item:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.04);
+    }
+
+    .project-menu-header {
+      padding: 8px 10px 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+    }
+
+    .project-menu-separator {
+      height: 1px;
+      margin: 8px 4px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .light-mode .project-dropdown-button {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.66)),
+        rgba(255,255,255,0.72);
+      border: 1px solid rgba(100, 116, 139, 0.14);
+      color: #1d2735;
+      box-shadow:
+        0 10px 24px rgba(15,23,42,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+    }
+
+    .light-mode .project-safe-menu {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,249,252,0.94));
+      border-color: rgba(15,23,42,0.08);
+      box-shadow: 0 18px 44px rgba(15,23,42,0.08);
+    }
+
+    .light-mode .project-menu-item {
+      color: #1d2735;
+    }
+
+    .light-mode .project-menu-separator {
+      background: rgba(15,23,42,0.08);
+    }
+  </style>
+</body>
+</html>

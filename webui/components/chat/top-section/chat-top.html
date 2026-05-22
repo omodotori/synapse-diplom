@@ -1,0 +1,266 @@
+<html>
+<head>
+    <script type="module">
+        import { store as chatTopStore } from "/components/chat/top-section/chat-top-store.js";
+    </script>
+</head>
+<body>
+    <div x-data>
+        <template x-if="$store.chatTop">
+            <div id="time-date-container">
+                <x-extension id="chat-top-start"></x-extension>
+
+                <div id="time-date">
+                    <span id="user-time"></span><br>
+                    <span id="user-date"></span>
+                </div>
+
+                <x-component path="sync/sync-status.html"></x-component>
+
+                <x-component path="notifications/notification-icons.html"></x-component>
+
+                <x-component path="projects/project-selector.html"></x-component>
+
+                <x-extension id="chat-top-end"></x-extension>
+            </div>
+        </template>
+    </div>
+
+    <style>
+    #time-date-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 14px 8px 14px;
+      padding: 8px 0;
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      flex-wrap: wrap;
+    }
+
+    #time-date-container > x-extension {
+      display: contents;
+    }
+
+    #time-date {
+      min-width: 150px;
+      font-size: 0.95rem;
+      font-weight: 650;
+      line-height: 1.2;
+      color: #eef3fa;
+      letter-spacing: -0.01em;
+    }
+
+    #user-date {
+      display: inline-block;
+      margin-top: 2px;
+      color: #95a3b8;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    #time-date-container > .status-icon,
+    #time-date-container > .notification-toggle,
+    #time-date-container > .project-dropdown-container {
+      flex-shrink: 0;
+    }
+
+    .status-icon,
+    .notification-toggle,
+    .project-dropdown-button {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+        rgba(18, 26, 40, 0.56);
+      box-shadow:
+        0 10px 24px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .status-icon {
+      width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .notification-toggle {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transition: 0.2s ease;
+    }
+
+    .notification-toggle:hover,
+    .project-dropdown-button:hover {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
+        rgba(18, 26, 40, 0.72);
+      border-color: rgba(148, 163, 184, 0.22);
+    }
+
+    .notification-icon .material-symbols-outlined {
+      font-size: 1.2rem;
+      color: #d9e3f2;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: #a86f78;
+      color: #fff;
+      font-size: 0.66rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-dropdown-container {
+      margin-left: auto;
+      position: relative;
+    }
+
+    .project-dropdown-button {
+      min-height: 42px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #eef3fa;
+    }
+
+    .project-dropdown-button .icon.material-symbols-outlined {
+      font-size: 1.15rem;
+    }
+
+    .project-dropdown-container .dropdown-menu {
+      margin-top: 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,0.12);
+      background:
+        linear-gradient(180deg, rgba(16,22,35,0.96), rgba(18,25,39,0.94));
+      box-shadow: 0 18px 44px rgba(0,0,0,0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .project-dropdown-container .dropdown-item,
+    .project-dropdown-container .dropdown-header {
+      color: #e7edf7;
+      opacity: 1;
+    }
+
+    .light-mode #time-date {
+      color: #1d2735;
+    }
+
+    .light-mode #user-date {
+      color: #66768b;
+    }
+
+    .light-mode .status-icon,
+    .light-mode .notification-toggle,
+    .light-mode .project-dropdown-button {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.66)),
+        rgba(255,255,255,0.72);
+      border: 1px solid rgba(100, 116, 139, 0.14);
+      box-shadow:
+        0 10px 24px rgba(15,23,42,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+      color: #1d2735;
+    }
+
+    .light-mode .notification-icon .material-symbols-outlined {
+      color: #1d2735;
+    }
+
+    .light-mode .project-dropdown-container .dropdown-menu {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,249,252,0.94));
+      border-color: rgba(15,23,42,0.08);
+      box-shadow: 0 18px 44px rgba(15,23,42,0.08);
+    }
+
+    .light-mode .project-dropdown-container .dropdown-item,
+    .light-mode .project-dropdown-container .dropdown-header {
+      color: #1d2735;
+    }
+
+
+    #time-date-container {
+      position: relative;
+      z-index: 3000 !important;
+    }
+
+    .project-dropdown-container {
+      position: relative;
+      z-index: 4000 !important;
+    }
+
+    .project-safe-menu,
+    .project-dropdown-container .dropdown-menu {
+      z-index: 5000 !important;
+    }
+
+    @media (max-width: 768px) {
+      #time-date-container {
+        margin: 10px 10px 8px 6px;
+        gap: 10px;
+      }
+
+      #time-date {
+        min-width: auto;
+        width: 100%;
+      }
+
+      .project-dropdown-container {
+        margin-left: 0;
+      }
+    }
+    </style>
+
+
+<style>
+#time-date-container {
+  overflow: visible !important;
+}
+
+.project-dropdown-container {
+  position: relative !important;
+  z-index: 99999 !important;
+  overflow: visible !important;
+}
+
+.project-safe-menu {
+  position: absolute !important;
+  z-index: 100000 !important;
+  overflow: visible !important;
+}
+</style>
+
+</body>
+</html>

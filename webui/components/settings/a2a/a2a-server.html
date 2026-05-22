@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>A0 A2A Server</title>
+  </head>
+
+  <body>
+    <div x-data="{ get settings() { return $store.settings.settings } }">
+      <template x-if="settings">
+        <div>
+          <div class="section-title">A0 A2A Server</div>
+          <div class="section-description">
+            Synapse может работать как A2A сервер. Смотрите <a href="javascript:openModal('settings/a2a/a2a-connection.html')">пример подключения</a>.
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <div class="field-title">Включить A2A сервер</div>
+              <div class="field-description">
+                Запустить Synapse как A2A сервер. Это позволяет другим агентам подключаться к Synapse по протоколу A2A.
+              </div>
+            </div>
+            <div class="field-control">
+              <label class="toggle">
+                <input type="checkbox" x-model="settings.a2a_server_enabled" />
+                <span class="toggler"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </body>
+</html>

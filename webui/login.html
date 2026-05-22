@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Synapse</title>
+    <link rel="stylesheet" href="/login.css">
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg">
+    <script src="/js/translation-guard.js"></script>
+<style>
+
+/* translation stability */
+.notranslate,
+[translate="no"] {
+  unicode-bidi: isolate;
+}
+
+.material-symbols-outlined.notranslate,
+.material-symbols-outlined[translate="no"] {
+  font-family: 'Material Symbols Outlined' !important;
+  white-space: nowrap !important;
+}
+
+input.notranslate,
+textarea.notranslate,
+select.notranslate,
+option.notranslate {
+  white-space: nowrap !important;
+}
+
+.field-label,
+.field-title,
+.section-title,
+.section-description,
+.button,
+.dropdown-item,
+.modal-header,
+.modal-bd,
+.onboarding-welcome-text {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+</style>
+</head>
+<body>
+    <div class="login-container">
+        <form class="login-form" method="POST" action="/login">
+            <img src="/public/icon.svg" alt="Synapse Logo" class="logo">
+            <h2>Synapse</h2>
+            <div class="input-group">
+                <label for="username">Имя пользователя</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Войти</button>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

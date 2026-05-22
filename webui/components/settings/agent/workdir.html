@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <title>Рабочая директория</title>
+
+    <script type="module">
+      import { store } from "/components/settings/settings-store.js";
+      import { store as fileBrowserStore } from "/components/modals/file-browser/file-browser-store.js";
+    </script>
+  </head>
+
+  <body>
+    <div x-data>
+      <template x-if="$store.settings?.settings">
+        <div>
+          <div class="section-title">Рабочая директория по умолчанию</div>
+          <div class="section-description">
+            Если проект не выбран, агент использует эту директорию как рабочее место. Новые сессии терминала будут запускаться здесь.
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <div class="field-title">Путь рабочей директория</div>
+              <div class="field-description">Полный путь к рабочей директории. По умолчанию usr/workdir.</div>
+            </div>
+            <div class="field-control">
+              <input type="text" x-model="$store.settings.settings.workdir_path" />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <div class="field-title">Показывать структуру директории Synapse</div>
+              <div class="field-description">
+                Если включено, файловая структура будет передаваться в контекст Synapse.
+              </div>
+            </div>
+            <div class="field-control">
+              <label class="toggle">
+                <input type="checkbox" x-model="$store.settings.settings.workdir_show" />
+                <span class="toggler"></span>
+              </label>
+            </div>
+          </div>
+
+          <template x-if="$store.settings.settings.workdir_show">
+            <div>
+              <div class="field">
+                <div class="field-label">
+                  <div class="field-title">Макс. глубина</div>
+                  <div class="field-description">Максимальная глубина файловой структуры (0 = без лимита).</div>
+                </div>
+                <div class="field-control">
+                  <input type="number" x-model.number="$store.settings.settings.workdir_max_depth" min="0" step="1" />
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="field-label">
+                  <div class="field-title">Макс. строк</div>
+                  <div class="field-description">Максимальное число строк, выводимых для Synapse (0 = без лимита).</div>
+                </div>
+                <div class="field-control">
+                  <input type="number" x-model.number="$store.settings.settings.workdir_max_lines" min="0" step="1" />
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="field-label">
+                  <div class="field-title">Макс. папок</div>
+                  <div class="field-description">Максимальное количество подпапок в одной папке (0 = без лимита).</div>
+                </div>
+                <div class="field-control">
+                  <input type="number" x-model.number="$store.settings.settings.workdir_max_folders" min="0" step="1" />
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="field-label">
+                  <div class="field-title">Макс. файлов</div>
+                  <div class="field-description">Максимальное количество файлов в одной папке (0 = без лимита).</div>
+                </div>
+                <div class="field-control">
+                  <input type="number" x-model.number="$store.settings.settings.workdir_max_files" min="0" step="1" />
+                </div>
+              </div>
+
+              <div class="field field-full">
+                <div class="field-label">
+                  <div class="field-title">Игнорируемые файлы / папки</div>
+                  <div class="field-description">Укажите шаблоны в формате gitignore.</div>
+                </div>
+                <div class="field-control">
+                  <textarea x-model="$store.settings.settings.workdir_gitignore" rows="5" placeholder="Введите шаблоны gitignore (например node_modules/, .git/, *.log)"></textarea>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="field-label">
+                  <div class="field-title">Тест вывода</div>
+                  <div class="field-description">Предпросмотр вывода структуры рабочей директории.</div>
+                </div>
+                <div class="field-control">
+                  <button class="btn btn-field" @click="$store.settings.testWorkdirFileStructure()">Проверить вывод</button>
+                  <button class="btn btn-field" style="margin-left: 0.5em;" @click="$store.fileBrowser.open($store.settings.settings.workdir_path)">Обзор</button>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </body>
+</html>

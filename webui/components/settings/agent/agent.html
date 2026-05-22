@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>Настройки агента</title>
+  </head>
+
+  <body>
+    <div x-data>
+      <template x-if="$store.settings.settings">
+        <div>
+          <div class="section-title">Настройки агента</div>
+          <div class="section-description">
+            Параметры агента.
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <div class="field-title">Профиль Synapse по умолчанию</div>
+              <div class="field-description">
+                Подпапка в /agents, используемая по умолчанию. Подчиненные агенты могут создаваться с другими профилями, это решает их главный агент. Эта настройка влияет на поведение агента верхнего уровня, с которым вы общаетесь.
+              </div>
+            </div>
+            <div class="field-control">
+              <select x-model="$store.settings.settings.agent_profile">
+                <template x-for="option in $store.settings.additional?.agent_subdirs" :key="option.value">
+                  <option :value="option.value" :selected="option.value === $store.settings.settings.agent_profile" x-text="option.label"></option>
+                </template>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <div class="field-title">Подпапка базы знаний</div>
+              <div class="field-description">
+                Подпапка в /knowledge, используемая для импорта знаний. Папка 'default' импортируется всегда и содержит знания фреймворка.
+              </div>
+            </div>
+            <div class="field-control">
+              <select x-model="$store.settings.settings.agent_knowledge_subdir">
+                <template x-for="option in $store.settings.additional?.knowledge_subdirs" :key="option.value">
+                  <option :value="option.value" :selected="option.value === $store.settings.settings.agent_knowledge_subdir" x-text="option.label"></option>
+                </template>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">
+              <div class="field-title">Наследовать активный проект</div>
+              <div class="field-description">
+                При создании нового чата автоматически наследовать активный проект из текущего чата.
+              </div>
+            </div>
+            <div class="field-control">
+              <label class="toggle">
+                <input type="checkbox" x-model="$store.settings.settings.chat_inherit_project">
+                <span class="toggler"> </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,733 @@
+<html>
+
+<head>
+    <script type="module">
+        import { store } from "/components/welcome/welcome-store.js";
+    </script>
+</head>
+
+<body>
+    <div x-data>
+        <template x-if="$store.welcomeStore">
+            <div x-init="$store.welcomeStore.init(); if ($store.welcomeStore.isVisible) { $store.welcomeStore.onCreate(); } $watch('$store.welcomeStore.isVisible', (visible) => { if (visible) { $store.welcomeStore.onCreate(); } });"
+                 class="welcome-container">
+                <x-extension id="welcome-screen-start"></x-extension>
+
+                <div class="welcome-shell">
+                    <div class="welcome-hero">
+                        <div class="welcome-hero-copy">
+                            <div class="welcome-eyebrow">Synapse Workspace</div>
+                            <h1 class="welcome-headline">Everything you need, in one calm control panel.</h1>
+                            <p class="welcome-lead">
+                                Start a new conversation, open projects, manage memory, scheduling, plugins, and files —
+                                all from one place.
+                            </p>
+                        </div>
+
+                        <div class="welcome-status-panel">
+                            <div class="welcome-status-card">
+                                <div class="welcome-status-label">Workspace</div>
+                                <div class="welcome-status-value">Synapse</div>
+                            </div>
+                            <div class="welcome-status-card">
+                                <div class="welcome-status-label">Mode</div>
+                                <div class="welcome-status-value">Interactive</div>
+                            </div>
+                            <div class="welcome-status-card">
+                                <div class="welcome-status-label">UI</div>
+                                <div class="welcome-status-value">Custom</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="welcome-content">
+                        <div class="welcome-actions-panel">
+                            <div class="welcome-panel-header">
+                                <div>
+                                    <div class="welcome-panel-title">Quick actions</div>
+                                    <div class="welcome-panel-subtitle">Jump into the parts of Synapse you use most.</div>
+                                </div>
+
+                                <div class="welcome-actions-footer">
+                                    <button type="button"
+                                            class="welcome-refresh-button"
+                                            @click="$store.welcomeStore.refreshBanners(true)"
+                                            :disabled="$store.welcomeStore.bannersLoading"
+                                            title="Refresh banners">
+                                        <span class="material-symbols-outlined notranslate"
+                                              :class="{ 'welcome-spin': $store.welcomeStore.bannersLoading }"
+                                              translate="no">refresh</span>
+                                    </button>
+
+                                    <button type="button"
+                                            class="welcome-refresh-button"
+                                            @click="$store.welcomeStore.undismissBanners()"
+                                            x-show="$store.welcomeStore.hasDismissedBanners"
+                                            :disabled="$store.welcomeStore.bannersLoading"
+                                            title="Undismiss all banners">
+                                        <span class="material-symbols-outlined notranslate" translate="no">undo</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="welcome-actions">
+                                <x-extension id="welcome-actions-start"></x-extension>
+
+                                <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('new-chat')">
+                                    <div class="welcome-action-icon-wrap">
+                                        <span class="material-symbols-outlined welcome-action-icon notranslate" translate="no">add_circle</span>
+                                    </div>
+                                    <div class="welcome-action-body">
+                                        <h3 class="welcome-action-title">New Chat</h3>
+                                        <p class="welcome-action-description">Start a fresh conversation.</p>
+                                    </div>
+                                </div>
+
+                                <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('projects')">
+                                    <div class="welcome-action-icon-wrap">
+                                        <span class="material-symbols-outlined welcome-action-icon notranslate" translate="no">folder</span>
+                                    </div>
+                                    <div class="welcome-action-body">
+                                        <h3 class="welcome-action-title">Projects</h3>
+                                        <p class="welcome-action-description">Open your working spaces and files.</p>
+                                    </div>
+                                </div>
+
+                                <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('memory')">
+                                    <div class="welcome-action-icon-wrap">
+                                        <span class="material-symbols-outlined welcome-action-icon notranslate" translate="no">memory</span>
+                                    </div>
+                                    <div class="welcome-action-body">
+                                        <h3 class="welcome-action-title">Memory</h3>
+                                        <p class="welcome-action-description">Review and manage saved context.</p>
+                                    </div>
+                                </div>
+
+                                <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('scheduler')">
+                                    <div class="welcome-action-icon-wrap">
+                                        <span class="material-symbols-outlined welcome-action-icon notranslate" translate="no">schedule</span>
+                                    </div>
+                                    <div class="welcome-action-body">
+                                        <h3 class="welcome-action-title">Scheduler</h3>
+                                        <p class="welcome-action-description">Manage reminders and timed actions.</p>
+                                    </div>
+                                </div>
+
+                                <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('settings')">
+                                    <div class="welcome-action-icon-wrap">
+                                        <span class="material-symbols-outlined welcome-action-icon notranslate" translate="no">settings</span>
+                                    </div>
+                                    <div class="welcome-action-body">
+                                        <h3 class="welcome-action-title">Settings</h3>
+                                        <p class="welcome-action-description">Configure models, tools, and integrations.</p>
+                                    </div>
+                                </div>
+
+                                <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('plugins')">
+                                    <div class="welcome-action-icon-wrap">
+                                        <span class="material-symbols-outlined welcome-action-icon notranslate" translate="no">extension</span>
+                                    </div>
+                                    <div class="welcome-action-body">
+                                        <h3 class="welcome-action-title">Plugins</h3>
+                                        <p class="welcome-action-description">Extend Synapse with more capabilities.</p>
+                                    </div>
+                                </div>
+
+                                <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('files')">
+                                    <div class="welcome-action-icon-wrap">
+                                        <span class="material-symbols-outlined welcome-action-icon notranslate" translate="no">folder_open</span>
+                                    </div>
+                                    <div class="welcome-action-body">
+                                        <h3 class="welcome-action-title">Files</h3>
+                                        <p class="welcome-action-description">Browse uploads and connected content.</p>
+                                    </div>
+                                </div>
+
+                                <x-extension id="welcome-actions-end"></x-extension>
+                            </div>
+                        </div>
+
+                        <div class="welcome-banners-panel"
+                             x-show="$store.welcomeStore.banners && $store.welcomeStore.banners.length > 0">
+                            <div class="welcome-panel-header welcome-panel-header-banners">
+                                <div>
+                                    <div class="welcome-panel-title">Updates & notices</div>
+                                    <div class="welcome-panel-subtitle">Important information about your workspace.</div>
+                                </div>
+                            </div>
+
+                            <div class="welcome-banners">
+                                <x-extension id="welcome-banners-start"></x-extension>
+
+                                <template x-for="banner in $store.welcomeStore.sortedBanners" :key="banner.id">
+                                    <div class="welcome-banner" :class="$store.welcomeStore.getBannerClass(banner.type)">
+                                        <div class="welcome-banner-icon">
+                                            <span class="material-symbols-outlined notranslate"
+                                                  translate="no"
+                                                  x-text="$store.welcomeStore.getBannerIcon(banner.type)"></span>
+                                        </div>
+
+                                        <div class="welcome-banner-content">
+                                            <div class="welcome-banner-title" x-text="banner.title"></div>
+                                            <div class="welcome-banner-html" x-html="banner.html"></div>
+                                        </div>
+
+                                        <button class="welcome-banner-dismiss"
+                                                x-show="banner.dismissible !== false"
+                                                @click.stop="$store.welcomeStore.dismissBanner(banner.id)"
+                                                title="Dismiss">
+                                            <span class="material-symbols-outlined notranslate" translate="no">close</span>
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <x-extension id="welcome-banners-end"></x-extension>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <x-extension id="welcome-screen-end"></x-extension>
+            </div>
+        </template>
+    </div>
+
+    <style>
+        .welcome-container {
+            --syn-bg-1: #0b111b;
+            --syn-bg-2: #101826;
+            --syn-panel: rgba(18, 26, 40, 0.82);
+            --syn-panel-2: rgba(22, 31, 48, 0.88);
+            --syn-border: rgba(148, 163, 184, 0.16);
+            --syn-border-strong: rgba(148, 163, 184, 0.26);
+            --syn-text: #e7edf7;
+            --syn-muted: #95a3b8;
+            --syn-soft: #b7c3d6;
+            --syn-accent: #7b8fb2;
+            --syn-accent-2: #5f759b;
+            --syn-glow: rgba(96, 165, 250, 0.10);
+
+            height: 100%;
+            max-height: 100%;
+            min-height: 0;
+            padding: 28px;
+            padding-bottom: 120px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            background:
+                radial-gradient(circle at top left, rgba(90, 116, 160, 0.16), transparent 28%),
+                radial-gradient(circle at top right, rgba(86, 92, 160, 0.12), transparent 24%),
+                linear-gradient(180deg, var(--syn-bg-1), var(--syn-bg-2));
+            color: var(--syn-text);
+            position: relative;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .welcome-container > x-extension,
+        .welcome-actions > x-extension,
+        .welcome-banners > x-extension {
+            display: contents;
+        }
+
+        .welcome-shell {
+            width: 100%;
+            max-width: 1220px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(280px, 360px);
+            gap: 20px;
+            align-items: stretch;
+            margin-bottom: 24px;
+        }
+
+        .welcome-hero-copy,
+        .welcome-status-panel,
+        .welcome-actions-panel,
+        .welcome-banners-panel {
+            background: var(--syn-panel);
+            border: 1px solid var(--syn-border);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .welcome-hero-copy {
+            border-radius: 28px;
+            padding: 34px 34px 32px;
+            text-align: left;
+            background:
+                linear-gradient(135deg, rgba(122, 146, 184, 0.08), transparent 45%),
+                var(--syn-panel);
+        }
+
+        .welcome-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(123, 143, 178, 0.12);
+            border: 1px solid rgba(123, 143, 178, 0.18);
+            color: var(--syn-soft);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .welcome-headline {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.02;
+            letter-spacing: -0.04em;
+            font-weight: 700;
+            color: #f2f6fb;
+            max-width: 12ch;
+        }
+
+        .welcome-lead {
+            margin: 18px 0 0;
+            max-width: 58ch;
+            color: var(--syn-muted);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .welcome-status-panel {
+            border-radius: 28px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .welcome-status-card {
+            border: 1px solid var(--syn-border);
+            border-radius: 18px;
+            padding: 16px 16px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: left;
+        }
+
+        .welcome-status-label {
+            color: var(--syn-muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .welcome-status-value {
+            color: #f1f6ff;
+            font-size: 1rem;
+            font-weight: 650;
+            letter-spacing: -0.01em;
+        }
+
+        .welcome-content {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .welcome-actions-panel,
+        .welcome-banners-panel {
+            border-radius: 24px;
+            padding: 22px;
+        }
+
+        .welcome-panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .welcome-panel-header-banners {
+            margin-bottom: 14px;
+        }
+
+        .welcome-panel-title {
+            color: #f1f5fb;
+            font-size: 1.1rem;
+            font-weight: 650;
+            letter-spacing: -0.02em;
+        }
+
+        .welcome-panel-subtitle {
+            margin-top: 6px;
+            color: var(--syn-muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .welcome-actions-footer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .welcome-refresh-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--syn-border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--syn-soft);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.22s ease;
+        }
+
+        .welcome-refresh-button:hover {
+            border-color: var(--syn-border-strong);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .welcome-refresh-button:disabled {
+            opacity: 0.55;
+            cursor: default;
+            transform: none;
+        }
+
+        .welcome-refresh-button .material-symbols-outlined {
+            font-size: 1.15rem;
+        }
+
+        .welcome-spin {
+            animation: welcome-spin 0.9s linear infinite;
+        }
+
+        @keyframes welcome-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .welcome-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .welcome-action-card {
+            min-height: 108px;
+            border-radius: 20px;
+            border: 1px solid var(--syn-border);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+                rgba(255, 255, 255, 0.01);
+            padding: 18px;
+            display: grid;
+            grid-template-columns: 52px minmax(0, 1fr);
+            gap: 14px;
+            align-items: center;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.24s ease;
+        }
+
+        .welcome-action-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--syn-border-strong);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+            background:
+                linear-gradient(180deg, rgba(123, 143, 178, 0.10), rgba(255, 255, 255, 0.02)),
+                rgba(255, 255, 255, 0.02);
+        }
+
+        .welcome-action-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: rgba(123, 143, 178, 0.10);
+            border: 1px solid rgba(123, 143, 178, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        .welcome-action-icon {
+            font-size: 1.55rem;
+            color: #d8e2f2;
+        }
+
+        .welcome-action-body {
+            min-width: 0;
+        }
+
+        .welcome-action-title {
+            margin: 0;
+            color: #eef3fa;
+            font-size: 0.98rem;
+            font-weight: 620;
+            letter-spacing: -0.01em;
+        }
+
+        .welcome-action-description {
+            margin: 6px 0 0;
+            color: var(--syn-muted);
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .welcome-banners {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .welcome-banner {
+            display: grid;
+            grid-template-columns: 42px minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: start;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid var(--syn-border);
+            background: rgba(255, 255, 255, 0.03);
+            text-align: left;
+            transition: 0.2s ease;
+        }
+
+        .welcome-banner:hover {
+            border-color: var(--syn-border-strong);
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .welcome-banner.banner-info {
+            border-left: 3px solid #6d89b3;
+        }
+
+        .welcome-banner.banner-warning {
+            border-left: 3px solid #b79a68;
+        }
+
+        .welcome-banner.banner-error {
+            border-left: 3px solid #a86f78;
+        }
+
+        .welcome-banner-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid var(--syn-border);
+        }
+
+        .welcome-banner-icon .material-symbols-outlined {
+            font-size: 1.2rem;
+        }
+
+        .banner-info .welcome-banner-icon {
+            color: #9fb5d7;
+        }
+
+        .banner-warning .welcome-banner-icon {
+            color: #d5ba86;
+        }
+
+        .banner-error .welcome-banner-icon {
+            color: #d1a0a7;
+        }
+
+        .welcome-banner-content {
+            min-width: 0;
+        }
+
+        .welcome-banner-title {
+            color: #f1f5fb;
+            font-size: 0.94rem;
+            font-weight: 620;
+            line-height: 1.35;
+            margin-bottom: 4px;
+        }
+
+        .welcome-banner-html {
+            color: var(--syn-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .welcome-banner-html a {
+            color: #b9c9e2;
+            text-decoration: underline;
+        }
+
+        .welcome-banner-html a:hover {
+            color: #e4ecf9;
+        }
+
+        .welcome-banner-html strong {
+            color: #f4f7fc;
+        }
+
+        .welcome-banner-dismiss {
+            margin-top: 2px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--syn-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s ease;
+            opacity: 0.8;
+        }
+
+        .welcome-banner-dismiss:hover {
+            color: #fff;
+            border-color: var(--syn-border);
+            background: rgba(255, 255, 255, 0.04);
+            opacity: 1;
+        }
+
+        .welcome-banner-dismiss .material-symbols-outlined {
+            font-size: 1rem;
+        }
+
+        .light-mode .welcome-container {
+            --syn-bg-1: #eef3f9;
+            --syn-bg-2: #e8eef6;
+            --syn-panel: rgba(255, 255, 255, 0.78);
+            --syn-panel-2: rgba(255, 255, 255, 0.88);
+            --syn-border: rgba(100, 116, 139, 0.14);
+            --syn-border-strong: rgba(100, 116, 139, 0.24);
+            --syn-text: #162131;
+            --syn-muted: #617187;
+            --syn-soft: #43536a;
+            --syn-glow: rgba(96, 165, 250, 0.08);
+            background:
+                radial-gradient(circle at top left, rgba(132, 149, 182, 0.10), transparent 28%),
+                radial-gradient(circle at top right, rgba(138, 150, 186, 0.08), transparent 24%),
+                linear-gradient(180deg, var(--syn-bg-1), var(--syn-bg-2));
+        }
+
+        .light-mode .welcome-headline,
+        .light-mode .welcome-panel-title,
+        .light-mode .welcome-action-title,
+        .light-mode .welcome-banner-title,
+        .light-mode .welcome-status-value {
+            color: #152234;
+        }
+
+        .light-mode .welcome-action-icon {
+            color: #465c7e;
+        }
+
+        @media (max-width: 1080px) {
+            .welcome-hero,
+            .welcome-content {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-status-panel {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .welcome-container {
+                padding: 16px;
+            }
+
+            .welcome-hero-copy,
+            .welcome-status-panel,
+            .welcome-actions-panel,
+            .welcome-banners-panel {
+                border-radius: 20px;
+            }
+
+            .welcome-hero-copy {
+                padding: 24px;
+            }
+
+            .welcome-headline {
+                max-width: none;
+            }
+
+            .welcome-status-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-panel-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .welcome-actions-footer {
+                justify-content: flex-start;
+            }
+
+            .welcome-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .welcome-action-card {
+                grid-template-columns: 46px minmax(0, 1fr);
+                min-height: 92px;
+                padding: 14px;
+                gap: 12px;
+                border-radius: 16px;
+            }
+
+            .welcome-action-icon-wrap {
+                width: 46px;
+                height: 46px;
+                border-radius: 14px;
+            }
+
+            .welcome-action-icon {
+                font-size: 1.35rem;
+            }
+
+            .welcome-action-description {
+                font-size: 0.78rem;
+            }
+
+            .welcome-banner {
+                grid-template-columns: 38px minmax(0, 1fr) auto;
+                gap: 10px;
+                padding: 14px;
+                border-radius: 16px;
+            }
+
+            .welcome-banner-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
+            }
+        }
+    </style>
+</body>
+
+</html>

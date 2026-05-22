@@ -1,0 +1,385 @@
+<html>
+<head>
+  <script type="module">
+    import { store as sidebarStore } from "/components/sidebar/sidebar-store.js";
+    import { store as chatsStore } from "/components/sidebar/chats/chats-store.js";
+    import { store as projectsStore } from "/components/projects/projects-store.js";
+    import { store as chatInputStore } from "/components/chat/input/input-store.js";
+  </script>
+</head>
+<body>
+  <div
+    class="sidebar-header-stack"
+    x-data
+    @click.window="$store.sidebar.menuClick($event, $refs.headerPanel)"
+    @keydown.escape.window="$store.sidebar.menuClose()"
+  >
+    <div
+      id="sidebar-header-panel"
+      class="sidebar-header-panel"
+      x-ref="headerPanel"
+      :class="{ 'sidebar-header-panel-open': $store.sidebar.headOpen() }"
+    >
+      <div class="sidebar-header-toprow">
+        <button id="toggle-sidebar" class="toggle-sidebar-button" @click="$store.sidebar.toggle()" aria-label="Toggle Sidebar" aria-expanded="false">
+          <span class="material-symbols-outlined notranslate" aria-hidden="true" translate="no">menu</span>
+        </button>
+
+        <div id="logo-bar">
+          <a href="#" aria-label="Synapse">
+            <div class="logo-container">
+              <span id="a0-logo" class="logo-expanded" role="img" aria-label="Synapse">
+                <img src="/public/a0-fullDark.svg" alt="Synapse" style="height:32px; width:auto; display:block;">
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-header-actions" id="hide-button">
+        <button class="config-button header-action-button primary-action" id="header-dashboard" @click="deselectChat()" aria-label="Dashboard" tabindex="-1" title="Dashboard">
+          <span class="material-symbols-outlined notranslate" aria-hidden="true" translate="no">home</span>
+          <span class="header-action-label">Dashboard</span>
+        </button>
+
+        <button class="config-button header-action-button" id="header-settings" @click="openModal('settings/settings.html')" aria-label="Settings" tabindex="-1" title="Settings">
+          <span class="material-symbols-outlined notranslate" aria-hidden="true" translate="no">settings</span>
+          <span class="header-action-label">Settings</span>
+        </button>
+
+        <button class="config-button header-action-button" id="header-plugins" @click="openModal('components/plugins/list/plugin-list.html')" aria-label="Plugins" tabindex="-1" title="Plugins">
+          <span class="material-symbols-outlined notranslate" aria-hidden="true" translate="no">extension</span>
+          <span class="header-action-label">Plugins</span>
+        </button>
+
+        <button
+          class="config-button header-action-button dropdown-toggle more-action"
+          id="header-more"
+          x-ref="menuButton"
+          @click="$store.sidebar.menuToggle($refs.menuButton)"
+          title="Quick actions"
+          aria-label="Quick actions"
+          tabindex="-1"
+        >
+          <span class="material-symbols-outlined notranslate" aria-hidden="true" :class="$store.sidebar.menuOpen ? 'rotated' : ''" translate="no">dashboard_customize</span>
+          <span class="header-action-label">Actions</span>
+        </button>
+      </div>
+
+      <div
+        class="dropdown-menu quick-actions-dropdown"
+        x-show="$store.sidebar.menuOpen"
+        :style="$store.sidebar.dropdownStyle"
+        @click.stop
+      >
+        <div id="sidebar-quick-actions-dropdown-slot-start"></div>
+
+        <div class="dropdown-block">
+          <div class="dropdown-header">Workspace</div>
+
+          <button class="dropdown-item" @click="deselectChat(); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">home</span>
+            <span>Dashboard</span>
+          </button>
+
+          <button class="dropdown-item" @click="openModal('/plugins/_memory/webui/memory-dashboard.html'); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">psychology</span>
+            <span>Memory</span>
+          </button>
+
+          <button class="dropdown-item" @click="$store.projects.openProjectsModal(); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">snippet_folder</span>
+            <span>Projects</span>
+          </button>
+
+          <button class="dropdown-item" @click="$store.chatInput.browseFiles(); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">folder</span>
+            <span>Files</span>
+          </button>
+
+          <button class="dropdown-item" @click="openModal('components/modals/scheduler/scheduler-modal.html'); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">schedule</span>
+            <span>Scheduler</span>
+          </button>
+
+          <button class="dropdown-item" @click="openModal('settings/settings.html'); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">settings</span>
+            <span>Settings</span>
+          </button>
+        </div>
+
+        <div class="dropdown-separator"></div>
+
+        <div class="dropdown-block">
+          <div class="dropdown-header">Chat</div>
+
+          <button class="dropdown-item" @click="$store.chats.newChat(); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">chat_add_on</span>
+            <span>New Chat</span>
+          </button>
+
+          <button class="dropdown-item" @click="$store.chats.loadChats(); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">folder_open</span>
+            <span>Load Chat</span>
+          </button>
+
+          <button class="dropdown-item" x-show="$store.chats.selected" @click="$store.chats.saveChat(); $store.sidebar.menuClose()">
+            <span class="material-symbols-outlined notranslate" translate="no">save</span>
+            <span>Save Chat</span>
+          </button>
+
+          <button class="dropdown-item" x-show="$store.chats.selected" @click="$confirmClick($event, () => { $store.chats.resetChat(); $store.sidebar.menuClose() })">
+            <span class="material-symbols-outlined notranslate" translate="no">delete_sweep</span>
+            <span>Clear Chat</span>
+          </button>
+
+          <button class="dropdown-item" x-show="$store.chats.loggedIn" @click="$confirmClick($event, () => { $store.chats.logout(); $store.sidebar.menuClose() })">
+            <span class="material-symbols-outlined notranslate" translate="no">logout</span>
+            <span>Logout</span>
+          </button>
+
+          <button class="dropdown-item" @click="$confirmClick($event, () => { $store.chats.restart(); $store.sidebar.menuClose() })">
+            <span class="material-symbols-outlined notranslate" translate="no">restart_alt</span>
+            <span>Restart Synapse</span>
+          </button>
+        </div>
+
+        <div id="sidebar-quick-actions-dropdown-slot-end"></div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .sidebar-header-stack {
+      position: relative;
+      z-index: 6;
+      width: 100%;
+    }
+
+    .sidebar-header-panel {
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 0.7rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.012) 100%),
+        linear-gradient(180deg, rgba(13, 19, 30, 0.96), rgba(15, 21, 33, 0.94));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .sidebar-header-toprow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+    }
+
+    #logo-bar {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    #logo-bar a {
+      color: inherit;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .logo-container {
+      width: 100%;
+      height: 1.8rem;
+      overflow: visible;
+    }
+
+    #a0-logo img {
+      display: block;
+      object-fit: contain;
+      max-width: 160px;
+    }
+
+    #hide-button {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .sidebar-header-panel .config-button,
+    .sidebar-header-panel .toggle-sidebar-button {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px;
+      box-shadow: none;
+      color: var(--color-text);
+    }
+
+    .toggle-sidebar-button {
+      color: var(--color-text);
+      opacity: 0.92;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.35rem;
+      height: 2.35rem;
+      padding: var(--spacing-xs);
+      transition: all var(--transition-speed) ease-in-out;
+      flex: 0 0 auto;
+    }
+
+    .toggle-sidebar-button:hover {
+      background-color: rgba(255,255,255,0.06);
+      opacity: 1;
+    }
+
+    .toggle-sidebar-button .material-symbols-outlined {
+      font-size: 22px;
+    }
+
+    .header-action-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-start;
+      padding: 0 12px;
+      width: 100%;
+      min-height: 42px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .header-action-button .material-symbols-outlined {
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .header-action-button .material-symbols-outlined.rotated {
+      transform: rotate(180deg);
+    }
+
+    .header-action-label {
+      font-size: 0.88rem;
+      font-weight: 560;
+      color: var(--color-text);
+      opacity: 0.95;
+    }
+
+    .header-action-button:hover {
+      background-color: rgba(255,255,255,0.06);
+    }
+
+    .primary-action {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .quick-actions-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        linear-gradient(180deg, rgba(16,22,35,0.96), rgba(18,25,39,0.94));
+      box-shadow: 0 22px 56px rgba(0, 0, 0, 0.28);
+      padding: 10px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .dropdown-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dropdown-header {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      padding: 6px 10px 8px;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 40px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--color-text);
+      padding: 0 12px;
+      text-align: left;
+      transition: 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.04);
+    }
+
+    .dropdown-item .material-symbols-outlined {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .dropdown-separator {
+      height: 1px;
+      margin: 8px 4px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .light-mode .sidebar-header-panel {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(245,248,252,0.84) 100%);
+      color: #233246;
+      border: 1px solid rgba(15,23,42,0.06);
+      box-shadow: 0 16px 40px rgba(15,23,42,0.08);
+    }
+
+    .light-mode .sidebar-header-panel .config-button,
+    .light-mode .sidebar-header-panel .toggle-sidebar-button {
+      border-color: rgba(15,23,42,0.06);
+      color: #233246;
+    }
+
+    .light-mode .header-action-label,
+    .light-mode .dropdown-item,
+    .light-mode .toggle-sidebar-button {
+      color: #233246;
+    }
+
+    .light-mode .header-action-button:hover,
+    .light-mode .toggle-sidebar-button:hover,
+    .light-mode .dropdown-item:hover {
+      background: rgba(15,23,42,0.04);
+    }
+
+    .light-mode .quick-actions-dropdown {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,249,252,0.94));
+      border: 1px solid rgba(15,23,42,0.06);
+      box-shadow: 0 18px 44px rgba(15,23,42,0.08);
+    }
+
+    .light-mode .dropdown-separator {
+      background: rgba(15,23,42,0.08);
+    }
+  </style>
+</body>
+</html>

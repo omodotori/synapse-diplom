@@ -1,0 +1,221 @@
+<script type="module">
+    import { store } from "/components/chat/attachments/attachmentsStore.js";
+    import { store as imageViewerStore } from "/components/modals/image-viewer/image-viewer-store.js";
+</script>
+
+<div x-data>
+    <template x-if="$store.chatAttachments">
+        <div x-show="$store.chatAttachments.hasAttachments" class="preview-section scrollbar">
+            <template x-for="(attachment, index) in $store.chatAttachments.attachments" :key="index">
+                <div class="attachment-item"
+                     :class="{'image-type': attachment.type === 'image', 'file-type': attachment.type === 'file'}">
+
+                    <template x-if="attachment.type === 'image'">
+                        <img :src="attachment.url"
+                             class="attachment-preview"
+                             :alt="attachment.name"
+                             @click="$store.imageViewer.open(attachment.url, { name: attachment.name })">
+                    </template>
+
+                    <template x-if="attachment.type === 'file'">
+                        <div class="file-card-content">
+                            <div class="file-icon-wrap">
+                                <img :src="attachment.displayInfo.previewUrl" class="file-icon" :alt="attachment.extension">
+                            </div>
+                            <div class="file-meta">
+                                <span class="file-type-label" x-text="attachment.extension || 'FILE'"></span>
+                                <span class="file-title" x-text="attachment.name"></span>
+                            </div>
+                        </div>
+                    </template>
+
+                    <button @click="$store.chatAttachments.removeAttachment(index)"
+                            class="remove-attachment"
+                            title="Remove"
+                            aria-label="Remove attachment">
+                        &times;
+                    </button>
+                </div>
+            </template>
+        </div>
+    </template>
+</div>
+
+<style>
+.preview-section {
+    --syn-attach-bg: rgba(14, 21, 33, 0.82);
+    --syn-attach-bg-soft: rgba(255, 255, 255, 0.03);
+    --syn-attach-border: rgba(148, 163, 184, 0.14);
+    --syn-attach-border-strong: rgba(148, 163, 184, 0.22);
+    --syn-attach-text: #e7edf6;
+    --syn-attach-muted: #94a3b8;
+    --syn-attach-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+    --syn-attach-remove-bg: rgba(7, 12, 20, 0.7);
+
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 4px 0 2px 0;
+    box-sizing: border-box;
+}
+
+.light-mode .preview-section {
+    --syn-attach-bg: rgba(255, 255, 255, 0.84);
+    --syn-attach-bg-soft: rgba(37, 99, 235, 0.03);
+    --syn-attach-border: rgba(100, 116, 139, 0.14);
+    --syn-attach-border-strong: rgba(100, 116, 139, 0.2);
+    --syn-attach-text: #1f2937;
+    --syn-attach-muted: #66768b;
+    --syn-attach-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    --syn-attach-remove-bg: rgba(255, 255, 255, 0.92);
+}
+
+.attachment-item {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    border-radius: 18px;
+    border: 1px solid var(--syn-attach-border);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+        var(--syn-attach-bg);
+    box-shadow: var(--syn-attach-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.attachment-item:hover {
+    transform: translateY(-1px);
+    border-color: var(--syn-attach-border-strong);
+}
+
+.attachment-item.image-type {
+    width: 108px;
+    height: 108px;
+    padding: 6px;
+    flex: 0 0 auto;
+}
+
+.attachment-item.file-type {
+    min-width: 230px;
+    max-width: 320px;
+    padding: 12px 14px;
+    justify-content: flex-start;
+}
+
+.attachment-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+    cursor: pointer;
+    display: block;
+}
+
+.file-card-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.file-icon-wrap {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--syn-attach-bg-soft);
+    border: 1px solid var(--syn-attach-border);
+    flex-shrink: 0;
+}
+
+.file-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+}
+
+.file-meta {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.file-type-label {
+    font-size: 0.68rem;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--syn-attach-muted);
+}
+
+.file-title {
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    font-weight: 600;
+    color: var(--syn-attach-text);
+    word-break: break-word;
+}
+
+.remove-attachment {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--syn-attach-border);
+    border-radius: 999px;
+    background: var(--syn-attach-remove-bg);
+    color: var(--syn-attach-text);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.16);
+    transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.remove-attachment:hover {
+    transform: scale(1.05);
+    opacity: 0.95;
+}
+
+.remove-attachment:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+    .preview-section {
+        gap: 10px;
+    }
+
+    .attachment-item.image-type {
+        width: 92px;
+        height: 92px;
+    }
+
+    .attachment-item.file-type {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .file-title {
+        font-size: 0.8rem;
+    }
+}
+</style>
