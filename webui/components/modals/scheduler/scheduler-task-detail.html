@@ -21,11 +21,11 @@
                 <div class="buttons-container scheduler-detail-actions">
                     <div class="buttons-left">
                         <button type="button" class="button cancel"
-                                @click="$confirmClick($event, () => $store.schedulerStore.deleteFromDetail())">Delete</button>
+                                @click="$confirmClick($event, () => $store.schedulerStore.deleteFromDetail())">Удалить</button>
                     </div>
                     <div class="buttons-right">
                         <button type="button" class="button confirm"
-                                @click="$store.schedulerStore.editFromDetail()">Edit</button>
+                                @click="$store.schedulerStore.editFromDetail()">Редактировать</button>
                         <button type="button" class="button"
                                 @click="$store.schedulerStore.runTask($store.schedulerStore.selectedTaskForDetail.uuid)">Run</button>
                         
@@ -145,11 +145,11 @@
             <div class="buttons-container scheduler-detail-footer-actions">
                 <div class="buttons-left">
                     <button type="button" class="button cancel"
-                            @click="$confirmClick($event, () => $store.schedulerStore.deleteFromDetail())">Delete</button>
+                            @click="$confirmClick($event, () => $store.schedulerStore.deleteFromDetail())">Удалить</button>
                 </div>
                 <div class="buttons-right">
                     <button type="button" class="button confirm"
-                            @click="$store.schedulerStore.editFromDetail()">Edit</button>
+                            @click="$store.schedulerStore.editFromDetail()">Редактировать</button>
                     <button type="button" class="button"
                             @click="$store.schedulerStore.runTask($store.schedulerStore.selectedTaskForDetail.uuid)">Run</button>
                 </div>

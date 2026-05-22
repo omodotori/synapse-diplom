@@ -48,7 +48,7 @@
 
   <template x-if="$store.fileEditor">
     <div class="modal-footer" data-modal-footer>
-      <button class="btn btn-cancel" @click="$store.fileEditor.closeFileEditor()" :disabled="$store.fileEditor.isSaving">Cancel</button>
+      <button class="btn btn-cancel" @click="$store.fileEditor.closeFileEditor()" :disabled="$store.fileEditor.isSaving">Отмена</button>
       <button
         class="btn btn-ok"
         @click="$store.fileEditor.saveFileEdits()"

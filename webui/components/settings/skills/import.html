@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Import Skills</title>
+    <title>Импорт навыков</title>
     <script type="module">
         import { store } from "/components/settings/skills/skills-import-store.js";
     </script>
@@ -28,7 +28,7 @@
                         <span class="policy-label-text">Limit to project:</span>
                         <select x-model="$store.skillsImportStore.projectKey" class="policy-dropdown"
                             @change="$store.skillsImportStore.previewImport()">
-                            <option value="">All</option>
+                            <option value="">Все</option>
                             <template x-for="project in $store.skillsImportStore.projects" :key="project.key">
                                 <option :value="project.key" x-text="project.label"></option>
                             </template>
@@ -39,7 +39,7 @@
                         <span class="policy-label-text">Limit to agent profile:</span>
                         <select x-model="$store.skillsImportStore.agentProfileKey" class="policy-dropdown"
                             @change="$store.skillsImportStore.previewImport()">
-                            <option value="">All</option>
+                            <option value="">Все</option>
                             <template x-for="agentProfile in $store.skillsImportStore.agentProfiles" :key="agentProfile.key">
                                 <option :value="agentProfile.key" x-text="agentProfile.label"></option>
                             </template>
@@ -48,7 +48,7 @@
 
                     <label class="policy-label">
                         <span class="policy-label-text">Namespace:</span>
-                        <input class="text-input" type="text" placeholder="e.g. my-pack"
+                        <input class="text-input" type="text" placeholder="напр. my-pack"
                             x-model="$store.skillsImportStore.namespace"
                             @change="$store.skillsImportStore.previewImport()">
                     </label>
@@ -57,17 +57,17 @@
                         <span class="policy-label-text">Conflict policy:</span>
                         <select x-model="$store.skillsImportStore.conflict" class="policy-dropdown"
                             @change="$store.skillsImportStore.previewImport()">
-                            <option value="skip">Skip existing</option>
+                            <option value="skip">Пропустить существующие</option>
                             <option value="rename">Rename (add _2, _3...)</option>
-                            <option value="overwrite">Overwrite existing</option>
+                            <option value="overwrite">Перезаписать существующие</option>
                         </select>
                     </label>
 
                     <div class="buttons">
                         <button class="btn slim" @click="$store.skillsImportStore.previewImport()"
-                            :disabled="$store.skillsImportStore.loading">Preview</button>
+                            :disabled="$store.skillsImportStore.loading">Предпросмотр</button>
                         <button class="btn slim primary" @click="$store.skillsImportStore.performImport()"
-                            :disabled="$store.skillsImportStore.loading">Import</button>
+                            :disabled="$store.skillsImportStore.loading">Импортировать</button>
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@
                 </div>
 
                 <div x-show="$store.skillsImportStore.preview" class="preview">
-                    <h4>Preview</h4>
+                    <h4>Предпросмотр</h4>
                     <div class="preview-meta">
                         <div>Namespace: <code x-text="$store.skillsImportStore.preview?.namespace"></code></div>
                         <div>Would import: <span x-text="$store.skillsImportStore.preview?.imported_count || 0"></span></div>

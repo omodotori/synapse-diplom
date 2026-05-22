@@ -56,13 +56,13 @@
                             <div class="plugins-toolbar-search">
                                 <input type="text"
                                     class="plugins-search-input"
-                                    placeholder="Search plugins by name or description..."
+                                    placeholder="Искать плагины по имени или описанию..."
                                     x-model="$store.pluginListStore.searchQuery">
                             </div>
                             <div class="plugins-toolbar-actions">
                                 <button type="button"
                                     class="button"
-                                    title="Refresh"
+                                    title="Обновить"
                                     @click="$store.pluginListStore.refresh()"
                                     :disabled="$store.pluginListStore.loading">
                                     <span class="icon material-symbols-outlined">refresh</span> Refresh
@@ -166,10 +166,10 @@
                                                     <template x-if="plugin.is_custom">
                                                         <button type="button"
                                                             class="dropdown-item plugin-dropdown-delete"
-                                                            title="Delete"
+                                                            title="Удалить"
                                                             @click="$confirmClick($event, () => { $store.pluginListStore.deletePlugin(plugin); actionsOpen = false; })">
                                                             <span class="material-symbols-outlined">delete</span>
-                                                            <span>Delete</span>
+                                                            <span>Удалить</span>
                                                         </button>
                                                     </template>
                                                 </div>

@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Plugin Settings</title>
+    <title>Настройки плагина</title>
     <script type="module">
         import { store } from "/components/plugins/plugin-settings-store.js";
     </script>
@@ -25,20 +25,20 @@
                      x-show="context.perProjectConfig || context.perAgentConfig">
                     <div class="plugin-settings-scope-header">
                         <div class="plugin-settings-scope-header-copy">
-                            <div class="plugin-settings-scope-title">Settings scope</div>
+                            <div class="plugin-settings-scope-title">Область настроек</div>
                             <div class="plugin-settings-scope-desc"
                                  x-text="
                                     context.perProjectConfig && context.perAgentConfig
-                                      ? 'This plugin supports settings per project or agent profile.'
+                                      ? 'Этот плагин поддерживает настройки для каждого проекта или профиля агента.'
                                       : context.perProjectConfig
-                                        ? 'This plugin supports settings per project.'
-                                        : 'This plugin supports settings per agent profile.'
+                                        ? 'Этот плагин поддерживает настройки для каждого проекта.'
+                                        : 'Этот плагин поддерживает настройки для каждого профиля агента.'
                                  ">
                             </div>
                         </div>
                         <div class="plugin-settings-scope-header-toggle"
                              x-show="$store.pluginToggle && !$store.pluginToggle.alwaysEnabled">
-                            <span class="plugin-settings-toolbar-label">Enabled</span>
+                            <span class="plugin-settings-toolbar-label">Включен</span>
                             <label class="toggle">
                                 <input type="checkbox"
                                        :checked="$store.pluginToggle?.status === 'enabled'"
@@ -54,12 +54,12 @@
 
                         <label class="plugin-settings-toolbar-item"
                                x-show="context.perProjectConfig">
-                            <span class="plugin-settings-toolbar-label">Project</span>
+                            <span class="plugin-settings-toolbar-label">Проект</span>
                             <select x-model="context.projectName"
                                     x-init="$nextTick(() => $el.value = context.projectName)"
                                     @change="context.onScopeChanged()"
                                     :disabled="!context.perProjectConfig">
-                                <option value="">Global</option>
+                                <option value="">Глобально</option>
                                 <template x-for="project in context.projects" :key="project.key">
                                     <option :value="project.key" x-text="project.label"></option>
                                 </template>
@@ -68,19 +68,19 @@
 
                         <label class="plugin-settings-toolbar-item"
                                x-show="context.perAgentConfig">
-                            <span class="plugin-settings-toolbar-label">Agent profile</span>
+                            <span class="plugin-settings-toolbar-label">Профиль агента</span>
                             <select x-model="context.agentProfileKey"
                                     x-init="$nextTick(() => $el.value = context.agentProfileKey)"
                                     @change="context.onScopeChanged()"
                                     :disabled="!context.perAgentConfig">
-                                <option value="">All profiles</option>
+                                <option value="">Все профили</option>
                                 <template x-for="profile in context.agentProfiles" :key="profile.key">
                                     <option :value="profile.key" x-text="profile.label"></option>
                                 </template>
                             </select>
                         </label>
 
-                        <button type="button" class="button plugin-settings-toolbar-button" title="Show existing configurations" @click="context.openConfigListModal()">
+                        <button type="button" class="button plugin-settings-toolbar-button" title="Показать существующие конфигурации" @click="context.openConfigListModal()">
                             <span class="icon material-symbols-outlined">list</span>
                         </button>
 
@@ -102,7 +102,7 @@
                 <!-- Loading -->
                 <div x-show="context.isLoading" class="plugin-settings-loading">
                     <span class="material-symbols-outlined spinning">progress_activity</span>
-                    <span>Loading settings...</span>
+                    <span>Загрузка настроек...</span>
                 </div>
 
                 <!-- Plugin settings body: plugin provides /plugins/<name>/webui/config.html -->
@@ -121,7 +121,7 @@
                         <button class="btn"
                                 @click="context.wizardFooter?.onBack?.()"
                                 :disabled="!context.wizardFooter?.canGoBack?.()">
-                            <span x-text="context.wizardFooter?.backLabel?.() || 'Back'"></span>
+                            <span x-text="context.wizardFooter?.backLabel?.() || 'Назад'"></span>
                         </button>
                         <div class="plugin-settings-footer-note" x-text="context.wizardFooter?.note?.() || ''"></div>
                     </div>
@@ -131,23 +131,23 @@
                     <button class="btn"
                             @click="context.resetToDefault()"
                             :disabled="context?.isSaving || context?.isLoading">
-                        Default
+                        По умолчанию
                     </button>
                     <button class="btn btn-cancel"
                             @click="window.closeModal?.()">
-                        Cancel
+                        Отмена
                     </button>
                     <button class="btn btn-field"
                             x-show="context.wizardFooter?.showNext?.()"
                             @click="context.wizardFooter?.onNext?.()"
                             :disabled="context.wizardFooter?.nextDisabled?.()">
-                        <span x-text="context.wizardFooter?.nextLabel?.() || 'Next'"></span>
+                        <span x-text="context.wizardFooter?.nextLabel?.() || 'Далее'"></span>
                     </button>
                     <button class="btn btn-ok"
                             x-show="!context.wizardFooter || context.wizardFooter?.showSave?.()"
                             @click="context.save()"
                             :disabled="context?.isSaving || context?.isLoading">
-                        Save
+                        Сохранить
                     </button>
                 </div>
             </div>

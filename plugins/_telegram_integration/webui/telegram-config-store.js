@@ -4,16 +4,16 @@ import * as API from "/js/api.js";
 const API_BASE = "/plugins/_telegram_integration";
 const STEPS = [
   {
-    title: "Connect your bot",
-    description: "Start with BotFather, then paste the bot token here.",
+    title: "Подключите вашего бота",
+    description: "Начните с BotFather, затем вставьте токен бота сюда.",
   },
   {
-    title: "Choose who can use it",
-    description: "Finish the core setup, choose access, and decide how messages arrive.",
+    title: "Выберите, кто может использовать бота",
+    description: "Завершите основную настройку, выберите доступ и решите, как будут поступать сообщения.",
   },
   {
-    title: "Shape the conversation",
-    description: "Choose how the bot behaves in groups and how the agent should reply.",
+    title: "Настройте общение",
+    description: "Выберите, как бот ведет себя в группах и как агент должен отвечать.",
   },
 ];
 
@@ -75,11 +75,11 @@ export const store = createStore("telegramConfig", {
   },
 
   get nextButtonLabel() {
-    return this.isLastStep ? "Done" : "Next";
+    return this.isLastStep ? "Готово" : "Далее";
   },
 
   get footerStepLabel() {
-    return `Step ${this.currentStep + 1} of ${this.steps.length}`;
+    return `Шаг ${this.currentStep + 1} из ${this.steps.length}`;
   },
 
   async init(config, context = null) {
@@ -199,10 +199,10 @@ export const store = createStore("telegramConfig", {
     const bot = this.activeBot;
     if (!bot) return "";
     if (this.currentStep === 0 && !String(bot.token || "").trim()) {
-      return "Add your bot token first.";
+      return "Сначала добавьте токен бота.";
     }
     if (this.currentStep === 1 && bot.mode === "webhook" && !String(bot.webhook_url || "").trim()) {
-      return "Add your webhook URL first.";
+      return "Сначала добавьте URL вебхука.";
     }
     return "";
   },
@@ -215,29 +215,29 @@ export const store = createStore("telegramConfig", {
   },
 
   botStatusLabel(bot) {
-    if (!String(bot?.token || "").trim()) return "New";
-    if (bot?.mode === "webhook" && !String(bot?.webhook_url || "").trim()) return "Needs URL";
-    if (bot?.enabled && this.canTest(bot)) return "Live";
-    if (this.canTest(bot)) return "Ready";
-    return "Needs info";
+    if (!String(bot?.token || "").trim()) return "Новый";
+    if (bot?.mode === "webhook" && !String(bot?.webhook_url || "").trim()) return "Нужен URL";
+    if (bot?.enabled && this.canTest(bot)) return "Работает";
+    if (this.canTest(bot)) return "Готов";
+    return "Нужны данные";
   },
 
   botStatusTone(bot) {
     const label = this.botStatusLabel(bot);
-    if (label === "Live") return "success";
-    if (label === "Ready") return "ready";
-    if (label === "New") return "muted";
+    if (label === "Работает") return "success";
+    if (label === "Готов") return "ready";
+    if (label === "Новый") return "muted";
     return "warning";
   },
 
   botTitle(bot, idx) {
-    return String(bot?.name || "").trim() || `Bot ${idx + 1}`;
+    return String(bot?.name || "").trim() || `Бот ${idx + 1}`;
   },
 
   botSubtitle(bot) {
-    const pieces = [bot.mode === "webhook" ? "Webhook" : "Polling"];
-    pieces.push(Array.isArray(bot.allowed_users) && bot.allowed_users.length > 0 ? "Private access" : "Open access");
-    if (bot.default_project) pieces.push(`Project: ${bot.default_project}`);
+    const pieces = [bot.mode === "webhook" ? "Вебхук" : "Опрос"];
+    pieces.push(Array.isArray(bot.allowed_users) && bot.allowed_users.length > 0 ? "Ограниченный доступ" : "Открытый доступ");
+    if (bot.default_project) pieces.push(`Проект: ${bot.default_project}`);
     return pieces.join(" · ");
   },
 
@@ -274,7 +274,7 @@ export const store = createStore("telegramConfig", {
   accessWarning(bot) {
     if (!bot?.enabled) return "";
     if (Array.isArray(bot.allowed_users) && bot.allowed_users.length > 0) return "";
-    return "Allowed users is empty. Anyone who finds this bot can reach your Synapse.";
+    return "Список пользователей пуст. Любой, кто найдет бота, сможет использовать Synapse.";
   },
 
   async testConnection(idx) {
@@ -298,21 +298,21 @@ export const store = createStore("telegramConfig", {
   },
 
   testButtonLabel(bot, idx) {
-    if (this.testing === idx) return "Checking...";
-    if (this.canTest(bot)) return "Check Telegram connection";
-    return "Fill in the basics first";
+    if (this.testing === idx) return "Проверка...";
+    if (this.canTest(bot)) return "Проверить подключение к Telegram";
+    return "Сначала заполните основные поля";
   },
 
   testIntro() {
-    return "We will validate the bot token with Telegram so you know this bot can connect.";
+    return "Мы проверим токен в Telegram, чтобы убедиться, что бот может подключиться.";
   },
 
   resultTitle(result) {
-    return result.test || "Check";
+    return result.test || "Проверка";
   },
 
   resultMessage(result) {
-    return result.message || (result.ok ? "Done." : "Something went wrong.");
+    return result.message || (result.ok ? "Успешно." : "Что-то пошло не так.");
   },
 
   initialStepForBot(bot) {
@@ -334,7 +334,7 @@ export const store = createStore("telegramConfig", {
       owner: "telegramConfig",
       visible: () => this.showFooterNav,
       canGoBack: () => !this.isFirstStep,
-      backLabel: () => "Back",
+      backLabel: () => "Назад",
       note: () => this.footerStepLabel,
       showNext: () => this.showFooterNav && !this.isLastStep,
       nextLabel: () => this.nextButtonLabel,

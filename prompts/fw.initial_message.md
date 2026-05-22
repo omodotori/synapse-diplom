@@ -8,7 +8,7 @@
     "headline": "Greeting user and starting conversation",
     "tool_name": "response",
     "tool_args": {
-        "text": "**Hello! 👋**, I'm **Synapse**. How can I help you today?"
+        "text": "**Привет! 👋** Я **Synapse**. Чем я могу помочь вам сегодня?"
     }
 }
 ```

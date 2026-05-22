@@ -17,21 +17,21 @@
 
             <!-- Keep in mind that <template> can have only one root element inside -->
             <div id="tunnel-settings-section">
-                <div class="section-title">Flare Tunnel</div>
+                <div class="section-title">Туннель Flare</div>
                 <div class="section-description">Create a secure public URL to access your Synapse instance anytime,
                     anywhere.</div>
                 <!-- Tunnel content UI -->
                 <div class="tunnel-container">
                     <div class="field">
                         <div class="field-label">
-                            <div class="field-title">Tunnel provider</div>
-                            <div class="field-description">Select provider for public tunnel</div>
+                            <div class="field-title">Провайдер туннеля</div>
+                            <div class="field-description">Выберите провайдера для публичного туннеля</div>
                         </div>
                         <div class="field-control">
                             <select id="tunnel-provider" x-model="$store.tunnelStore.provider"
                                 :disabled="$store.tunnelStore.isLoading">
                                 <option value="cloudflared">Cloudflare</option>
-                                <option value="microsoft">Microsoft Dev Tunnels</option>
+                                <option value="microsoft">Туннели Microsoft Dev</option>
                                 <option value="serveo">Serveo</option>
                             </select>
                         </div>
@@ -45,7 +45,7 @@
                     <div class="microsoft-login-box" x-show="$store.tunnelStore.microsoftLoginCode" x-transition>
                         <div class="microsoft-login-header">
                             <span class="microsoft-login-icon material-symbols-outlined">key</span>
-                            <div class="microsoft-login-title">Microsoft Login Required</div>
+                            <div class="microsoft-login-title">Требуется авторизация Microsoft</div>
                         </div>
                         <div class="microsoft-login-steps">
                             <div class="microsoft-login-step">
@@ -96,7 +96,7 @@
                                 <div class="tunnel-qr-code" id="qrcode-tunnel">
                                     <!-- QR code will be generated here -->
                                 </div>
-                                <div class="tunnel-qr-label">Scan with mobile device</div>
+                                <div class="tunnel-qr-label">Отсканируйте с мобильного устройства</div>
                             </div>
                             <div class="tunnel-link-info">
                                 Share this URL to allow others to access your Synapse instance.

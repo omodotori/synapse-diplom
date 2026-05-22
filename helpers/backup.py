@@ -207,11 +207,11 @@ class BackupService:
         Returns:
             List of translated patterns for the current system
         """
-        # Get the backed up agent zero root path from metadata
+        # Get the backed up synapse root path from metadata
         environment_info = backup_metadata.get("environment_info", {})
         backed_up_agent_root = environment_info.get("synapse_root", "")
 
-        # Get current agent zero root path
+        # Get current synapse root path
         current_agent_root = self.synapse_root
 
         # If we don't have the backed up root path, return patterns as-is
@@ -224,7 +224,7 @@ class BackupService:
 
         translated_patterns = []
         for pattern in patterns:
-            # Check if the pattern starts with the backed up agent zero root
+            # Check if the pattern starts with the backed up synapse root
             if pattern.startswith(backed_up_agent_root + '/') or pattern == backed_up_agent_root:
                 # Replace the backed up root with the current root
                 relative_pattern = pattern[len(backed_up_agent_root):].lstrip('/')
@@ -762,11 +762,11 @@ class BackupService:
         Returns:
             Translated path for the current system
         """
-        # Get the backed up agent zero root path from metadata
+        # Get the backed up synapse root path from metadata
         environment_info = backup_metadata.get("environment_info", {})
         backed_up_agent_root = environment_info.get("synapse_root", "")
 
-        # Get current agent zero root path
+        # Get current synapse root path
         current_agent_root = self.synapse_root
 
         # If we don't have the backed up root path, use original path with leading slash
@@ -783,7 +783,7 @@ class BackupService:
         else:
             absolute_archive_path = archive_path
 
-        # Check if the archive path starts with the backed up agent zero root
+        # Check if the archive path starts with the backed up synapse root
         if absolute_archive_path.startswith(backed_up_agent_root + '/') or absolute_archive_path == backed_up_agent_root:
             # Replace the backed up root with the current root
             relative_path = absolute_archive_path[len(backed_up_agent_root):].lstrip('/')

@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Manage API Keys</title>
+  <title>Управление ключами API</title>
 </head>
 
 <body>
@@ -48,10 +48,10 @@
      x-init="init()">
 
   <div class="api-keys-section">
-    <div class="section-title">API Keys</div>
+    <div class="section-title">Ключи API</div>
     <div class="section-description">
-      API keys for model providers and services used by Synapse. You can set multiple API keys separated by a comma (,). They will be used in round-robin fashion.<br>
-      For more information about Synapse Venice provider, see <a href="http://agent-zero.ai/?community/api-dashboard/about" target="_blank">Synapse Venice</a>.
+      Ключи API для провайдеров моделей и сервисов, используемых Synapse. Вы можете указать несколько ключей, разделив их запятой (,). Они будут использоваться по очереди.<br>
+      Для получения дополнительной информации о провайдере Synapse Venice см. <a href="http://agent-zero.ai/?community/api-dashboard/about" target="_blank">Synapse Venice</a>.
     </div>
 
     <div x-show="error" class="plugin-settings-error" style="margin-top: 1rem;">
@@ -94,12 +94,12 @@
     <button class="btn btn-ok"
             @click="saveAndClose()"
             :disabled="loading || saving || !hasChanges">
-      Save
+      Сохранить
     </button>
     <button class="btn btn-cancel"
             @click="window.closeModal?.()"
             :disabled="saving">
-      Close
+      Закрыть
     </button>
   </div>
 </div>

@@ -15,12 +15,12 @@
 
         <template x-if="$store.telegramConfig.didInit && $store.telegramConfig.bots.length === 0">
           <div class="tg-empty">
-            <div class="tg-empty-title">Start with one bot</div>
+            <div class="tg-empty-title">Начните с одного бота</div>
             <div class="tg-empty-copy">
-              Most setups only need a bot token, one allowed user, and the default polling mode.
+              Обычно нужен только токен бота, один разрешенный пользователь и режим опроса по умолчанию.
             </div>
             <button class="btn btn-field" @click="$store.telegramConfig.addBot()">
-              Connect a bot
+              Подключить бота
             </button>
           </div>
         </template>
@@ -36,7 +36,7 @@
                 <span class="tg-status-pill" :class="'tone-' + $store.telegramConfig.botStatusTone(bot)"
                   x-text="$store.telegramConfig.botStatusLabel(bot)"></span>
                 <button class="btn btn-action delete"
-                  @click.stop="$confirmClick($event, () => $store.telegramConfig.removeBot(idx))" title="Remove bot">
+                  @click.stop="$confirmClick($event, () => $store.telegramConfig.removeBot(idx))" title="Удалить бота">
                   <span class="material-symbols-outlined">delete</span>
                 </button>
                 <span class="material-symbols-outlined tg-card-chevron"
@@ -64,25 +64,25 @@
                   <div class="tg-step-panel">
                     <div class="tg-token-row">
                       <div class="tg-qr-card">
-                        <div class="tg-qr-title">Scan to open @BotFather</div>
+                        <div class="tg-qr-title">Сканируйте, чтобы открыть @BotFather</div>
                         <img class="tg-qr-image" :src="$store.telegramConfig.botFatherQr"
-                          alt="Scan to open @BotFather" />
+                          alt="Сканируйте, чтобы открыть @BotFather" />
                       </div>
 
                       <div class="tg-token-card">
                         <div class="tg-token-steps">
-                          <div class="tg-token-steps-title">Create your bot</div>
+                          <div class="tg-token-steps-title">Создайте бота</div>
                           <ol class="tg-token-steps-list">
-                            <li>Open <a href="https://t.me/BotFather" target="_blank" rel="noopener">@BotFather</a></li>
-                            <li>Send <strong>/newbot</strong> and follow the prompts</li>
-                            <li>Paste the token here</li>
+                            <li>Откройте <a href="https://t.me/BotFather" target="_blank" rel="noopener">@BotFather</a></li>
+                            <li>Отправьте <strong>/newbot</strong> и следуйте инструкциям</li>
+                            <li>Вставьте токен сюда</li>
                           </ol>
                         </div>
 
                         <div class="field">
                           <div class="field-label">
-                            <div class="field-title">Bot token</div>
-                            <div class="field-description">Paste the token you got from @BotFather.</div>
+                            <div class="field-title">Токен бота</div>
+                            <div class="field-description">Вставьте токен, полученный от @BotFather.</div>
                           </div>
                           <div class="field-control">
                             <input type="password" x-model="bot.token"
@@ -98,8 +98,8 @@
                   <div class="tg-step-panel">
                     <div class="field">
                       <div class="field-label">
-                        <div class="field-title">Turn on this bot</div>
-                        <div class="field-description">Enable message polling when you are ready for the bot to go live.
+                        <div class="field-title">Включить этого бота</div>
+                        <div class="field-description">Включите опрос сообщений (polling), когда будете готовы к запуску бота.
                         </div>
                       </div>
                       <div class="field-control">
@@ -112,8 +112,8 @@
 
                     <div class="field">
                       <div class="field-label">
-                        <div class="field-title">Bot name</div>
-                        <div class="field-description">A friendly internal label so you can tell bots apart.</div>
+                        <div class="field-title">Имя бота</div>
+                        <div class="field-description">Понятное внутреннее имя, чтобы отличать ботов друг от друга.</div>
                       </div>
                       <div class="field-control">
                         <input type="text" x-model="bot.name" placeholder="support_bot" />
@@ -122,22 +122,22 @@
 
                     <div class="field">
                       <div class="field-label">
-                        <div class="field-title">Delivery mode</div>
+                        <div class="field-title">Режим доставки</div>
                         <div class="field-description">Polling is the simplest option. Webhook is for public HTTPS
                           setups.</div>
                       </div>
                       <div class="field-control">
                         <select x-model="bot.mode">
-                          <option value="polling">Polling</option>
-                          <option value="webhook">Webhook</option>
+                          <option value="polling">Опрос (Polling)</option>
+                          <option value="webhook">Вебхук (Webhook)</option>
                         </select>
                       </div>
                     </div>
 
                     <div class="field" x-show="bot.mode === 'webhook'">
                       <div class="field-label">
-                        <div class="field-title">Webhook URL</div>
-                        <div class="field-description">Your public Synapse base URL, for example
+                        <div class="field-title">URL вебхука</div>
+                        <div class="field-description">Ваш публичный базовый URL Synapse, например
                           https://yourdomain.com.</div>
                       </div>
                       <div class="field-control">
@@ -147,7 +147,7 @@
 
                     <div class="field">
                       <div class="field-label">
-                        <div class="field-title">Allowed users</div>
+                        <div class="field-title">Разрешенные пользователи</div>
                         <div class="field-description">Comma-separated @usernames or numeric IDs. Leave empty only if
                           you truly want open access.</div>
                       </div>
@@ -164,12 +164,12 @@
 
                     <div class="field">
                       <div class="field-label">
-                        <div class="field-title">Default project</div>
-                        <div class="field-description">Optional fallback project for conversations from this bot.</div>
+                        <div class="field-title">Проект по умолчанию</div>
+                        <div class="field-description">Проект по умолчанию для переписок с этим ботом.</div>
                       </div>
                       <div class="field-control">
                         <select :value="bot.default_project" @change="bot.default_project = $event.target.value">
-                          <option value="">No project</option>
+                          <option value="">Без проекта</option>
                           <template x-for="proj in $store.telegramConfig.projects" :key="proj.name">
                             <option :value="proj.name" x-text="proj.title || proj.name"
                               :selected="bot.default_project === proj.name"></option>
@@ -184,23 +184,23 @@
                   <div class="tg-step-panel">
                     <div class="field">
                       <div class="field-label">
-                        <div class="field-title">Group behavior</div>
+                        <div class="field-title">Поведение в группах</div>
                         <div class="field-description">Choose whether the bot replies only when invited into the
                           conversation or to everything in a group.</div>
                       </div>
                       <div class="field-control">
                         <select x-model="bot.group_mode">
-                          <option value="mention">Reply when @mentioned or replied to</option>
-                          <option value="all">Reply to every group message</option>
-                          <option value="off">Ignore group messages</option>
+                          <option value="mention">Отвечать при упоминании (@) или в ответ на сообщение</option>
+                          <option value="all">Отвечать на каждое сообщение в группе</option>
+                          <option value="off">Игнорировать сообщения в группах</option>
                         </select>
                       </div>
                     </div>
 
                     <div class="field" x-show="bot.group_mode !== 'off'">
                       <div class="field-label">
-                        <div class="field-title">Welcome new members</div>
-                        <div class="field-description">Send a greeting when someone joins the group.</div>
+                        <div class="field-title">Приветствовать новых участников</div>
+                        <div class="field-description">Отправлять приветствие, когда кто-то присоединяется к группе.</div>
                       </div>
                       <div class="field-control">
                         <label class="toggle">
@@ -212,8 +212,8 @@
 
                     <div class="field" x-show="bot.group_mode !== 'off' && bot.welcome_enabled">
                       <div class="field-label">
-                        <div class="field-title">Welcome message</div>
-                        <div class="field-description">Use {name} for the new member's name.</div>
+                        <div class="field-title">Приветственное сообщение</div>
+                        <div class="field-description">Используйте {name} для подстановки имени нового участника.</div>
                       </div>
                       <div class="field-control">
                         <input type="text" x-model="bot.welcome_message" placeholder="Welcome, {name}!" />
@@ -222,8 +222,8 @@
 
                     <div class="field">
                       <div class="field-label">
-                        <div class="field-title">Agent instructions</div>
-                        <div class="field-description">Extra guidance for how the agent should reply in Telegram chats.
+                        <div class="field-title">Инструкции для агента</div>
+                        <div class="field-description">Дополнительные инструкции о том, как агент должен отвечать в чатах Telegram.
                         </div>
                       </div>
                       <div class="field-control">
@@ -236,7 +236,7 @@
 
                 <div class="tg-test-panel">
                   <div class="tg-test-copy">
-                    <div class="tg-test-title">Check the connection</div>
+                    <div class="tg-test-title">Проверка подключения</div>
                     <div class="tg-test-description" x-text="$store.telegramConfig.testIntro()"></div>
                   </div>
                   <button class="btn btn-field" @click.stop="$store.telegramConfig.testConnection(idx)"
@@ -263,15 +263,15 @@
                 <template x-if="$store.telegramConfig.currentStep > 0">
                   <details class="tg-advanced">
                     <summary>
-                      <span>Advanced</span>
+                      <span>Расширенные настройки</span>
                       <span class="material-symbols-outlined tg-advanced-chevron"
                         aria-hidden="true">keyboard_arrow_down</span>
                     </summary>
                     <div class="tg-advanced-body">
                       <div class="field" x-show="bot.mode === 'webhook'">
                         <div class="field-label">
-                          <div class="field-title">Webhook secret</div>
-                          <div class="field-description">Optional shared secret for webhook verification.</div>
+                          <div class="field-title">Секрет вебхука</div>
+                          <div class="field-description">Опциональный секрет для проверки вебхука.</div>
                         </div>
                         <div class="field-control">
                           <input type="password" x-model="bot.webhook_secret" />
@@ -280,8 +280,8 @@
 
                       <div class="field">
                         <div class="field-label">
-                          <div class="field-title">Message notifications</div>
-                          <div class="field-description">Show a WebUI notification for each incoming Telegram message.
+                          <div class="field-title">Уведомления о сообщениях</div>
+                          <div class="field-description">Показывать уведомление в WebUI для каждого входящего сообщения Telegram.
                           </div>
                         </div>
                         <div class="field-control">
@@ -294,7 +294,7 @@
 
                       <div class="field">
                         <div class="field-label">
-                          <div class="field-title">User project mapping</div>
+                          <div class="field-title">Привязка пользователей к проектам</div>
                           <div class="field-description">Map specific Telegram user IDs to projects with user_id=project
                             entries.</div>
                         </div>
@@ -307,7 +307,7 @@
 
                       <div class="field">
                         <div class="field-label">
-                          <div class="field-title">Attachment max age</div>
+                          <div class="field-title">Срок хранения файлов</div>
                           <div class="field-description">How long to keep downloaded attachments. Use 0 to keep them
                             forever.</div>
                         </div>
@@ -327,7 +327,7 @@
 
         <template x-if="$store.telegramConfig.bots.length > 0">
           <button class="btn btn-field tg-add-btn" @click="$store.telegramConfig.addBot()">
-            Connect another bot
+            Подключить еще одного бота
           </button>
         </template>
       </div>

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Microhone settings</title>
+    <title>Настройки микрофона</title>
 
     <!-- Import the alpine store -->
     <script type="module">
@@ -27,7 +27,7 @@
                 </select>
                 <button class="btn btn-field" 
                     x-show="$store.microphoneSetting.devices.length == 0 && !$store.microphoneSetting.requestingPermission"
-                    @click="$store.microphoneSetting.requestPermission()">Request permission to select device</button>
+                    @click="$store.microphoneSetting.requestPermission()">Запросить разрешение на выбор устройства</button>
                 <button class="btn btn-field" 
                     x-show="$store.microphoneSetting.requestingPermission"
                     @click="$store.microphoneSetting.requestPermission()">

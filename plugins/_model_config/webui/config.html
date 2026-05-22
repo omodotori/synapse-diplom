@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Model Configuration</title>
+  <title>Настройки модели</title>
   <script type="module">
     import { store } from "/plugins/_model_config/webui/model-config-store.js";
   </script>
@@ -31,12 +31,12 @@
 
         <!-- Per-Chat Override -->
         <div class="model-section">
-          <div class="section-title">Per-Chat Override</div>
-          <div class="section-description">Allow switching model presets from the chat navigation bar. New chats inherit the active preset.</div>
+          <div class="section-title">Индивидуальные настройки чата</div>
+          <div class="section-description">Разрешить переключение пресетов моделей из панели навигации. Новые чаты наследуют активный пресет.</div>
           <div class="field">
             <div class="field-label">
-              <div class="field-title">Enable model switcher</div>
-              <div class="field-description">Show a preset switcher in the chat navigation bar. Overrides main and utility model for the current chat.</div>
+              <div class="field-title">Включить переключатель моделей</div>
+              <div class="field-description">Показывать переключатель пресетов в панели навигации чата. Переопределяет основную и вспомогательную модель для текущего чата.</div>
             </div>
             <div class="field-control">
               <label class="toggle">
@@ -48,7 +48,7 @@
           <div class="override-presets-link" x-show="config.allow_chat_override">
             <button class="text-button" @click="openModal('/plugins/_model_config/webui/main.html')">
               <span class="material-symbols-outlined">tune</span>
-              <span>Edit Presets</span>
+              <span>Изменить пресеты</span>
             </button>
           </div>
         </div>

@@ -37,19 +37,19 @@
       </div>
 
       <div class="sidebar-header-actions" id="hide-button">
-        <button class="config-button header-action-button primary-action" id="header-dashboard" @click="deselectChat()" aria-label="Dashboard" tabindex="-1" title="Dashboard">
+        <button class="config-button header-action-button primary-action" id="header-dashboard" @click="deselectChat()" aria-label="Дашборд" tabindex="-1" title="Дашборд">
           <span class="material-symbols-outlined notranslate" aria-hidden="true" translate="no">home</span>
-          <span class="header-action-label">Dashboard</span>
+          <span class="header-action-label">Дашборд</span>
         </button>
 
-        <button class="config-button header-action-button" id="header-settings" @click="openModal('settings/settings.html')" aria-label="Settings" tabindex="-1" title="Settings">
+        <button class="config-button header-action-button" id="header-settings" @click="openModal('settings/settings.html')" aria-label="Настройки" tabindex="-1" title="Настройки">
           <span class="material-symbols-outlined notranslate" aria-hidden="true" translate="no">settings</span>
-          <span class="header-action-label">Settings</span>
+          <span class="header-action-label">Настройки</span>
         </button>
 
-        <button class="config-button header-action-button" id="header-plugins" @click="openModal('components/plugins/list/plugin-list.html')" aria-label="Plugins" tabindex="-1" title="Plugins">
+        <button class="config-button header-action-button" id="header-plugins" @click="openModal('components/plugins/list/plugin-list.html')" aria-label="Плагины" tabindex="-1" title="Плагины">
           <span class="material-symbols-outlined notranslate" aria-hidden="true" translate="no">extension</span>
-          <span class="header-action-label">Plugins</span>
+          <span class="header-action-label">Плагины</span>
         </button>
 
         <button
@@ -57,12 +57,12 @@
           id="header-more"
           x-ref="menuButton"
           @click="$store.sidebar.menuToggle($refs.menuButton)"
-          title="Quick actions"
-          aria-label="Quick actions"
+          title="Быстрые действия"
+          aria-label="Быстрые действия"
           tabindex="-1"
         >
           <span class="material-symbols-outlined notranslate" aria-hidden="true" :class="$store.sidebar.menuOpen ? 'rotated' : ''" translate="no">dashboard_customize</span>
-          <span class="header-action-label">Actions</span>
+          <span class="header-action-label">Действия</span>
         </button>
       </div>
 
@@ -75,72 +75,72 @@
         <div id="sidebar-quick-actions-dropdown-slot-start"></div>
 
         <div class="dropdown-block">
-          <div class="dropdown-header">Workspace</div>
+          <div class="dropdown-header">Рабочая среда</div>
 
           <button class="dropdown-item" @click="deselectChat(); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">home</span>
-            <span>Dashboard</span>
+            <span>Дашборд</span>
           </button>
 
           <button class="dropdown-item" @click="openModal('/plugins/_memory/webui/memory-dashboard.html'); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">psychology</span>
-            <span>Memory</span>
+            <span>Память</span>
           </button>
 
           <button class="dropdown-item" @click="$store.projects.openProjectsModal(); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">snippet_folder</span>
-            <span>Projects</span>
+            <span>Проекты</span>
           </button>
 
           <button class="dropdown-item" @click="$store.chatInput.browseFiles(); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">folder</span>
-            <span>Files</span>
+            <span>Файлы</span>
           </button>
 
           <button class="dropdown-item" @click="openModal('components/modals/scheduler/scheduler-modal.html'); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">schedule</span>
-            <span>Scheduler</span>
+            <span>Планировщик</span>
           </button>
 
           <button class="dropdown-item" @click="openModal('settings/settings.html'); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">settings</span>
-            <span>Settings</span>
+            <span>Настройки</span>
           </button>
         </div>
 
         <div class="dropdown-separator"></div>
 
         <div class="dropdown-block">
-          <div class="dropdown-header">Chat</div>
+          <div class="dropdown-header">Чат</div>
 
           <button class="dropdown-item" @click="$store.chats.newChat(); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">chat_add_on</span>
-            <span>New Chat</span>
+            <span>Новый чат</span>
           </button>
 
           <button class="dropdown-item" @click="$store.chats.loadChats(); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">folder_open</span>
-            <span>Load Chat</span>
+            <span>Загрузить чат</span>
           </button>
 
           <button class="dropdown-item" x-show="$store.chats.selected" @click="$store.chats.saveChat(); $store.sidebar.menuClose()">
             <span class="material-symbols-outlined notranslate" translate="no">save</span>
-            <span>Save Chat</span>
+            <span>Сохранить чат</span>
           </button>
 
           <button class="dropdown-item" x-show="$store.chats.selected" @click="$confirmClick($event, () => { $store.chats.resetChat(); $store.sidebar.menuClose() })">
             <span class="material-symbols-outlined notranslate" translate="no">delete_sweep</span>
-            <span>Clear Chat</span>
+            <span>Очистить чат</span>
           </button>
 
           <button class="dropdown-item" x-show="$store.chats.loggedIn" @click="$confirmClick($event, () => { $store.chats.logout(); $store.sidebar.menuClose() })">
             <span class="material-symbols-outlined notranslate" translate="no">logout</span>
-            <span>Logout</span>
+            <span>Выйти</span>
           </button>
 
           <button class="dropdown-item" @click="$confirmClick($event, () => { $store.chats.restart(); $store.sidebar.menuClose() })">
             <span class="material-symbols-outlined notranslate" translate="no">restart_alt</span>
-            <span>Restart Synapse</span>
+            <span>Перезапустить Synapse</span>
           </button>
         </div>
 

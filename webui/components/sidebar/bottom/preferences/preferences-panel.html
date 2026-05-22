@@ -21,14 +21,14 @@
           <ul class="config-list collapse" id="preferences-collapse"
               x-effect="(() => { const c = bootstrap.Collapse.getOrCreateInstance($el, { toggle: false }); $store.sidebar.isSectionOpen('preferences') ? c.show() : c.hide(); })()">
             <li x-data>
-              <span class="switch-label">Dark mode</span>
+              <span class="switch-label">Тёмная тема</span>
               <label class="switch">
                 <input type="checkbox" x-model="$store.preferences.darkMode">
                 <span class="slider"></span>
               </label>
             </li>
             <li x-data class="chat-width-setting">
-              <span class="width-label">Width</span>
+              <span class="width-label">Ширина</span>
               <div class="width-buttons">
                 <template x-for="(opt, idx) in $store.preferences.chatWidthOptions" :key="opt.value">
                   <span class="width-btn-wrapper">
@@ -43,7 +43,7 @@
               </div>
             </li>
             <li x-data class="detail-mode-setting">
-              <span class="detail-label">Detail</span>
+              <span class="detail-label">Детализация</span>
               <div class="detail-buttons">
                 <template x-for="(opt, idx) in $store.preferences.detailModeOptions" :key="opt.value">
                   <span class="detail-btn-wrapper">
@@ -59,14 +59,14 @@
               </div>
             </li>
             <li x-data>
-              <span class="switch-label">Speech</span>
+              <span class="switch-label">Голос / Речь</span>
               <label class="switch">
                 <input type="checkbox" x-model="$store.preferences.speech">
                 <span class="slider"></span>
               </label>
             </li>
             <li x-data>
-              <span>Show utility messages</span>
+              <span>Показывать системные сообщения</span>
               <label class="switch">
                 <input type="checkbox" x-model="$store.preferences.showUtils">
                 <span class="slider"></span>

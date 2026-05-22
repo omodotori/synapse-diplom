@@ -48,7 +48,7 @@
                             <div class="plugin-settings-toolbar-row">
 
                                 <label class="plugin-settings-toolbar-item">
-                                    <span class="plugin-settings-toolbar-label">Project</span>
+                                    <span class="plugin-settings-toolbar-label">Проект</span>
                                     <select x-model="$store.pluginToggle.projectName"
                                             @change="$store.pluginToggle.onScopeChanged()"
                                             :disabled="!$store.pluginToggle.perProjectConfig">
@@ -60,7 +60,7 @@
                                 </label>
 
                                 <label class="plugin-settings-toolbar-item">
-                                    <span class="plugin-settings-toolbar-label">Agent profile</span>
+                                    <span class="plugin-settings-toolbar-label">Профиль агента</span>
                                     <select x-model="$store.pluginToggle.agentProfileKey"
                                             @change="$store.pluginToggle.onScopeChanged()"
                                             :disabled="!$store.pluginToggle.perAgentConfig">

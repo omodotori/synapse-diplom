@@ -49,7 +49,7 @@
                 </div>
 
                 <textarea id="full-screen-input" x-model="$store.fullScreenInputModal.inputText"
-                          placeholder="Type your message here..."
+                          placeholder="Введите ваше сообщение здесь..."
                           @keydown.ctrl.enter="$store.fullScreenInputModal.handleClose()"
                           @keydown.ctrl.z.prevent="$store.fullScreenInputModal.undo()"
                           @keydown.ctrl.shift.z.prevent="$store.fullScreenInputModal.redo()"

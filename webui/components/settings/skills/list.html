@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>List Skills</title>
+    <title>Список навыков</title>
     <script type="module">
         import { store } from "/components/settings/skills/skills-list-store.js";
     </script>
@@ -10,7 +10,7 @@
         <template x-if="$store.skillsListStore">
             <div x-init="$store.skillsListStore.init()" x-destroy="$store.skillsListStore.onClose()">
 
-                <div class="section-title">List Skills</div>
+                <div class="section-title">Список навыков</div>
                 <div class="section-description">
                     Browse skills across global and project scopes. Duplicates are shown individually.
                 </div>
@@ -18,10 +18,10 @@
                 <div class="skills-toolbar">
                     <div class="skills-toolbar-row">
                         <label class="skills-toolbar-item">
-                            <span class="skills-toolbar-label">Project</span>
+                            <span class="skills-toolbar-label">Проект</span>
                             <select x-model="$store.skillsListStore.projectName"
                                 @change="$store.skillsListStore.loadSkills()">
-                                <option value="">All</option>
+                                <option value="">Все</option>
                                 <template x-for="project in $store.skillsListStore.projects" :key="project.key">
                                     <option :value="project.key" x-text="project.label"></option>
                                 </template>
@@ -29,10 +29,10 @@
                         </label>
 
                         <label class="skills-toolbar-item">
-                            <span class="skills-toolbar-label">Agent profile</span>
+                            <span class="skills-toolbar-label">Профиль агента</span>
                             <select x-model="$store.skillsListStore.agentProfileKey"
                                 @change="$store.skillsListStore.loadSkills()">
-                                <option value="">All</option>
+                                <option value="">Все</option>
                                 <template x-for="agentProfile in $store.skillsListStore.agentProfiles" :key="agentProfile.key">
                                     <option :value="agentProfile.key" x-text="agentProfile.label"></option>
                                 </template>
@@ -40,7 +40,7 @@
                         </label>
 
                         <div class="skills-toolbar-actions">
-                            <button type="button" class="button confirm" title="Refresh"
+                            <button type="button" class="button confirm" title="Обновить"
                                 @click="$store.skillsListStore.loadSkills()"
                                 :disabled="$store.skillsListStore.loading">
                                 <span class="icon material-symbols-outlined">refresh</span> Refresh
@@ -75,7 +75,7 @@
                                         @click="$store.skillsListStore.openSkill(skill)">
                                         <span class="icon material-symbols-outlined">folder_open</span> Open
                                     </button>
-                                    <button type="button" class="button cancel icon-button" title="Delete"
+                                    <button type="button" class="button cancel icon-button" title="Удалить"
                                         @click="$confirmClick($event, () => $store.skillsListStore.deleteSkill(skill))">
                                         <span class="icon material-symbols-outlined">delete</span>
                                     </button>

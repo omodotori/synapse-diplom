@@ -5,9 +5,9 @@ import { switcherState, switcherMethods } from "/plugins/_model_config/webui/swi
 
 
 export const MODEL_SECTIONS = [
-  { key: 'chat_model', title: 'Main Model', desc: 'Primary model for chat, reasoning, and browser tasks.' },
-  { key: 'utility_model', title: 'Utility Model', desc: 'Lightweight model for background tasks: memory management, prompt preparation, summarization.' },
-  { key: 'embedding_model', title: 'Embedding Model', desc: 'Model for generating vector embeddings used in knowledge retrieval.' }
+  { key: 'chat_model', title: 'Основная модель', desc: 'Основная модель для чата, логических задач и работы в браузере.' },
+  { key: 'utility_model', title: 'Вспомогательная модель', desc: 'Легкая модель для фоновых задач: управление памятью, подготовка промптов, суммаризация.' },
+  { key: 'embedding_model', title: 'Модель эмбеддингов (Embedding)', desc: 'Модель для генерации векторных представлений, используемых при поиске по базе знаний.' }
 ];
 
 export function kwargsToText(obj) {
