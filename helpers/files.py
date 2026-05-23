@@ -601,6 +601,9 @@ def deabsolute_path(path: str):
 def fix_dev_path(path: str):
     "On dev environment, convert /a0/... paths to local absolute paths"
     from helpers.runtime import is_development
+    
+    if os.name == 'nt' and path.startswith('/') and len(path) > 2 and path[2] == ':':
+        path = path[1:]
 
     if is_development():
         if path.startswith("/a0/"):

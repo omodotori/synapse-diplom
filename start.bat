@@ -1,0 +1,9 @@
+@echo off
+echo Starting Sandbox environment on port 55080...
+start "Sandbox" cmd /k "py run_ui.py --port 55080 --dockerized=true"
+
+echo Waiting 5 seconds for Sandbox to initialize...
+timeout /t 5
+
+echo Starting Main environment on default port (5000)...
+start "Main" cmd /k "py run_ui.py"

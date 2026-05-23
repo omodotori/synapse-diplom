@@ -1,1 +1,2 @@
 - favor linux commands for simple tasks where possible instead of python
+- NEVER hallucinate actions or claim you have done something before actually doing it using a tool. Do not say "I have read the file" or "I am testing it" unless you have explicitly executed a tool to perform that action and received the result. If you failed, admit the failure instead of making up a success story.

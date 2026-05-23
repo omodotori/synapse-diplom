@@ -421,7 +421,15 @@ class MemoryConsolidator:
                 return []
 
         except Exception as e:
-            PrintStyle().warning(f"Keyword extraction failed: {str(e)}")
+            error_str = str(e)
+            if "RateLimitError" in error_str or "429" in error_str:
+                error_str = "Лимит запросов API исчерпан (Rate Limit)"
+            elif "ConnectionError" in error_str or "APIConnectionError" in error_str:
+                error_str = "Ошибка подключения к API"
+            elif "AuthenticationError" in error_str or "401" in error_str:
+                error_str = "Неверный API ключ (Authentication Error)"
+                
+            PrintStyle().warning(f"Keyword extraction failed: {error_str}")
             # Fallback: use intelligent truncation for search
             # Take first 200 chars if short, or first sentence if longer, but cap at 200 chars
             if len(new_memory) <= 200:
@@ -499,7 +507,15 @@ class MemoryConsolidator:
             )
 
         except Exception as e:
-            PrintStyle().warning(f"LLM consolidation analysis failed: {str(e)}")
+            error_str = str(e)
+            if "RateLimitError" in error_str or "429" in error_str:
+                error_str = "Лимит запросов API исчерпан (Rate Limit)"
+            elif "ConnectionError" in error_str or "APIConnectionError" in error_str:
+                error_str = "Ошибка подключения к API"
+            elif "AuthenticationError" in error_str or "401" in error_str:
+                error_str = "Неверный API ключ (Authentication Error)"
+                
+            PrintStyle().warning(f"LLM consolidation analysis failed: {error_str}")
             # Fallback: skip consolidation
             return ConsolidationResult(
                 action=ConsolidationAction.SKIP,

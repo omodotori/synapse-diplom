@@ -48,11 +48,16 @@ class RetryCriticalException(Extension):
         )
         await asyncio.sleep(delay)
         await self.agent.handle_intervention()
-        agent_facing_error = self.agent.read_prompt(
-            "fw.msg_critical_error.md", error_message=error_message
-        )
-        self.agent.hist_add_warning(message=agent_facing_error, id=msg_id)
-        PrintStyle(font_color="orange", padding=True).print(agent_facing_error)
+        user_facing_error = "⚠️ Что-то пошло не так. Попробуйте ещё раз."
+        if "429" in error_message or "Too Many Requests" in error_message or "RateLimitError" in error_message:
+            user_facing_error = "⚠️ Лимит запросов исчерпан. Попробуйте позже или смените модель в настройках."
+        elif "Cannot connect to host" in error_message and "55080" in error_message:
+            user_facing_error = "⚠️ Техническая проблема с запуском агента. Перезапустите приложение."
+        elif "AuthenticationError" in error_message or "401" in error_message or "Connection error" in error_message or "NotFoundError" in error_message or "404" in error_message:
+            user_facing_error = "⚠️ Не удалось подключиться к AI модели. Проверьте настройки и API ключ."
+
+        self.agent.hist_add_warning(message=user_facing_error, id=msg_id)
+        PrintStyle(font_color="orange", padding=True).print(user_facing_error)
 
         data["exception"] = None
 
