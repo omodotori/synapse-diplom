@@ -1,6 +1,6 @@
 a2wsgi==1.10.8
 ansio==0.0.1
-# browser-use==0.5.11
+browser-use==0.12.8
 docker==7.1.0
 # duckduckgo-search==6.1.12
 faiss-cpu==1.11.0
@@ -19,12 +19,12 @@ langchain-unstructured==0.1.6
 openai-whisper==20250625
 lxml_html_clean>=0.4.0  # CVE-2024-52595 fix: XSS CWE-79 CVSS 8.4
 markdown==3.7
-mcp==1.22.0
+mcp==1.26.0
 newspaper3k==0.2.8
 paramiko==3.5.0
 playwright==1.52.0
-pypdf==6.0.0
-python-dotenv==1.1.0
+pypdf==6.10.2
+python-dotenv==1.2.2
 pytz==2024.2
 sentence-transformers==3.0.1
 tiktoken==0.8.0
@@ -33,8 +33,8 @@ unstructured-client==0.31.0
 webcolors==24.6.0
 nest-asyncio==1.6.0
 crontab==1.0.1
-markdownify==1.1.0
-pydantic==2.11.7
+markdownify==1.2.2
+pydantic==2.12.5
 pymupdf==1.25.3
 pytesseract==0.3.13
 pdf2image==1.17.0

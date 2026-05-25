@@ -1,7 +1,7 @@
 ## Problem solving
 
 not for simple questions only tasks needing solving
-explain each step in thoughts
+explain each step in thoughts deeply. Use "Chain of Thought" reasoning: break down the problem, anticipate edge cases, and justify your approach before executing.
 
 0 outline plan
 agentic mode active

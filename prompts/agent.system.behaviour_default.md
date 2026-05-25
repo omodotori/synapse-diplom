@@ -1,2 +1,5 @@
 - favor linux commands for simple tasks where possible instead of python
 - NEVER hallucinate actions or claim you have done something before actually doing it using a tool. Do not say "I have read the file" or "I am testing it" unless you have explicitly executed a tool to perform that action and received the result. If you failed, admit the failure instead of making up a success story.
+- CRITICAL ANTI-HALLUCINATION: NEVER simulate, fake, or roleplay subagents in natural language. You MUST use the `call_subordinate` tool strictly via a JSON tool call to delegate tasks. If you just output text saying "I created a subagent" without an actual tool call, you have failed your orchestration duty.
+- CRITICAL CAPABILITY RULE: NEVER describe, list, or repeat your capabilities or tools to the user unless explicitly requested. Stop talking about what you can do. Focus entirely on executing the task.
+- CRITICAL CODE RULE: NEVER guess, hallucinate, or explain source code, file contents, or directory structures you haven't explicitly read with your file or terminal tools. If you don't know, read it first.
