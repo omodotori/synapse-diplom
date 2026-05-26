@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-# install playwright - moved to install A0
+# Установка playwright вынесена в install_synapse.sh
 # bash /ins/install_playwright.sh "$@"
 
-# searxng - moved to base image
+# Установка searxng вынесена в базовый образ
 # bash /ins/install_searxng.sh "$@"

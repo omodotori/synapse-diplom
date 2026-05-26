@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# Wait until run_tunnel.py exists
-echo "Starting tunnel API..."
+# Ожидание файла run_tunnel.py
+echo "Запуск Tunnel API..."
 
 sleep 1
-while [ ! -f /a0/run_tunnel.py ]; do
-    echo "Waiting for /a0/run_tunnel.py to be available..."
+while [ ! -f /synapse/run_tunnel.py ]; do
+    echo "Ожидание файла /synapse/run_tunnel.py..."
     sleep 1
 done
 
 . "/ins/setup_venv.sh" "$@"
 
-exec python /a0/run_tunnel.py \
+exec python /synapse/run_tunnel.py \
     --dockerized=true \
     --port=80 \
     --tunnel_api_port=55520 \

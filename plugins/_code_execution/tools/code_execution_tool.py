@@ -148,12 +148,13 @@ class CodeExecution(Tool):
     async def execute_terminal_command(
         self, cfg: dict, session: int, command: str, reset: bool = False
     ):
+        command_with_feedback = f"{command}; echo \"[exit code: $?]\""
         prefix = (
             ("bash>" if not runtime.is_windows() or cfg["ssh_enabled"] else "PS>")
             + self.format_command_for_output(command)
             + "\n\n"
         )
-        return await self.terminal_session(cfg, session, command, reset, prefix)
+        return await self.terminal_session(cfg, session, command_with_feedback, reset, prefix)
 
     async def terminal_session(
         self, cfg: dict, session: int, command: str, reset: bool = False, prefix: str = "", timeouts: dict | None = None

@@ -1,8 +1,11 @@
 services:
-  agent-zero:
-    container_name: agent-zero
-    image: synapseai/agent-zero:latest
+  synapse:
+    container_name: synapse
+    build:
+      context: ../../
+      dockerfile: DockerfileLocal
+    image: synapse:latest
     volumes:
-      - ./agent-zero:/a0
+      - ../..:/synapse
     ports:
       - "50080:80"

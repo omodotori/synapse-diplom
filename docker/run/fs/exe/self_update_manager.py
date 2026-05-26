@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 from __future__ import annotations
 
 import argparse
@@ -22,22 +22,22 @@ import yaml
 
 
 OFFICIAL_REPO_URL = os.environ.get(
-    "A0_SELF_UPDATE_REMOTE_URL",
-    "https://github.com/synapseai/agent-zero.git",
+    "SYNAPSE_SELF_UPDATE_REMOTE_URL",
+    "https://github.com/synapseai/synapse.git",
 )
-REPO_DIR = Path("/a0")
-TRIGGER_FILE = Path("/exe/a0-self-update.yaml")
-STATUS_FILE = Path("/exe/a0-self-update-status.yaml")
-LOG_FILE = Path("/exe/a0-self-update.log")
+REPO_DIR = Path("/synapse")
+TRIGGER_FILE = Path("/exe/synapse-self-update.yaml")
+STATUS_FILE = Path("/exe/synapse-self-update-status.yaml")
+LOG_FILE = Path("/exe/synapse-self-update.log")
 DEFAULT_HEALTH_URL = os.environ.get(
-    "A0_SELF_UPDATE_HEALTH_URL",
+    "SYNAPSE_SELF_UPDATE_HEALTH_URL",
     "http://127.0.0.1:80/api/health",
 )
 DEFAULT_HEALTH_TIMEOUT_SECONDS = int(
-    os.environ.get("A0_SELF_UPDATE_HEALTH_TIMEOUT_SECONDS", "120")
+    os.environ.get("SYNAPSE_SELF_UPDATE_HEALTH_TIMEOUT_SECONDS", "120")
 )
 DEFAULT_HEALTH_POLL_INTERVAL_SECONDS = float(
-    os.environ.get("A0_SELF_UPDATE_HEALTH_POLL_INTERVAL_SECONDS", "2")
+    os.environ.get("SYNAPSE_SELF_UPDATE_HEALTH_POLL_INTERVAL_SECONDS", "2")
 )
 DEFAULT_BACKUP_DIR = "/root/update-backups"
 DEFAULT_BACKUP_CONFLICT_POLICY = "rename"
@@ -60,7 +60,7 @@ class AttemptLogger:
 
     def log(self, message: str = "") -> None:
         line = f"[{now_iso()}] {message}".rstrip()
-        print(f"[a0-self-update] {message}", flush=True)
+        print(f"[synapse-self-update] {message}", flush=True)
         with self.path.open("a", encoding="utf-8") as handle:
             handle.write(line + "\n")
 
@@ -347,7 +347,7 @@ def create_usr_backup(
         destination_dir = (repo_dir / destination_dir).resolve()
     else:
         destination_dir = destination_dir.resolve()
-    destination_name = sanitize_filename(backup_name, "agent-zero-usr-backup.zip")
+    destination_name = sanitize_filename(backup_name, "synapse-usr-backup.zip")
     destination = resolve_backup_destination(destination_dir, destination_name, conflict_policy)
 
     temp_fd, temp_path = tempfile.mkstemp(suffix=".zip")
@@ -419,7 +419,7 @@ def create_rollback_stash(repo_dir: Path, logger: AttemptLogger) -> str | None:
         return None
 
     previous_top = get_top_stash_ref(repo_dir)
-    message = f"a0-self-update rollback snapshot {now_iso()}"
+    message = f"synapse-self-update rollback snapshot {now_iso()}"
     run_command(
         [
             "git",
@@ -496,7 +496,7 @@ def clean_repo_worktree(
 
 
 def fetch_release_refs(repo_dir: Path, branch: str, tag: str, logger: AttemptLogger) -> None:
-    remote_branch_ref = f"refs/remotes/a0-self-update/{branch}"
+    remote_branch_ref = f"refs/remotes/synapse-self-update/{branch}"
     tag_commit_ref = get_tag_commit_ref(tag)
     logger.log(f"Fetching branch {branch} and tag {tag} from {OFFICIAL_REPO_URL}")
     run_command(
@@ -531,7 +531,7 @@ def fetch_release_refs(repo_dir: Path, branch: str, tag: str, logger: AttemptLog
 
 
 def fetch_branch_refs(repo_dir: Path, branch: str, logger: AttemptLogger) -> str:
-    remote_branch_ref = f"refs/remotes/a0-self-update/{branch}"
+    remote_branch_ref = f"refs/remotes/synapse-self-update/{branch}"
     logger.log(f"Fetching branch {branch} and tags from {OFFICIAL_REPO_URL}")
     run_command(
         [
@@ -838,7 +838,7 @@ def execute_pending_update(
             backup_destination = create_usr_backup(
                 repo_dir=REPO_DIR,
                 backup_path=str(request_data.get("backup_path", "/root/update-backups")),
-                backup_name=str(request_data.get("backup_name", "agent-zero-usr-backup.zip")),
+                backup_name=str(request_data.get("backup_name", "synapse-usr-backup.zip")),
                 conflict_policy=str(request_data.get("backup_conflict_policy", "rename")),
                 logger=logger,
             )

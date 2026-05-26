@@ -7,7 +7,7 @@ echo "====================PYTHON 3.13===================="
 
 apt clean && apt-get update && apt-get -y upgrade
 
-# install python 3.13 globally
+# Глобальная установка python 3.13
 apt-get install -y --no-install-recommends \
     python3.13 python3.13-venv 
     #python3.13-dev
@@ -15,49 +15,49 @@ apt-get install -y --no-install-recommends \
 
 echo "====================PYTHON 3.13 VENV===================="
 
-# create and activate default venv
+# Создание и активация виртуального окружения по умолчанию
 python3.13 -m venv /opt/venv
 source /opt/venv/bin/activate
 
-# upgrade pip and install static packages
+# Обновление pip и установка базовых пакетов
 pip install --no-cache-dir --upgrade pip pipx ipython requests
 
 echo "====================PYTHON PYVENV===================="
 
-# Install pyenv build dependencies.
+# Установка зависимостей для сборки pyenv
 apt-get install -y --no-install-recommends \
     make build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev wget curl llvm \
     libncursesw5-dev xz-utils tk-dev libxml2-dev \
     libxmlsec1-dev libffi-dev liblzma-dev
 
-# Install pyenv globally
+# Глобальная установка pyenv
 git clone https://github.com/pyenv/pyenv.git /opt/pyenv
 
-# Setup environment variables for pyenv to be available system-wide
+# Настройка переменных окружения для доступности pyenv во всей системе
 cat > /etc/profile.d/pyenv.sh <<'EOF'
 export PYENV_ROOT="/opt/pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 EOF
 
-# fix permissions
+# Исправление прав доступа
 chmod +x /etc/profile.d/pyenv.sh
 
-# Source pyenv environment to make it available in this script
+# Загрузка переменных pyenv для использования в текущем скрипте
 source /etc/profile.d/pyenv.sh
 
-# Install Python 3.12.4
+# Установка Python 3.12.4
 echo "====================PYENV 3.12 VENV===================="
 pyenv install 3.12.4
 
-/opt/pyenv/versions/3.12.4/bin/python -m venv /opt/venv-a0
-source /opt/venv-a0/bin/activate
+/opt/pyenv/versions/3.12.4/bin/python -m venv /opt/venv-synapse
+source /opt/venv-synapse/bin/activate
 
-# upgrade pip and install static packages
+# Обновление pip и установка базовых пакетов
 pip install --no-cache-dir --upgrade pip pipx
 
-# Install some packages in specific variants
+# Установка пакетов с конкретными версиями
 pip install --no-cache-dir \
     torch==2.4.0 \
     torchvision==0.19.0 \
@@ -67,7 +67,7 @@ echo "====================PYTHON UV ===================="
 
 curl -Ls https://astral.sh/uv/install.sh | UV_INSTALL_DIR=/usr/local/bin sh
 
-# clean up pip cache
+# Очистка кэша pip
 pip cache purge
 
 echo "====================PYTHON END===================="

@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
 
-# update apt
+# Обновление списка пакетов apt
 apt-get update
 
-# fix permissions for cron files if any
+# Исправление прав доступа для файлов cron, если они существуют
 if [ -f /etc/cron.d/* ]; then
     chmod 0644 /etc/cron.d/*
 fi
 
-# Prepare SSH daemon
+# Подготовка SSH-сервера
 bash /ins/setup_ssh.sh "$@"
