@@ -12,17 +12,17 @@ For now, use the install commands below.
 
 **macOS / Linux:**
 ```bash
-curl -LsSf https://raw.githubusercontent.com/synapseai/a0-connector/main/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/synapseai/synapse-connector/main/install.sh | sh
 ```
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/synapseai/a0-connector/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/synapseai/synapse-connector/main/install.ps1 | iex
 ```
 
 **Manual fallback when uv is already installed or if URLs give 404:**
 ```bash
-uv tool install git+https://github.com/synapseai/a0-connector
+uv tool install git+https://github.com/synapseai/synapse-connector
 ```
 
 Run these on the host machine, not inside the Synapse container.
@@ -50,7 +50,7 @@ a0
 If another agent is helping with setup, do not paste a whole checklist. Paste one line:
 
 ```text
-Set up the A0 CLI connector for Synapse on this machine using the a0-setup-cli Skill.
+Set up the A0 CLI connector for Synapse on this machine using the synapse-setup-cli Skill.
 ```
 
 ## Troubleshooting

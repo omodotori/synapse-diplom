@@ -1,6 +1,6 @@
 ---
-name: a0-contribute-plugin
-description: Guide for publishing an Synapse plugin to the community Plugin Index (a0-plugins repo). Covers GitHub repo setup, index.yaml creation, CI validation rules, and PR submission. Use when the user wants to share, publish, submit, or contribute a plugin to the Plugin Hub so other Synapse users can find and install it.
+name: synapse-contribute-plugin
+description: Guide for publishing an Synapse plugin to the community Plugin Index (synapse-plugins repo). Covers GitHub repo setup, index.yaml creation, CI validation rules, and PR submission. Use when the user wants to share, publish, submit, or contribute a plugin to the Plugin Hub so other Synapse users can find and install it.
 version: 1.0.0
 tags: ["plugins", "contribute", "publish", "plugin-hub", "community", "index", "PR"]
 trigger_patterns:
@@ -16,7 +16,7 @@ trigger_patterns:
 
 # Synapse Plugin Contribution
 
-This skill guides publishing a plugin to the [Plugin Index](https://github.com/synapseai/a0-plugins), making it discoverable and installable by all Synapse users.
+This skill guides publishing a plugin to the [Plugin Index](https://github.com/synapseai/synapse-plugins), making it discoverable and installable by all Synapse users.
 
 ---
 
@@ -24,8 +24,8 @@ This skill guides publishing a plugin to the [Plugin Index](https://github.com/s
 
 Before starting, verify:
 
-1. Plugin exists and works locally in `/a0/usr/plugins/<name>/`
-2. Plugin has been reviewed - if not, offer to run `a0-review-plugin` first:
+1. Plugin exists and works locally in `/synapse/usr/plugins/<name>/`
+2. Plugin has been reviewed - if not, offer to run `synapse-review-plugin` first:
    > "I recommend running a full review before contributing. Should I do that now?"
 3. User has a GitHub account and `git` / `gh` CLI available
 
@@ -105,7 +105,7 @@ The folder name in the index must:
 
 Verify uniqueness by fetching the current index:
 ```
-https://github.com/synapseai/a0-plugins/releases/download/generated-index/index.json
+https://github.com/synapseai/synapse-plugins/releases/download/generated-index/index.json
 ```
 
 Check that the intended name does not appear as a key in `plugins`.
@@ -118,8 +118,8 @@ Check that the intended name does not appear as a key in `plugins`.
 
 ```bash
 # Automatic mode
-gh repo fork https://github.com/synapseai/a0-plugins --clone --remote
-cd a0-plugins
+gh repo fork https://github.com/synapseai/synapse-plugins --clone --remote
+cd synapse-plugins
 git checkout -b add-<plugin_name>
 ```
 
@@ -151,7 +151,7 @@ screenshots:
 
 ### Recommended tags
 
-Use tags from https://github.com/synapseai/a0-plugins/blob/main/TAGS.md (up to 5).
+Use tags from https://github.com/synapseai/synapse-plugins/blob/main/TAGS.md (up to 5).
 Common tags: `tools`, `automation`, `workflow`, `api`, `web`, `database`, `memory`, `integration`, `security`, `development`, `llm`, `agents`
 
 ### Optional thumbnail
@@ -198,7 +198,7 @@ git commit -m "feat: add <plugin_name> plugin"
 # Push and open PR
 git push origin add-<plugin_name>
 gh pr create \
-  --repo synapseai/a0-plugins \
+  --repo synapseai/synapse-plugins \
   --title "feat: add <plugin_name>" \
   --body "## Plugin: <title>
 
@@ -222,7 +222,7 @@ gh pr create \
 | File | Location | Purpose | Key fields |
 |---|---|---|---|
 | `plugin.yaml` | Your plugin's GitHub repo root | Runtime manifest (drives Synapse behavior) | `name` (required!), `title`, `description`, `version`, `settings_sections`, `per_project_config`, `per_agent_config`, `always_enabled` |
-| `index.yaml` | `a0-plugins/plugins/<name>/` | Index manifest (drives discoverability) | `title`, `description`, `github`, `tags`, `screenshots` |
+| `index.yaml` | `synapse-plugins/plugins/<name>/` | Index manifest (drives discoverability) | `title`, `description`, `github`, `tags`, `screenshots` |
 
 **Never mix these up.** They have different schemas and different purposes.
 
@@ -230,9 +230,9 @@ gh pr create \
 
 ## References
 
-- Plugin architecture: `/a0/docs/agents/AGENTS.plugins.md`
-- Developer lifecycle guide: `/a0/docs/developer/plugins.md`
-- Plugin Index repo: https://github.com/synapseai/a0-plugins
-- Recommended tags: https://github.com/synapseai/a0-plugins/blob/main/TAGS.md
-- Review before contributing: read `/a0/skills/a0-review-plugin/SKILL.md`
-- Build the plugin first: read `/a0/skills/a0-create-plugin/SKILL.md`
+- Plugin architecture: `/synapse/docs/agents/AGENTS.plugins.md`
+- Developer lifecycle guide: `/synapse/docs/developer/plugins.md`
+- Plugin Index repo: https://github.com/synapseai/synapse-plugins
+- Recommended tags: https://github.com/synapseai/synapse-plugins/blob/main/TAGS.md
+- Review before contributing: read `/synapse/skills/synapse-review-plugin/SKILL.md`
+- Build the plugin first: read `/synapse/skills/synapse-create-plugin/SKILL.md`

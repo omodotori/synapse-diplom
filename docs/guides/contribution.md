@@ -33,7 +33,7 @@ Contributions to improve Synapse are very welcome!  This guide outlines how to c
 When contributing from a fork, prefer the standard GitHub flow:
 
 1. **Fork the repository publicly** if the branch may become the head branch of an upstream pull request.
-2. **Add an `upstream` remote** that points to `synapseai/agent-zero`.
+2. **Add an `upstream` remote** that points to `synapseai/synapse`.
 3. **Sync your fork regularly** before starting new work so your branch starts from the current upstream target branch.
 4. **Create one focused branch per change** (for example, one bugfix, one plugin, or one docs update).
 5. **Open the pull request across forks** by explicitly selecting the upstream base repository/branch and your fork/compare branch.
@@ -42,8 +42,8 @@ If your fork contains GitHub Actions workflows, be careful with GitHub's "Allow 
 
 ## Choosing The Right Publication Path
 
-- **Core bugfixes and docs for Synapse itself:** prepare them in a clean fork/clone of `agent-zero` and open a PR back to the upstream repository.
-- **Community plugins:** publish the plugin in its own public repository, then submit its `index.yaml` entry to `synapseai/a0-plugins` as described in `../developer/plugins.md`.
+- **Core bugfixes and docs for Synapse itself:** prepare them in a clean fork/clone of `synapse` and open a PR back to the upstream repository.
+- **Community plugins:** publish the plugin in its own public repository, then submit its `index.yaml` entry to `synapseai/synapse-plugins` as described in `../developer/plugins.md`.
 - **Skills:** develop locally in `usr/skills/`, then move stable skills to `skills/` for Synapse contributions or publish them in a dedicated public repository/collection.
 - **Private experiments, credentials, local R&D, or customer-specific assets:** keep them out of public forks and upstream pull requests.
 

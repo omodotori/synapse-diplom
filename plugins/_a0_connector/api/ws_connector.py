@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from agent import AgentContext, AgentContextType, UserMessage
 
 
-PROTOCOL_VERSION = "a0-connector.v1"
+PROTOCOL_VERSION = "synapse-connector.v1"
 WS_FEATURES = [
     "connector_subscribe_context",
     "connector_send_message",
@@ -55,7 +55,7 @@ class WsConnector(WsHandler):
 
     async def on_connect(self, sid: str) -> None:
         register_sid(sid)
-        PrintStyle.debug(f"[a0-connector] /ws connected: {sid}")
+        PrintStyle.debug(f"[synapse-connector] /ws connected: {sid}")
 
     async def on_disconnect(self, sid: str) -> None:
         contexts = unregister_sid(sid)
@@ -70,7 +70,7 @@ class WsConnector(WsHandler):
             sid,
             error="CLI disconnected before completing the requested remote execution",
         )
-        PrintStyle.debug(f"[a0-connector] /ws disconnected: {sid}")
+        PrintStyle.debug(f"[synapse-connector] /ws disconnected: {sid}")
 
     async def process(
         self,
@@ -392,7 +392,7 @@ class WsConnector(WsHandler):
             )
             result = await task.result()
         except Exception as exc:
-            PrintStyle.error(f"[a0-connector] connector_send_message error: {exc}")
+            PrintStyle.error(f"[synapse-connector] connector_send_message error: {exc}")
             await self._emit_context_error(
                 context_id=context_id,
                 code="AGENT_ERROR",
@@ -426,7 +426,7 @@ class WsConnector(WsHandler):
                 await self.emit_to(target_sid, "connector_error", payload)
             except Exception as exc:
                 PrintStyle.error(
-                    f"[a0-connector] failed to emit connector_error to {target_sid}: {exc}"
+                    f"[synapse-connector] failed to emit connector_error to {target_sid}: {exc}"
                 )
 
     async def _emit_context_complete(
@@ -445,7 +445,7 @@ class WsConnector(WsHandler):
                 )
             except Exception as exc:
                 PrintStyle.error(
-                    f"[a0-connector] failed to emit connector_context_complete to {target_sid}: {exc}"
+                    f"[synapse-connector] failed to emit connector_context_complete to {target_sid}: {exc}"
                 )
 
     def _start_streaming(self, sid: str, context_id: str, *, from_sequence: int) -> None:
@@ -484,7 +484,7 @@ class WsConnector(WsHandler):
             raise
         except Exception as exc:
             PrintStyle.error(
-                f"[a0-connector] stream error sid={sid} context={context_id}: {exc}"
+                f"[synapse-connector] stream error sid={sid} context={context_id}: {exc}"
             )
         finally:
             self._streaming_tasks.pop((sid, context_id), None)

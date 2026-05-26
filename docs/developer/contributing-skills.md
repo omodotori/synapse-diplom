@@ -298,8 +298,8 @@ One skill = one expertise area. If your skill is getting too long, split it:
 
 1. **Fork the Repository:**
    ```bash
-   git clone https://github.com/synapseai/agent-zero.git
-   cd agent-zero
+   git clone https://github.com/synapseai/synapse.git
+   cd synapse
    ```
 
 2. **Create Your Skill:**

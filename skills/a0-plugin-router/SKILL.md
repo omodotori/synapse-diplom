@@ -1,5 +1,5 @@
 ---
-name: a0-plugin-router
+name: synapse-plugin-router
 description: Main entry point for all Synapse plugin tasks. Routes to specialist skills for creating, reviewing, contributing, managing, or debugging plugins. Use when the user mentions plugins, asks how the plugin system works, wants to build/install/uninstall/publish/debug a plugin, or asks about the Plugin Hub.
 version: 1.0.0
 tags: ["plugins", "router", "meta", "create", "review", "contribute", "manage", "plugin-hub"]
@@ -25,17 +25,17 @@ Classify the user's request and read the appropriate specialist skill immediatel
 
 | User intent | Skill to read |
 |---|---|
-| Create / build / develop / write a new plugin | Read `/a0/skills/a0-create-plugin/SKILL.md` |
-| Review / audit / validate / check a plugin | Read `/a0/skills/a0-review-plugin/SKILL.md` |
-| Contribute / publish / submit / share to community | Read `/a0/skills/a0-contribute-plugin/SKILL.md` |
-| Install / update / uninstall / remove / browse / scan | Read `/a0/skills/a0-manage-plugin/SKILL.md` |
-| Plugin not working / crashing / missing / debug / troubleshoot | Read `/a0/skills/a0-debug-plugin/SKILL.md` |
+| Create / build / develop / write a new plugin | Read `/synapse/skills/synapse-create-plugin/SKILL.md` |
+| Review / audit / validate / check a plugin | Read `/synapse/skills/synapse-review-plugin/SKILL.md` |
+| Contribute / publish / submit / share to community | Read `/synapse/skills/synapse-contribute-plugin/SKILL.md` |
+| Install / update / uninstall / remove / browse / scan | Read `/synapse/skills/synapse-manage-plugin/SKILL.md` |
+| Plugin not working / crashing / missing / debug / troubleshoot | Read `/synapse/skills/synapse-debug-plugin/SKILL.md` |
 | Explain / how does it work / architecture | Answer inline using the overview below |
 
 If intent is ambiguous, ask one question before routing:
 > "Are you trying to **create** a new plugin, **review** one, **contribute** it to the community, **manage** (install/update/uninstall) plugins, or **debug** a plugin that isn't working?"
 
-If the user says "make a plugin for the community" - start with `a0-create-plugin`, then note that `a0-contribute-plugin` handles the publishing step after the plugin is built and tested.
+If the user says "make a plugin for the community" - start with `synapse-create-plugin`, then note that `synapse-contribute-plugin` handles the publishing step after the plugin is built and tested.
 
 ---
 
@@ -111,7 +111,7 @@ For `@extensible` targets, the only valid implicit hook layout is `extensions/py
 
 ### Deep-Dive References
 
-- Architecture + extension points: `/a0/docs/agents/AGENTS.plugins.md`
-- Developer guide: `/a0/docs/developer/plugins.md`
-- Component system: `/a0/docs/agents/AGENTS.components.md`
-- Modal system: `/a0/docs/agents/AGENTS.modals.md`
+- Architecture + extension points: `/synapse/docs/agents/AGENTS.plugins.md`
+- Developer guide: `/synapse/docs/developer/plugins.md`
+- Component system: `/synapse/docs/agents/AGENTS.components.md`
+- Modal system: `/synapse/docs/agents/AGENTS.modals.md`

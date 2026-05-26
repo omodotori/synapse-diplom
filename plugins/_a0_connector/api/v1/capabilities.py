@@ -70,7 +70,7 @@ class Capabilities(connector_base.PublicConnectorApiHandler):
         from helpers import login
 
         return {
-            "protocol": "a0-connector.v1",
+            "protocol": "synapse-connector.v1",
             "version": "0.1.0",
             "auth": ["session"],
             "auth_required": bool(login.is_login_required()),

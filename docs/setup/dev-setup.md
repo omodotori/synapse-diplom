@@ -30,17 +30,17 @@ This guide will show you how to setup a local development environment for Synaps
 - For Python you can choose your environment manager - base Python venv, Conda, uv...
 
 ## Step 1: Clone or download the repository
-- Synapse is available on GitHub [github.com/synapseai/agent-zero](https://github.com/synapseai/agent-zero).
-- You can download the files using a browser and extract or run `git clone https://github.com/synapseai/agent-zero` in your desired directory.
+- Synapse is available on GitHub [github.com/synapseai/synapse](https://github.com/synapseai/synapse).
+- You can download the files using a browser and extract or run `git clone https://github.com/synapseai/synapse` in your desired directory.
 
 > [!NOTE]
-> In my case, I used `cd ~/Desktop` and `git clone https://github.com/synapseai/agent-zero`, so my project folder is `~/Desktop/agent-zero`.
+> In my case, I used `cd ~/Desktop` and `git clone https://github.com/synapseai/synapse`, so my project folder is `~/Desktop/synapse`.
 
 ## Step 2: Open project folder in your IDE
 - I will be using plain and clean VS Code for this example to make sure I don't skip any setup part, you can use any of it's variants like Cursor, Windsurf etc.
 - Synapse comes with `.vscode` folder that contains basic setup, recommended extensions, and debugger profiles. These will help us a lot.
 
-1. Open your IDE and open the project folder using `File > Open Folder` and select your folder, in my case `~/Desktop/agent-zero`.
+1. Open your IDE and open the project folder using `File > Open Folder` and select your folder, in my case `~/Desktop/synapse`.
 2. You will probably be prompted to trust the directory, confirm that.
 3. You should now have the project open in your IDE
 ![VS Code project](res/dev/devinst-1.png)
@@ -60,7 +60,7 @@ Now when you select one of the python files in the project, you should see prope
 ![VS Code Python environments](res/dev/devinst-3.png)
 ![VS Code Python environments](res/dev/devinst-4.png)
 
-- Your new environment should be automatically activated. If not, select it in the lower right corner. You might need to open a new terminal in VS Code to reflect the changes with `Terminal > New Terminal` or clicking the `+` button in the terminal tab. Your terminal prompt should now start with your environment name/path, in my case `(/Users/frdel/Desktop/agent-zero/.conda)` This shows the environment is active in the terminal.
+- Your new environment should be automatically activated. If not, select it in the lower right corner. You might need to open a new terminal in VS Code to reflect the changes with `Terminal > New Terminal` or clicking the `+` button in the terminal tab. Your terminal prompt should now start with your environment name/path, in my case `(/Users/frdel/Desktop/synapse/.conda)` This shows the environment is active in the terminal.
 
 ![VS Code env terminal](res/dev/devinst-5.png)
 
@@ -69,7 +69,7 @@ Now when you select one of the python files in the project, you should see prope
 pip install -r requirements.txt
 PLAYWRIGHT_BROWSERS_PATH=tmp/playwright playwright install chromium --only-shell
 ```
-The first command installs Python dependencies. The second installs the Chromium headless shell into `tmp/playwright` ahead of time (same path in Docker: `/a0/tmp/playwright`). If you skip the second command, **local development** still downloads the shell on first Browser Agent use through `ensure_playwright_binary()` in `plugins/_browser_agent/helpers/playwright.py`. Pre-installing avoids that wait. **Docker** images ship the shell preinstalled; runtime install is for local dev when the binary is missing.
+The first command installs Python dependencies. The second installs the Chromium headless shell into `tmp/playwright` ahead of time (same path in Docker: `/synapse/tmp/playwright`). If you skip the second command, **local development** still downloads the shell on first Browser Agent use through `ensure_playwright_binary()` in `plugins/_browser_agent/helpers/playwright.py`. Pre-installing avoids that wait. **Docker** images ship the shell preinstalled; runtime install is for local dev when the binary is missing.
 Errors in the code editor caused by missing packages should now be gone. If not, try reloading the window.
 
 
@@ -110,9 +110,9 @@ After inserting my API key in settings, my Synapse instance works. I can send a 
 - Some parts of A0 require standardized linux environment, additional web services and preinstalled binaries that would be unneccessarily complex to set up in a local environment.
 - To make development easier, we can use existing A0 instance in docker and forward some requests to be executed there using SSH and RFC (Remote Function Call).
 
-1. Pull the docker image `synapseai/agent-zero` from Docker Hub and run it with a web port (`80`) mapped and SSH port (`22`) mapped.
-If you want, you can also map the `/a0` folder to our local project folder as well, this way we can update our local instance and the docker instance at the same time.
-This is how it looks in my example: port `80` is mapped to `8880` on the host and `22` to `8822`, `/a0` folder mapped to `/Users/frdel/Desktop/agent-zero`:
+1. Pull the docker image `synapseai/synapse` from Docker Hub and run it with a web port (`80`) mapped and SSH port (`22`) mapped.
+If you want, you can also map the `/synapse` folder to our local project folder as well, this way we can update our local instance and the docker instance at the same time.
+This is how it looks in my example: port `80` is mapped to `8880` on the host and `22` to `8822`, `/synapse` folder mapped to `/Users/frdel/Desktop/synapse`:
 
 ![docker run](res/dev/devinst-11.png)
 ![docker run](res/dev/devinst-12.png)
@@ -171,7 +171,7 @@ These environment variables automatically override the hardcoded defaults in `ge
 
 ## Want to build your docker image?
 - You can use the `DockerfileLocal` to build your docker image.
-- Navigate to your project root in the terminal and run `docker build -f DockerfileLocal -t agent-zero-local --build-arg CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S) .`
+- Navigate to your project root in the terminal and run `docker build -f DockerfileLocal -t synapse-local --build-arg CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S) .`
 - The `CACHE_DATE` argument is optional, it is used to cache most of the build process and only rebuild the last steps when the files or dependencies change.
 - See `docker/run/build.txt` for more build command examples.
 - Automated Docker Hub publishing for release tags is handled by `.github/workflows/docker-publish.yml`. The latest eligible `main` tag generates its GitHub release body on the fly from commit subjects and descriptions via OpenRouter.

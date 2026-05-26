@@ -1,5 +1,5 @@
 ---
-name: a0-manage-plugin
+name: synapse-manage-plugin
 description: Manage Synapse plugins lifecycle: browse the Plugin Hub, scan for security, install from Git/ZIP/Plugin Hub, update, uninstall, enable, disable, debug, and troubleshoot. Use when asked to install, update, uninstall, remove, scan, find, search, enable, disable, debug, or troubleshoot a plugin.
 version: 1.2.0
 tags: ["plugins", "install", "uninstall", "update", "scan", "security", "debug", "troubleshoot", "plugin-hub", "manage"]
@@ -35,8 +35,8 @@ Identify what the user needs and jump to the relevant section:
 | Update an installed plugin | [Update a Plugin](#update-a-plugin) |
 | Uninstall / remove a plugin | [Uninstall a Plugin](#uninstall-a-plugin) |
 | Enable or disable a plugin | [Activation](#activation) |
-| Plugin not loading / crashing / missing | Read `/a0/skills/a0-debug-plugin/SKILL.md` |
-| Explain how plugin discovery works | Read `/a0/skills/a0-debug-plugin/SKILL.md` |
+| Plugin not loading / crashing / missing | Read `/synapse/skills/synapse-debug-plugin/SKILL.md` |
+| Explain how plugin discovery works | Read `/synapse/skills/synapse-debug-plugin/SKILL.md` |
 
 ---
 
@@ -47,7 +47,7 @@ Fetch the current community index:
 ```python
 import urllib.request, json
 
-url = "https://github.com/synapseai/a0-plugins/releases/download/generated-index/index.json"
+url = "https://github.com/synapseai/synapse-plugins/releases/download/generated-index/index.json"
 with urllib.request.urlopen(url, timeout=30) as resp:
     index = json.loads(resp.read())
 
@@ -60,7 +60,7 @@ Each entry in `plugins` is keyed by plugin name with fields: `title`, `descripti
 
 **To list installed plugins** locally:
 ```bash
-ls /a0/usr/plugins/
+ls /synapse/usr/plugins/
 ```
 
 **Alternatively via UI**: Open the Plugins dialog in Synapse and switch to the **Browse** tab (or click **Install** in the toolbar to open the Plugin Hub).
@@ -214,7 +214,7 @@ Or via UI: Plugins dialog -> Install -> ZIP tab -> upload file.
 Only use this if the HTTP API is genuinely unavailable (not because of import errors - those mean you must use the HTTP API instead).
 
 ```bash
-git clone https://github.com/<user>/<repo> /a0/usr/plugins/<plugin_name>
+git clone https://github.com/<user>/<repo> /synapse/usr/plugins/<plugin_name>
 ```
 
 After cloning, the plugin is on disk but the framework doesn't know about it. Clear the cache and notify the frontend by calling the toggle API (off then on) which triggers `after_plugin_change()` internally:
@@ -243,11 +243,11 @@ Or simply restart Synapse - on startup it re-scans `usr/plugins/` fresh.
 
 ```bash
 # Is the plugin a git repo?
-git -C /a0/usr/plugins/<name> rev-parse --is-inside-work-tree 2>/dev/null
+git -C /synapse/usr/plugins/<name> rev-parse --is-inside-work-tree 2>/dev/null
 
 # Compare local HEAD with remote HEAD (no fetch required)
-LOCAL=$(git -C /a0/usr/plugins/<name> rev-parse HEAD)
-REMOTE=$(git -C /a0/usr/plugins/<name> ls-remote origin HEAD | awk '{print $1}')
+LOCAL=$(git -C /synapse/usr/plugins/<name> rev-parse HEAD)
+REMOTE=$(git -C /synapse/usr/plugins/<name> ls-remote origin HEAD | awk '{print $1}')
 echo "Local:  $LOCAL"
 echo "Remote: $REMOTE"
 [ "$LOCAL" = "$REMOTE" ] && echo "Up to date" || echo "Update available"
@@ -260,7 +260,7 @@ If they differ, new commits exist on the remote - report this to the user as "up
 If installed via Git:
 
 ```bash
-cd /a0/usr/plugins/<name>
+cd /synapse/usr/plugins/<name>
 git pull origin main
 ```
 
@@ -317,10 +317,10 @@ Use this only if the standard uninstall fails (e.g., broken `uninstall` hook tha
 
 ```bash
 # Confirm the plugin is a custom one (usr/plugins/) - NEVER delete from plugins/
-ls /a0/usr/plugins/<name>/
+ls /synapse/usr/plugins/<name>/
 
 # Remove it
-rm -rf /a0/usr/plugins/<name>/
+rm -rf /synapse/usr/plugins/<name>/
 ```
 
 After manual removal, refresh the plugin list via the UI or restart Synapse.
@@ -336,14 +336,14 @@ Plugins are enabled/disabled via toggle files:
 
 **Enable a plugin**:
 ```bash
-rm -f /a0/usr/plugins/<name>/.toggle-0
-touch /a0/usr/plugins/<name>/.toggle-1
+rm -f /synapse/usr/plugins/<name>/.toggle-0
+touch /synapse/usr/plugins/<name>/.toggle-1
 ```
 
 **Disable a plugin**:
 ```bash
-rm -f /a0/usr/plugins/<name>/.toggle-1
-touch /a0/usr/plugins/<name>/.toggle-0
+rm -f /synapse/usr/plugins/<name>/.toggle-1
+touch /synapse/usr/plugins/<name>/.toggle-0
 ```
 
 Via UI: Plugins dialog -> find the plugin -> use the toggle switch.
@@ -358,8 +358,8 @@ Plugins with `always_enabled: true` in `plugin.yaml` cannot be toggled (framewor
 
 ## References
 
-- Plugin architecture: `/a0/docs/agents/AGENTS.plugins.md`
-- Developer lifecycle guide: `/a0/docs/developer/plugins.md`
-- Debug a broken plugin: read `/a0/skills/a0-debug-plugin/SKILL.md`
-- Create a new plugin: read `/a0/skills/a0-create-plugin/SKILL.md`
-- Review a plugin: read `/a0/skills/a0-review-plugin/SKILL.md`
+- Plugin architecture: `/synapse/docs/agents/AGENTS.plugins.md`
+- Developer lifecycle guide: `/synapse/docs/developer/plugins.md`
+- Debug a broken plugin: read `/synapse/skills/synapse-debug-plugin/SKILL.md`
+- Create a new plugin: read `/synapse/skills/synapse-create-plugin/SKILL.md`
+- Review a plugin: read `/synapse/skills/synapse-review-plugin/SKILL.md`

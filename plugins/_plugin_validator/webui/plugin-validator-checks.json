@@ -34,7 +34,7 @@
     },
     "securityIndex": {
       "label": "Security + Index Review",
-      "detail": "Check for hardcoded secrets, unsafe eval/exec, path traversal risks, shell injection, unsafe ZIP extraction, and outbound network calls that are not clearly justified. Also fetch the current community index at https://github.com/synapseai/a0-plugins/releases/download/generated-index/index.json and verify the plugin name is unique, the GitHub URL is not already claimed, and the purpose is not an obvious duplicate of an existing index entry.",
+      "detail": "Check for hardcoded secrets, unsafe eval/exec, path traversal risks, shell injection, unsafe ZIP extraction, and outbound network calls that are not clearly justified. Also fetch the current community index at https://github.com/synapseai/synapse-plugins/releases/download/generated-index/index.json and verify the plugin name is unique, the GitHub URL is not already claimed, and the purpose is not an obvious duplicate of an existing index entry.",
       "criteria": {
         "pass": "No material security concerns found and no blocking community index conflicts detected",
         "warning": "Potentially acceptable security or duplication concerns need review before contribution",

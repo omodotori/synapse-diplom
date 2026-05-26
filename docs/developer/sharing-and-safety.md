@@ -6,7 +6,7 @@ This guide helps contributors decide **what to share**, **where to share it**, a
 
 ### 1. Is this change meant for the Synapse core repository?
 
-Use the main `agent-zero` contribution flow when the change directly improves the framework itself, for example:
+Use the main `synapse` contribution flow when the change directly improves the framework itself, for example:
 
 - a bugfix in `webui/`, `helpers/`, `api/`, `tools/`, `extensions/`, or `docs/`
 - a test that belongs with core framework behavior
@@ -14,7 +14,7 @@ Use the main `agent-zero` contribution flow when the change directly improves th
 
 If yes:
 
-1. Fork `synapseai/agent-zero` publicly.
+1. Fork `synapseai/synapse` publicly.
 2. Add `upstream` to your local clone.
 3. Sync from `upstream/main` (or the currently used upstream target branch).
 4. Create a focused branch.
@@ -38,7 +38,7 @@ If yes:
 1. Put the plugin contents at the root of its own repository.
 2. Include `plugin.yaml`, `README.md`, and `LICENSE`.
 3. Test it locally from `usr/plugins/`.
-4. Submit its `index.yaml` entry to `synapseai/a0-plugins`.
+4. Submit its `index.yaml` entry to `synapseai/synapse-plugins`.
 
 See [`plugins.md`](plugins.md) for the Plugin Index rules and packaging details.
 

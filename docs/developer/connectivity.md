@@ -499,7 +499,7 @@ Retrieve file contents by paths, returning files as base64 encoded data. Useful 
 ### API Reference
 
 **Parameters:**
-*   `paths` (array, required): Array of file paths to retrieve (e.g., `["/a0/usr/uploads/file.txt"]`)
+*   `paths` (array, required): Array of file paths to retrieve (e.g., `["/synapse/usr/uploads/file.txt"]`)
 
 **Headers:**
 *   `X-API-KEY` (required)
@@ -553,8 +553,8 @@ async function getFiles(filePaths) {
 
 // Example 1: Get specific files
 const filePaths = [
-    "/a0/usr/uploads/document.txt",
-    "/a0/usr/uploads/data.json"
+    "/synapse/usr/uploads/document.txt",
+    "/synapse/usr/uploads/data.json"
 ];
 getFiles(filePaths);
 
@@ -581,7 +581,7 @@ async function attachmentWorkflow() {
         console.log('Message sent with attachment');
 
         // Step 2: Retrieve the uploaded file
-        const retrievedFiles = await getFiles(["/a0/usr/uploads/test.txt"]);
+        const retrievedFiles = await getFiles(["/synapse/usr/uploads/test.txt"]);
 
         if (retrievedFiles && retrievedFiles["test.txt"]) {
             const originalContent = atob(retrievedFiles["test.txt"]);
@@ -617,11 +617,11 @@ Below is an example of a `mcp.json` configuration file that a client could use t
 {
     "mcpServers":
     {
-        "agent-zero": {
+        "synapse": {
             "type": "sse",
             "url": "YOUR_SYNAPSE_URL/mcp/t-YOUR_API_TOKEN/sse"
         },
-        "agent-zero-http": {
+        "synapse-http": {
             "type": "streamable-http",
             "url": "YOUR_SYNAPSE_URL/mcp/t-YOUR_API_TOKEN/http/"
         }
@@ -636,11 +636,11 @@ You can specify a project for MCP connections by including it in the URL path:
 ```json
 {
     "mcpServers": {
-        "agent-zero-with-project": {
+        "synapse-with-project": {
             "type": "sse",
             "url": "YOUR_SYNAPSE_URL/mcp/t-YOUR_API_TOKEN/p-my-project-name/sse"
         },
-        "agent-zero-http-with-project": {
+        "synapse-http-with-project": {
             "type": "streamable-http",
             "url": "YOUR_SYNAPSE_URL/mcp/t-YOUR_API_TOKEN/p-my-project-name/http/"
         }

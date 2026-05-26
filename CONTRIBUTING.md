@@ -20,8 +20,8 @@ For the full contribution workflow, start with:
 
 ## Choosing the right place to share work
 
-- **Core bugfix or docs for Synapse itself:** contribute back to `synapseai/agent-zero` from a public fork.
-- **Community plugin:** publish the plugin in its own public repository, then submit it to `synapseai/a0-plugins`.
+- **Core bugfix or docs for Synapse itself:** contribute back to `synapseai/synapse` from a public fork.
+- **Community plugin:** publish the plugin in its own public repository, then submit it to `synapseai/synapse-plugins`.
 - **Reusable skill:** contribute it to Synapse's `skills/` tree or publish it in a dedicated public repository/collection.
 - **Private experiment, customer-specific code, local R&D, or sensitive material:** keep it out of public forks and upstream PRs.
 

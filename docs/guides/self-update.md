@@ -18,24 +18,24 @@ Synapse includes a Docker-oriented self-update flow for switching to a specific 
 
 ## How it works
 
-1. The WebUI writes a YAML request file outside `/a0` so the request survives upgrades and downgrades.
+1. The WebUI writes a YAML request file outside `/synapse` so the request survives upgrades and downgrades.
 2. Synapse restarts.
 3. The durable updater in `/exe` reads the YAML request before starting the UI.
-4. If requested, it creates a zip backup of `/a0/usr`.
+4. If requested, it creates a zip backup of `/synapse/usr`.
 5. It fetches the requested branch and update target from the official Synapse repository.
-6. It updates `/a0` while preserving gitignored paths such as `/a0/usr`.
+6. It updates `/synapse` while preserving gitignored paths such as `/synapse/usr`.
 7. It starts Synapse again and waits for `/api/health` to become healthy.
 8. If the UI does not become healthy within the allowed time, it restores the previous checkout and starts that version again.
 
 ## Durable files
 
-The self-update flow stores its runtime files outside `/a0`:
+The self-update flow stores its runtime files outside `/synapse`:
 
-- Trigger file: `/exe/a0-self-update.yaml`
-- Status file: `/exe/a0-self-update-status.yaml`
-- Last attempt log: `/exe/a0-self-update.log`
+- Trigger file: `/exe/synapse-self-update.yaml`
+- Status file: `/exe/synapse-self-update-status.yaml`
+- Last attempt log: `/exe/synapse-self-update.log`
 
-Because these files live in `/exe`, you can recover from an older downgraded `/a0` by creating a new update YAML manually.
+Because these files live in `/exe`, you can recover from an older downgraded `/synapse` by creating a new update YAML manually.
 
 ## Backup behavior
 
@@ -75,4 +75,4 @@ If a newer major line exists, the UI points you to the Docker setup guide becaus
 - Gitignored paths are preserved during update
 - Obsolete tracked files are removed as part of the checkout replacement
 - Rollback is automatic when the updated UI fails its health check
-- The updater itself lives outside `/a0`, so it is not lost by downgrading to an older repository state
+- The updater itself lives outside `/synapse`, so it is not lost by downgrading to an older repository state

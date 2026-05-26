@@ -6,8 +6,8 @@ Welcome to the Synapse documentation hub. Whether you're getting started or divi
 ## Quick Start
 
 - **[Quickstart Guide](quickstart.md):** Get up and running in 5 minutes with Synapse.
-- **[Installation Guide](setup/installation.md):** Install scripts, updates, and advanced Docker setup (includes [How to Update](setup/installation.md#how-to-update-agent-zero)).
-- **[A0 CLI Connector](guides/a0-cli-connector.md):** Install the terminal-native connector, connect it to Synapse, and copy a setup brief for another agent.
+- **[Installation Guide](setup/installation.md):** Install scripts, updates, and advanced Docker setup (includes [How to Update](setup/installation.md#how-to-update-synapse)).
+- **[A0 CLI Connector](guides/synapse-cli-connector.md):** Install the terminal-native connector, connect it to Synapse, and copy a setup brief for another agent.
 - **[Self Update](guides/self-update.md):** How the in-app updater works (technical reference).
 - **[VPS Deployment](setup/vps-deployment.md):** Deploy Synapse on a remote server.
 - **[Development Setup](setup/dev-setup.md):** Set up a local development environment.
@@ -15,7 +15,7 @@ Welcome to the Synapse documentation hub. Whether you're getting started or divi
 ## User Guides
 
 - **[Usage Guide](guides/usage.md):** Comprehensive guide to Synapse's features and capabilities.
-- **[A0 CLI Connector](guides/a0-cli-connector.md):** Terminal-first companion workflow for Synapse.
+- **[A0 CLI Connector](guides/synapse-cli-connector.md):** Terminal-first companion workflow for Synapse.
 - **[Projects Tutorial](guides/projects.md):** Learn to create isolated workspaces with dedicated context and memory.
 - **[API Integration](guides/api-integration.md):** Add external APIs without writing code.
 - **[MCP Setup](guides/mcp-setup.md):** Configure Model Context Protocol servers.
@@ -37,8 +37,8 @@ Welcome to the Synapse documentation hub. Whether you're getting started or divi
 ## Community & Support
 
 - **Join the Community:** Connect with other users on [Discord](https://discord.gg/B8KZKNsPpj) to discuss ideas, ask questions, and collaborate.
-- **Share Your Work:** Show off your Synapse creations and workflows in the [Show and Tell](https://github.com/synapseai/agent-zero/discussions/categories/show-and-tell) area.
-- **Report Issues:** Use the [GitHub issue tracker](https://github.com/synapseai/agent-zero/issues) to report bugs or suggest features.
+- **Share Your Work:** Show off your Synapse creations and workflows in the [Show and Tell](https://github.com/synapseai/synapse/discussions/categories/show-and-tell) area.
+- **Report Issues:** Use the [GitHub issue tracker](https://github.com/synapseai/synapse/issues) to report bugs or suggest features.
 - **Follow Updates:** Subscribe to the [YouTube channel](https://www.youtube.com/@SynapseFW) for tutorials and release videos.
 
 ---
@@ -48,18 +48,18 @@ Welcome to the Synapse documentation hub. Whether you're getting started or divi
 - [Quick Start](#quick-start)
   - [Quickstart Guide](quickstart.md)
   - [Installation Guide](setup/installation.md)
-    - [How to Update Synapse](setup/installation.md#how-to-update-agent-zero)
+    - [How to Update Synapse](setup/installation.md#how-to-update-synapse)
     - [Manual Installation (Advanced)](setup/installation.md#manual-installation-advanced)
     - [Step 1: Install Docker Desktop](setup/installation.md#step-1-install-docker-desktop)
       - [Windows Installation](setup/installation.md#-windows-installation)
       - [macOS Installation](setup/installation.md#-macos-installation)
       - [Linux Installation](setup/installation.md#-linux-installation)
-    - [Step 2: Run Synapse](setup/installation.md#step-2-run-agent-zero)
-      - [Pull Docker Image](setup/installation.md#21-pull-the-agent-zero-docker-image)
+    - [Step 2: Run Synapse](setup/installation.md#step-2-run-synapse)
+      - [Pull Docker Image](setup/installation.md#21-pull-the-synapse-docker-image)
       - [Map Folders for Persistence](setup/installation.md#22-optional-map-folders-for-persistence)
       - [Run the Container](setup/installation.md#23-run-the-container)
       - [Access the Web UI](setup/installation.md#24-access-the-web-ui)
-    - [Step 3: Configure Synapse](setup/installation.md#step-3-configure-agent-zero)
+    - [Step 3: Configure Synapse](setup/installation.md#step-3-configure-synapse)
       - [Settings Configuration](setup/installation.md#settings-configuration)
       - [Agent Configuration](setup/installation.md#agent-configuration)
       - [Chat Model Settings](setup/installation.md#chat-model-settings)
@@ -67,11 +67,11 @@ Welcome to the Synapse documentation hub. Whether you're getting started or divi
       - [Authentication](setup/installation.md#authentication)
     - [Choosing Your LLMs](setup/installation.md#choosing-your-llms)
     - [Installing Ollama (Local Models)](setup/installation.md#installing-and-using-ollama-local-models)
-    - [Using on Mobile Devices](setup/installation.md#using-agent-zero-on-your-mobile-device)
+    - [Using on Mobile Devices](setup/installation.md#using-synapse-on-your-mobile-device)
   - [Self Update (technical)](guides/self-update.md)
   - [VPS Deployment](setup/vps-deployment.md)
   - [Development Setup](setup/dev-setup.md)
-  - [A0 CLI Connector](guides/a0-cli-connector.md)
+  - [A0 CLI Connector](guides/synapse-cli-connector.md)
 
 - [User Guides](#user-guides)
   - [Usage Guide](guides/usage.md)
@@ -94,7 +94,7 @@ Welcome to the Synapse documentation hub. Whether you're getting started or divi
     - [Voice Interface](guides/usage.md#voice-interface)
     - [Memory Management](guides/usage.md#memory-management)
     - [Backup & Restore](guides/usage.md#backup--restore)
-  - [A0 CLI Connector](guides/a0-cli-connector.md)
+  - [A0 CLI Connector](guides/synapse-cli-connector.md)
   - [Projects Tutorial](guides/projects.md)
   - [API Integration](guides/api-integration.md)
   - [MCP Setup](guides/mcp-setup.md)

@@ -32,7 +32,7 @@ chat:
     models_list:
       endpoint_url: "https://api.venice.ai/api/v1/models"
     kwargs:
-      api_base: https://llm.agent-zero.ai/v1
+      api_base: https://llm.synapse.ai/v1
       venice_parameters:
         include_venice_system_prompt: false
   anthropic:
@@ -122,7 +122,7 @@ chat:
       endpoint_url: "https://openrouter.ai/api/v1/models"
     kwargs:
       extra_headers:
-        "HTTP-Referer": "https://agent-zero.ai/"
+        "HTTP-Referer": "https://synapse.ai/"
         "X-Title": "Synapse"
         "X-OpenRouter-Categories": "personal-agent,cloud-agent"
   sambanova:
@@ -198,7 +198,7 @@ embedding:
     kwargs:
       api_base: https://openrouter.ai/api/v1
       extra_headers:
-        "HTTP-Referer": "https://agent-zero.ai/"
+        "HTTP-Referer": "https://synapse.ai/"
         "X-Title": "Synapse"
         "X-OpenRouter-Categories": "personal-agent,cloud-agent"
   other:

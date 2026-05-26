@@ -9,8 +9,8 @@ from dataclasses import dataclass
 from typing import Literal, TypedDict
 
 # Pattern for extracting chat thread ID from email subject
-# Matches: [a0-xxxxxxxx] at end of subject
-_THREAD_ID_RE = re.compile(r"\[a0-([a-zA-Z0-9]+)\]")
+# Matches: [synapse-xxxxxxxx] at end of subject
+_THREAD_ID_RE = re.compile(r"\[synapse-([a-zA-Z0-9]+)\]")
 
 # Context data keys (no underscore prefix — must persist across restarts)
 CTX_EMAIL_HANDLER = "email_handler"
@@ -44,7 +44,7 @@ def build_reply_subject(original_subject: str, thread_id: str) -> str:
     clean = _THREAD_ID_RE.sub("", original_subject).strip()
     if not clean.lower().startswith("re:"):
         clean = f"Re: {clean}"
-    return f"{clean} [a0-{thread_id}]"
+    return f"{clean} [synapse-{thread_id}]"
 
 
 class ChatSummary(TypedDict):

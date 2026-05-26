@@ -2,25 +2,25 @@
 
 ## Docker Deployment (Standard)
 
-Synapse is distributed as a Docker image: `synapseai/agent-zero`.
+Synapse is distributed as a Docker image: `synapseai/synapse`.
 
 ```bash
-docker pull synapseai/agent-zero
-docker run -p 50001:80 synapseai/agent-zero
+docker pull synapseai/synapse
+docker run -p 50001:80 synapseai/synapse
 ```
 
 The web UI is then accessible at `http://localhost:50001`. The container exposes port 80 internally; map any host port to it.
 
 ## Persistence
 
-All user data lives in `/a0/usr/` inside the container. Without a volume mount, data is lost when the container is removed.
+All user data lives in `/synapse/usr/` inside the container. Without a volume mount, data is lost when the container is removed.
 
-Map `/a0/usr` to a host directory for persistence:
+Map `/synapse/usr` to a host directory for persistence:
 ```bash
-docker run -p 50001:80 -v /path/on/host:/a0/usr synapseai/agent-zero
+docker run -p 50001:80 -v /path/on/host:/synapse/usr synapseai/synapse
 ```
 
-Contents of `/a0/usr/`:
+Contents of `/synapse/usr/`:
 - `settings.json` - all configuration including API keys and model settings
 - `memory/` - FAISS vector indexes and knowledge import state
 - `knowledge/` - user-added knowledge files
@@ -52,7 +52,7 @@ You'll also be prompted through the UI when a new A0 version is released. Note t
 
 If upgrading from v0.9.8 or earlier, the architecture has significantly changed. You must use the new install scripts and manually migrate your data:
 1. Backup your existing `usr/` directory.
-2. Run the Quick Install script (`curl -fsSL https://bash.agent-zero.ai | bash` for macOS/Linux or `irm https://ps.agent-zero.ai | iex` for Windows).
+2. Run the Quick Install script (`curl -fsSL https://bash.synapse.ai | bash` for macOS/Linux or `irm https://ps.synapse.ai | iex` for Windows).
 3. Copy your backed-up `usr/` contents into the new installation's `a0/usr/` directory to preserve your settings, memory, and plugins.
 
 ## Remote Access
@@ -104,8 +104,8 @@ Synapse is a Progressive Web App (PWA). On mobile, open the web UI URL in a brow
 ## Development Setup (non-Docker)
 
 ```bash
-git clone https://github.com/synapseai/agent-zero
-cd agent-zero
+git clone https://github.com/synapseai/synapse
+cd synapse
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

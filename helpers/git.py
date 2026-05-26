@@ -401,7 +401,7 @@ def get_version():
 
 
 def is_official_synapse_repo() -> bool:
-    """Return True when origin points to synapseai/agent-zero."""
+    """Return True when origin points to synapseai/synapse."""
     try:
         repo = Repo(files.get_base_dir())
         if not repo.remotes:
@@ -413,8 +413,8 @@ def is_official_synapse_repo() -> bool:
             remote_url = remote_url[:-4]
 
         allowed_repos = [
-            "synapseai/agent-zero",
-            "frdel/agent-zero",
+            "synapseai/synapse",
+            "frdel/synapse",
         ]
         return any(
             remote_url.endswith(f"github.com/{repo_name}")

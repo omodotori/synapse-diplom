@@ -1,5 +1,5 @@
 ---
-name: a0-review-plugin
+name: synapse-review-plugin
 description: Full audit of Synapse plugins in usr/plugins/. Reviews manifest validity, directory structure, code patterns (Store Gating, notifications, imports), security, and duplicate detection against the community index. Use when asked to review, audit, validate, or check an existing plugin before using or contributing it.
 version: 1.0.0
 tags: ["plugins", "review", "audit", "validate", "security", "checklist"]
@@ -15,7 +15,7 @@ trigger_patterns:
 
 # Synapse Plugin Review
 
-Full-audit workflow for plugins in `/a0/usr/plugins/<name>/`. Run all 4 phases in order and report findings grouped by phase. Mark each item PASS, FAIL, or WARN.
+Full-audit workflow for plugins in `/synapse/usr/plugins/<name>/`. Run all 4 phases in order and report findings grouped by phase. Mark each item PASS, FAIL, or WARN.
 
 For detailed checklists and code pattern references, read `checklists.md` in this skill directory when needed.
 
@@ -115,7 +115,7 @@ Read source files and check for violations of Synapse conventions.
 
 Fetch the current index:
 ```
-https://github.com/synapseai/a0-plugins/releases/download/generated-index/index.json
+https://github.com/synapseai/synapse-plugins/releases/download/generated-index/index.json
 ```
 
 Check:
@@ -168,7 +168,7 @@ Fix required: version missing in plugin.yaml, inline error box in webui/settings
 ## References
 
 - Detailed pattern checklists: read `checklists.md` in this skill directory
-- Plugin architecture: `/a0/docs/agents/AGENTS.plugins.md`
-- Developer lifecycle guide: `/a0/docs/developer/plugins.md`
-- Component system: `/a0/docs/agents/AGENTS.components.md`
-- If review passes and user wants to publish: read `/a0/skills/a0-contribute-plugin/SKILL.md`
+- Plugin architecture: `/synapse/docs/agents/AGENTS.plugins.md`
+- Developer lifecycle guide: `/synapse/docs/developer/plugins.md`
+- Component system: `/synapse/docs/agents/AGENTS.components.md`
+- If review passes and user wants to publish: read `/synapse/skills/synapse-contribute-plugin/SKILL.md`

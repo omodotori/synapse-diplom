@@ -88,5 +88,5 @@ Status icons: {{STATUS_LEGEND}}
 - Do NOT add checks beyond the selected phases
 - Do NOT merge multiple unrelated files into one finding
 - If a phase has zero issues, include the {{RATING_PASS}} row and move on
-- For the community index review, fetch the current index from `https://github.com/synapseai/a0-plugins/releases/download/generated-index/index.json`
+- For the community index review, fetch the current index from `https://github.com/synapseai/synapse-plugins/releases/download/generated-index/index.json`
 - For temporary sources, cleanup is mandatory and must be verified

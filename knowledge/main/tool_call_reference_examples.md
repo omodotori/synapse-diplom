@@ -17,7 +17,7 @@ can live in knowledge without bloating the default prompt stack.
 {
   "tool_name": "text_editor:read",
   "tool_args": {
-    "path": "/workspace/agent-zero/README.md",
+    "path": "/workspace/synapse/README.md",
     "line_from": 1,
     "line_to": 60
   }

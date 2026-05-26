@@ -232,7 +232,7 @@ Supported actions:
 
 ## Publishing to the Plugin Index
 
-The **Plugin Index** is a community-maintained repository at https://github.com/synapseai/a0-plugins. Plugins listed there are discoverable by all Synapse users.
+The **Plugin Index** is a community-maintained repository at https://github.com/synapseai/synapse-plugins. Plugins listed there are discoverable by all Synapse users.
 
 ### Two Distinct Manifest Files
 
@@ -251,7 +251,7 @@ per_agent_config: false
 always_enabled: false
 ```
 
-**Index manifest** (`index.yaml`, submitted to `a0-plugins` under `plugins/<your_plugin_name>/` — drives discoverability only):
+**Index manifest** (`index.yaml`, submitted to `synapse-plugins` under `plugins/<your_plugin_name>/` — drives discoverability only):
 ```yaml
 title: My Plugin
 description: What this plugin does.
@@ -284,7 +284,7 @@ your-plugin-repo/          ← GitHub repository root
 ### Submission Process
 
 1. Create a GitHub repository with the runtime `plugin.yaml` (including the `name` field) at the repo root.
-2. Fork `https://github.com/synapseai/a0-plugins`.
+2. Fork `https://github.com/synapseai/synapse-plugins`.
 3. Create folder `plugins/<your_plugin_name>/` and add `index.yaml` (the index manifest, not `plugin.yaml`). Optionally add a square thumbnail image (≤ 20 KB, named `thumbnail.png|jpg|webp`).
 4. Open a Pull Request. One PR must add exactly one new plugin folder.
 5. CI validates automatically. A maintainer reviews and merges.
@@ -297,7 +297,7 @@ Submission rules:
 - `title`: max 50 characters
 - `description`: max 500 characters
 - `index.yaml` total: max 2000 characters
-- `tags`: optional, up to 5, see https://github.com/synapseai/a0-plugins/blob/main/TAGS.md
+- `tags`: optional, up to 5, see https://github.com/synapseai/synapse-plugins/blob/main/TAGS.md
 - `screenshots`: optional, up to 5 full image URLs (png/jpg/webp, each ≤ 2 MB)
 
 ### Plugin Hub
@@ -323,8 +323,8 @@ This keeps toasts and notification history consistent. See [Notifications](notif
 ## See Also
 
 - `docs/agents/AGENTS.plugins.md` for full architecture details
-- `skills/a0-plugin-router/SKILL.md` for the primary agent-facing entry point across plugin create/review/manage/contribute/debug tasks
-- `skills/a0-create-plugin/SKILL.md` for direct plugin authoring workflow when the task is specifically to build or extend a plugin
+- `skills/synapse-plugin-router/SKILL.md` for the primary agent-facing entry point across plugin create/review/manage/contribute/debug tasks
+- `skills/synapse-create-plugin/SKILL.md` for direct plugin authoring workflow when the task is specifically to build or extend a plugin
 - `plugins/README.md` for core plugin directory overview
 
 ## Frontend Extension Notes

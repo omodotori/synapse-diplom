@@ -7,18 +7,18 @@ Run one command; the script handles Docker, image pull, and container setup.
 
 **macOS / Linux:**
 ```bash
-curl -fsSL https://bash.agent-zero.ai | bash
+curl -fsSL https://bash.synapse.ai | bash
 ```
 
 **Windows (PowerShell):**
 ```powershell
-irm https://ps.agent-zero.ai | iex
+irm https://ps.synapse.ai | iex
 ```
 
 Follow the CLI prompts for port and authentication, complete onboarding, then open the Web UI URL from the terminal.
 
 > [!TIP]
-> To update later, open **Settings UI → Update tab → Open Self Update** (see [How to Update](setup/installation.md#how-to-update-agent-zero)). Backups are automatically managed internally.
+> To update later, open **Settings UI → Update tab → Open Self Update** (see [How to Update](setup/installation.md#how-to-update-synapse)). Backups are automatically managed internally.
 
 > [!NOTE]
 > For manual Docker Desktop setup, volume mapping, and platform-specific detail, see the [Installation Guide](setup/installation.md#manual-installation-advanced).
@@ -31,12 +31,12 @@ Synapse stays in Docker for safety. The A0 CLI installs and runs on your host ma
 
 **macOS / Linux:**
 ```bash
-curl -LsSf https://raw.githubusercontent.com/synapseai/a0-connector/main/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/synapseai/synapse-connector/main/install.sh | sh
 ```
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/synapseai/a0-connector/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/synapseai/synapse-connector/main/install.ps1 | iex
 ```
 
 Run those on the host machine, not inside the Synapse container.
@@ -49,13 +49,13 @@ a0
 
 Once `a0` connects, open or create a chat there. That is the path that lets Synapse stay in Docker while still working on real local files on your machine.
 
-For the full setup flow, manual fallback install paths, remote-host tips, and a copy-ready brief for another agent, see the [A0 CLI Connector guide](guides/a0-cli-connector.md).
+For the full setup flow, manual fallback install paths, remote-host tips, and a copy-ready brief for another agent, see the [A0 CLI Connector guide](guides/synapse-cli-connector.md).
 
 ### Open the Web UI and configure your API key
 
 Open your browser and navigate to `http://localhost:<PORT>`. The Web UI will show the onboarding banner. Click Start Setup to set your AI models and API key.
 
-![Synapse Web UI](res/setup/6-docker-a0-running-new.png)
+![Synapse Web UI](res/setup/6-docker-synapse-running-new.png)
 
 Click **Add your API key** to open Settings and configure:
 

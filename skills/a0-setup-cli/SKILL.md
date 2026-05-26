@@ -1,9 +1,9 @@
 ---
-name: a0-setup-cli
+name: synapse-setup-cli
 description: Guide the user through installing and connecting the A0 CLI on the host machine so Dockerized Synapse can work on real local files. Use when asked to install A0, set up the CLI connector, connect Synapse to local files, or troubleshoot host-vs-container setup confusion.
 version: 1.1.0
 author: Synapse Team
-tags: ["agent-zero", "a0", "cli", "connector", "docker", "setup", "local-files"]
+tags: ["synapse", "a0", "cli", "connector", "docker", "setup", "local-files"]
 trigger_patterns:
   - "install a0"
   - "install a0 cli"
@@ -39,7 +39,7 @@ If they already tried, diagnose that attempt before repeating instructions.
 
 ### 2. Stop container installs immediately
 
-If the user is inside the Synapse container, `/a0`, `docker exec`, or another sandbox shell, stop and say:
+If the user is inside the Synapse container, `/synapse`, `docker exec`, or another sandbox shell, stop and say:
 
 > `a0` does not get installed inside the Synapse container. Exit to your normal host terminal first. Synapse stays in Docker; `a0` belongs on your machine.
 
@@ -60,13 +60,13 @@ Treat these public installer URLs as placeholders for now. Use them first, but b
 macOS / Linux:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/synapseai/a0-connector/main/install.sh | sh
+curl -LsSf https://raw.githubusercontent.com/synapseai/synapse-connector/main/install.sh | sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-irm https://raw.githubusercontent.com/synapseai/a0-connector/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/synapseai/synapse-connector/main/install.ps1 | iex
 ```
 
 The installer will install `uv` if needed, then run `uv tool install --upgrade <package-spec>` for the CLI.
@@ -78,14 +78,14 @@ If the placeholder installer URL is unavailable, switch to a manual `uv tool ins
 Public Git fallback:
 
 ```bash
-uv tool install --upgrade git+https://github.com/synapseai/a0-connector
+uv tool install --upgrade git+https://github.com/synapseai/synapse-connector
 ```
 
 Local checkout or internal mirror examples:
 
 ```bash
-uv tool install --upgrade /path/to/a0-connector
-uv tool install --upgrade git+ssh://git.example.com/team/a0-connector.git
+uv tool install --upgrade /path/to/synapse-connector
+uv tool install --upgrade git+ssh://git.example.com/team/synapse-connector.git
 ```
 
 If they want to reuse the stock installer with a custom package source, explain that the installer honors `A0_PACKAGE_SPEC`.
@@ -137,7 +137,7 @@ Successful setup looks like this:
 
 ## Troubleshooting
 
-- If the user says they installed inside Docker or shows `/a0` paths, redirect them to the host-machine install.
+- If the user says they installed inside Docker or shows `/synapse` paths, redirect them to the host-machine install.
 - If `a0` gets a connector `404`, explain that the running Synapse build likely does not include the builtin `_a0_connector` support yet and should be updated.
 - If the browser UI works but `a0` does not, remind them the web UI can run without connector support but the CLI cannot.
 - If Docker discovery does not find the instance, have them enter the exact Synapse URL with `host:port`, or create a Flare Tunnel in `Settings > External Services > Flare Tunnel` and paste that HTTPS URL directly.

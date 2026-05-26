@@ -1,5 +1,5 @@
 ---
-name: a0-debug-plugin
+name: synapse-debug-plugin
 description: Diagnose and fix Synapse plugin problems. Covers plugin not appearing, won't enable, API endpoints not responding, frontend store errors, extension point injection, settings resolution, hooks.py issues, and log inspection. Use when a plugin is not working, not loading, crashing, missing from the list, or behaving unexpectedly.
 version: 1.0.0
 tags: ["plugins", "debug", "troubleshoot", "fix", "diagnose", "error", "broken"]
@@ -26,13 +26,13 @@ Work through these checks in order. Stop at the first failure and fix it before 
 
 ```bash
 # Check plugin.yaml exists
-ls /a0/usr/plugins/<name>/plugin.yaml
+ls /synapse/usr/plugins/<name>/plugin.yaml
 
 # Validate YAML
-python3 -c "import yaml; yaml.safe_load(open('/a0/usr/plugins/<name>/plugin.yaml'))"
+python3 -c "import yaml; yaml.safe_load(open('/synapse/usr/plugins/<name>/plugin.yaml'))"
 
 # Check directory name doesn't start with '.'
-ls /a0/usr/plugins/
+ls /synapse/usr/plugins/
 ```
 
 Common causes:
@@ -46,11 +46,11 @@ Common causes:
 
 ```bash
 # Check toggle state
-ls -la /a0/usr/plugins/<name>/.toggle-*
+ls -la /synapse/usr/plugins/<name>/.toggle-*
 
 # Check for conflicting scoped toggles
 ls -la project/.a0proj/plugins/<name>/.toggle-* 2>/dev/null
-ls -la /a0/usr/agents/default/plugins/<name>/.toggle-* 2>/dev/null
+ls -la /synapse/usr/agents/default/plugins/<name>/.toggle-* 2>/dev/null
 ```
 
 ---
@@ -64,7 +64,7 @@ ls -la /a0/usr/agents/default/plugins/<name>/.toggle-* 2>/dev/null
 
 ```bash
 # Check for syntax errors in handler
-python3 -m py_compile /a0/usr/plugins/<name>/api/my_handler.py
+python3 -m py_compile /synapse/usr/plugins/<name>/api/my_handler.py
 ```
 
 ---
@@ -103,7 +103,7 @@ Config resolution order (highest priority first):
 
 ```bash
 # Find which config file is actually being loaded
-find /a0 -path "*/plugins/<name>/config.json" 2>/dev/null
+find /synapse -path "*/plugins/<name>/config.json" 2>/dev/null
 ```
 
 ---
@@ -116,7 +116,7 @@ The `install()` hook is called automatically by the plugin installer after place
 - Manually trigger in the **framework runtime** (not via `code_execution_tool` python - that uses `/opt/venv`, not `/opt/venv-a0`):
 
 ```bash
-cd /a0 && /opt/venv-a0/bin/python -c "
+cd /synapse && /opt/venv-a0/bin/python -c "
 import asyncio
 from helpers.plugins import call_plugin_hook
 asyncio.run(call_plugin_hook('<plugin_name>', 'install'))
@@ -130,7 +130,7 @@ If the `pre_update()` hook is not running before plugin updates:
 - Manually trigger it in the **framework runtime** the same way:
 
 ```bash
-cd /a0 && /opt/venv-a0/bin/python -c "
+cd /synapse && /opt/venv-a0/bin/python -c "
 import asyncio
 from helpers.plugins import call_plugin_hook
 asyncio.run(call_plugin_hook('<plugin_name>', 'pre_update'))
@@ -145,7 +145,7 @@ If the `uninstall()` hook is not running when the plugin is removed:
 - Manually trigger it in the **framework runtime** the same way:
 
 ```bash
-cd /a0 && /opt/venv-a0/bin/python -c "
+cd /synapse && /opt/venv-a0/bin/python -c "
 import asyncio
 from helpers.plugins import call_plugin_hook
 asyncio.run(call_plugin_hook('<plugin_name>', 'uninstall'))
@@ -159,7 +159,7 @@ print('Done')
 
 ```bash
 # Find recent log files
-ls -lt /a0/logs/*.html | head -5
+ls -lt /synapse/logs/*.html | head -5
 ```
 
 Plugin-related errors appear as Python tracebacks mentioning the plugin path.
@@ -183,5 +183,5 @@ Plugins are re-scanned when:
 
 ## References
 
-- Plugin architecture: `/a0/docs/agents/AGENTS.plugins.md`
-- Manage (install/update/uninstall): read `/a0/skills/a0-manage-plugin/SKILL.md`
+- Plugin architecture: `/synapse/docs/agents/AGENTS.plugins.md`
+- Manage (install/update/uninstall): read `/synapse/skills/synapse-manage-plugin/SKILL.md`

@@ -20,5 +20,5 @@ Skills fills that gap as a bundled built-in plugin.
 
 - keep the active list short because every selected skill is injected into prompt extras every turn
 - this plugin enforces the same extras cap as the core `skills_tool`: at most 5 active skills
-- selected skills are stored in normalized `/a0/...` form so configs stay portable across development and Docker-style layouts
+- selected skills are stored in normalized `/synapse/...` form so configs stay portable across development and Docker-style layouts
 - if a configured skill is not visible in the current agent scope, it is skipped quietly instead of breaking the prompt build

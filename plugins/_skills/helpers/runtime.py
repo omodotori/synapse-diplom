@@ -185,7 +185,7 @@ def _normalize_active_skill_entry(item: Any) -> ActiveSkillEntry | None:
 
 def _normalize_skill_path(path: str) -> str:
     fixed = path.strip().replace("\\", "/")
-    if fixed.startswith("/a0/"):
+    if fixed.startswith("/synapse/"):
         return fixed.rstrip("/")
     if fixed.startswith("/"):
         return files.normalize_a0_path(fixed).rstrip("/")

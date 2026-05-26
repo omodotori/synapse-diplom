@@ -1,9 +1,9 @@
 ---
-name: a0-development
+name: synapse-development
 description: Development guide for extending and building features for the Synapse AI framework. Covers architecture, tools, extensions, API endpoints, agent profiles, projects, prompts, and skills — with correct paths, imports, and patterns matching the current codebase.
 version: 1.0.0
 author: Synapse Team
-tags: ["development", "framework", "agent-zero", "extending", "tools", "extensions", "skills", "api", "agents", "prompts"]
+tags: ["development", "framework", "synapse", "extending", "tools", "extensions", "skills", "api", "agents", "prompts"]
 trigger_patterns:
   - "extend synapse"
   - "synapse development"
@@ -36,12 +36,12 @@ This skill provides comprehensive, accurate guidance for extending and building 
 - Create **Skills** (see the dedicated `create-skill` skill for the full wizard)
 - Work with **Projects** and workspace configuration
 
-> **Path convention:** Throughout this guide, `/a0/` refers to the framework root — this is `/a0/` inside Docker, or your local repository root in development. All paths are relative to this root.
+> **Path convention:** Throughout this guide, `/synapse/` refers to the framework root — this is `/synapse/` inside Docker, or your local repository root in development. All paths are relative to this root.
 
 > [!IMPORTANT]
-> **Plugins are the primary way to extend Synapse.** Most new tools, extensions, and prompts should be packaged as plugins. For all plugin tasks (create, review, manage, debug, contribute), load the `a0-plugin-router` skill which routes to the appropriate specialist. This guide covers the underlying framework patterns that plugins build upon.
+> **Plugins are the primary way to extend Synapse.** Most new tools, extensions, and prompts should be packaged as plugins. For all plugin tasks (create, review, manage, debug, contribute), load the `synapse-plugin-router` skill which routes to the appropriate specialist. This guide covers the underlying framework patterns that plugins build upon.
 
-Related skills: `a0-plugin-router` (plugin tasks) | `create-skill` (skill creation wizard) | `a0-create-plugin` | `a0-review-plugin` | `a0-manage-plugin` | `a0-contribute-plugin` | `a0-debug-plugin`
+Related skills: `synapse-plugin-router` (plugin tasks) | `create-skill` (skill creation wizard) | `synapse-create-plugin` | `synapse-review-plugin` | `synapse-manage-plugin` | `synapse-contribute-plugin` | `synapse-debug-plugin`
 
 ---
 
@@ -50,7 +50,7 @@ Related skills: `a0-plugin-router` (plugin tasks) | `create-skill` (skill creati
 ### Project Layout
 
 ```
-/a0/                              # Framework root
+/synapse/                              # Framework root
 ├── agent.py                      # Core Agent + AgentContext + AgentConfig classes
 ├── initialize.py                 # Agent initialization logic
 ├── models.py                     # Model definitions
@@ -109,14 +109,14 @@ Related skills: `a0-plugin-router` (plugin tasks) | `create-skill` (skill creati
 
 ### Key Architecture Patterns
 
-1. **Plugin-first design** — Most capabilities (tools, extensions, prompts) are delivered via plugins in `/a0/plugins/` (core) or `/a0/usr/plugins/` (user).
+1. **Plugin-first design** — Most capabilities (tools, extensions, prompts) are delivered via plugins in `/synapse/plugins/` (core) or `/synapse/usr/plugins/` (user).
 2. **Extensions execute in numeric order** — Files named `_10_*.py`, `_20_*.py`, etc. run sequentially within each hook point.
 3. **Tools inherit from `Tool`** — All tools implement the `execute()` method returning a `Response`.
 4. **Shared `AgentContext`** — Enables state persistence across agents in a conversation.
 5. **Async/await throughout** — All tool execution, extensions, and API handlers are async.
 6. **Prompt fragments compose** — System prompts are assembled from named fragments with includes and variable substitution.
 7. **Profile inheritance** — Agent profiles inherit from `default/` and override specific prompt fragments.
-8. **User-space separation** — Everything under `/a0/usr/` survives framework updates.
+8. **User-space separation** — Everything under `/synapse/usr/` survives framework updates.
 
 ### Agent Loop
 
@@ -146,7 +146,7 @@ from helpers.tool import Tool, Response
 ### Tool Base Class
 
 ```python
-# /a0/helpers/tool.py
+# /synapse/helpers/tool.py
 
 @dataclass
 class Response:
@@ -177,14 +177,14 @@ class Tool:
 
 | Location | Purpose |
 |---|---|
-| `/a0/tools/` | Core framework tools (search, response, call_subordinate, etc.) |
-| `/a0/plugins/<plugin>/tools/` | Plugin-provided tools (code_execution, memory, text_editor) |
-| `/a0/agents/<profile>/tools/` | Profile-specific tool overrides |
-| `/a0/usr/plugins/<plugin>/tools/` | User plugin tools |
+| `/synapse/tools/` | Core framework tools (search, response, call_subordinate, etc.) |
+| `/synapse/plugins/<plugin>/tools/` | Plugin-provided tools (code_execution, memory, text_editor) |
+| `/synapse/agents/<profile>/tools/` | Profile-specific tool overrides |
+| `/synapse/usr/plugins/<plugin>/tools/` | User plugin tools |
 
 ### Example: Creating a Tool
 
-Based on the actual `_example` profile in `/a0/agents/_example/tools/example_tool.py`:
+Based on the actual `_example` profile in `/synapse/agents/_example/tools/example_tool.py`:
 
 ```python
 # my_tool.py
@@ -255,11 +255,11 @@ Where `_NN_` is a numeric prefix controlling execution order (e.g., `_10_`, `_20
 
 | Source | Path |
 |---|---|
-| Core extensions | `/a0/extensions/python/<hook_point>/` |
-| Plugin extensions | `/a0/plugins/<plugin>/extensions/python/<hook_point>/` |
-| User extensions | `/a0/usr/extensions/python/<hook_point>/` |
-| Agent profile extensions | `/a0/agents/<profile>/extensions/<hook_point>/` |
-| User plugin extensions | `/a0/usr/plugins/<plugin>/extensions/python/<hook_point>/` |
+| Core extensions | `/synapse/extensions/python/<hook_point>/` |
+| Plugin extensions | `/synapse/plugins/<plugin>/extensions/python/<hook_point>/` |
+| User extensions | `/synapse/usr/extensions/python/<hook_point>/` |
+| Agent profile extensions | `/synapse/agents/<profile>/extensions/<hook_point>/` |
+| User plugin extensions | `/synapse/usr/plugins/<plugin>/extensions/python/<hook_point>/` |
 
 ### Python Extension Hook Points
 
@@ -343,7 +343,7 @@ Client-side extensions live under `extensions/webui/<hook_point>/`:
 
 ### Example: Creating an Extension
 
-Based on the actual `_example` profile in `/a0/agents/_example/extensions/agent_init/_10_example_extension.py`:
+Based on the actual `_example` profile in `/synapse/agents/_example/extensions/agent_init/_10_example_extension.py`:
 
 ```python
 # extensions/python/agent_init/_15_my_extension.py
@@ -417,9 +417,9 @@ class ApiHandler:
 
 | Location | Purpose |
 |---|---|
-| `/a0/api/` | Core API endpoints |
-| `/a0/plugins/<plugin>/api/` | Plugin API endpoints |
-| `/a0/usr/plugins/<plugin>/api/` | User plugin API endpoints |
+| `/synapse/api/` | Core API endpoints |
+| `/synapse/plugins/<plugin>/api/` | Plugin API endpoints |
+| `/synapse/usr/plugins/<plugin>/api/` | User plugin API endpoints |
 
 Endpoints are auto-discovered by filename. The route is derived from the filename (e.g., `my_endpoint.py` -> `/api/my_endpoint`).
 
@@ -495,8 +495,8 @@ context: Use this agent for software development tasks, including writing code,
 
 | Location | Purpose |
 |---|---|
-| `/a0/agents/` | Core profiles (default, synapse, developer, hacker, researcher) |
-| `/a0/usr/agents/` | User-created profiles (survives updates) |
+| `/synapse/agents/` | Core profiles (default, synapse, developer, hacker, researcher) |
+| `/synapse/usr/agents/` | User-created profiles (survives updates) |
 
 ### Prompt Override Mechanism
 
@@ -507,7 +507,7 @@ The most common override is `agent.system.main.role.md` which defines the agent'
 ### Example: Creating a Profile
 
 ```yaml
-# /a0/usr/agents/data-analyst/agent.yaml
+# /synapse/usr/agents/data-analyst/agent.yaml
 title: Data Analyst
 description: Agent specialized in data analysis, visualization, and statistical modeling.
 context: Use this agent for data analysis tasks, creating visualizations, statistical
@@ -515,7 +515,7 @@ context: Use this agent for data analysis tasks, creating visualizations, statis
 ```
 
 ```markdown
-<!-- /a0/usr/agents/data-analyst/prompts/agent.system.main.role.md -->
+<!-- /synapse/usr/agents/data-analyst/prompts/agent.system.main.role.md -->
 
 ## Your role
 You are a specialized data analysis agent.
@@ -536,11 +536,11 @@ Your expertise includes:
 
 ### Reference: The `_example` Profile
 
-The framework includes a complete example profile at `/a0/agents/_example/` that demonstrates:
-- Custom tool: `/a0/agents/_example/tools/example_tool.py`
-- Custom extension: `/a0/agents/_example/extensions/agent_init/_10_example_extension.py`
-- Tool prompt: `/a0/agents/_example/prompts/agent.system.tool.example_tool.md`
-- Role prompt: `/a0/agents/_example/prompts/agent.system.main.role.md`
+The framework includes a complete example profile at `/synapse/agents/_example/` that demonstrates:
+- Custom tool: `/synapse/agents/_example/tools/example_tool.py`
+- Custom extension: `/synapse/agents/_example/extensions/agent_init/_10_example_extension.py`
+- Tool prompt: `/synapse/agents/_example/prompts/agent.system.tool.example_tool.md`
+- Role prompt: `/synapse/agents/_example/prompts/agent.system.main.role.md`
 
 ---
 
@@ -570,11 +570,11 @@ fw.*.md                         # Framework messages (errors, hints, etc.)
 
 | Location | Priority | Purpose |
 |---|---|---|
-| `/a0/agents/<profile>/prompts/` | Highest | Profile-specific overrides |
-| `/a0/usr/agents/<profile>/prompts/` | High | User profile overrides |
-| `/a0/plugins/<plugin>/prompts/` | Normal | Plugin-provided prompts |
-| `/a0/usr/plugins/<plugin>/prompts/` | Normal | User plugin prompts |
-| `/a0/prompts/` | Base | Core framework prompts |
+| `/synapse/agents/<profile>/prompts/` | Highest | Profile-specific overrides |
+| `/synapse/usr/agents/<profile>/prompts/` | High | User profile overrides |
+| `/synapse/plugins/<plugin>/prompts/` | Normal | Plugin-provided prompts |
+| `/synapse/usr/plugins/<plugin>/prompts/` | Normal | User plugin prompts |
+| `/synapse/prompts/` | Base | Core framework prompts |
 
 The framework searches directories in priority order and uses the **first match** found.
 
@@ -619,8 +619,8 @@ Skills are reusable instruction bundles that the agent loads on demand via the `
 
 | Location | Purpose |
 |---|---|
-| `/a0/skills/` | Core skills (shipped with framework) |
-| `/a0/usr/skills/` | User-created skills (survives updates) |
+| `/synapse/skills/` | Core skills (shipped with framework) |
+| `/synapse/usr/skills/` | User-created skills (survives updates) |
 
 The agent interacts with skills through JSON tool calls:
 
@@ -642,7 +642,7 @@ Projects provide isolated workspaces with custom configuration.
 ### Project Structure
 
 ```
-/a0/usr/projects/<project-name>/
+/synapse/usr/projects/<project-name>/
 +-- .a0proj/
 |   +-- project.json          # Project configuration
 |   +-- agents.json           # Per-project agent overrides
@@ -692,11 +692,11 @@ Projects provide isolated workspaces with custom configuration.
 
 Plugins are the **primary extension mechanism** in Synapse. A plugin can bundle tools, extensions, prompts, API endpoints, helpers, and UI components into a self-contained package.
 
-> For all plugin tasks — creating, reviewing, managing, contributing, or debugging plugins — load the `a0-plugin-router` skill, which routes to the appropriate specialist skill.
+> For all plugin tasks — creating, reviewing, managing, contributing, or debugging plugins — load the `synapse-plugin-router` skill, which routes to the appropriate specialist skill.
 
 ### Core Plugins
 
-The framework ships with these core plugins in `/a0/plugins/`:
+The framework ships with these core plugins in `/synapse/plugins/`:
 
 | Plugin | Purpose |
 |---|---|
@@ -789,10 +789,10 @@ When building features for Synapse:
 
 ### 2. Develop in User Space
 
-- New plugins -> `/a0/usr/plugins/<name>/`
-- New profiles -> `/a0/usr/agents/<name>/`
-- New skills -> `/a0/usr/skills/<name>/`
-- New extensions -> `/a0/usr/extensions/python/<hook_point>/`
+- New plugins -> `/synapse/usr/plugins/<name>/`
+- New profiles -> `/synapse/usr/agents/<name>/`
+- New skills -> `/synapse/usr/skills/<name>/`
+- New extensions -> `/synapse/usr/extensions/python/<hook_point>/`
 
 ### 3. Test and Iterate
 
@@ -803,24 +803,24 @@ When building features for Synapse:
 
 ### 4. Contributing
 
-For contribution guidelines, see `/a0/docs/contribution.md`. For plugin contributions to the community Plugin Index, load the `a0-contribute-plugin` skill.
+For contribution guidelines, see `/synapse/docs/contribution.md`. For plugin contributions to the community Plugin Index, load the `synapse-contribute-plugin` skill.
 
 ---
 
 ## Best Practices
 
 ### DO
-- Use the **plugin system** for new features (see `a0-create-plugin` skill)
+- Use the **plugin system** for new features (see `synapse-create-plugin` skill)
 - Follow existing code patterns and conventions
 - Write clear docstrings and comments
 - Handle errors gracefully in tools and extensions
 - Create prompt fragments for every tool (`agent.system.tool.<name>.md`)
-- Develop in `/a0/usr/` directories to survive updates
+- Develop in `/synapse/usr/` directories to survive updates
 - Test with the `_example` profile as a reference
 - Use `from helpers.*` imports (not `from python.helpers.*`)
 
 ### DON'T
-- Modify files in `/a0/plugins/` or `/a0/tools/` directly (use usr/ space)
+- Modify files in `/synapse/plugins/` or `/synapse/tools/` directly (use usr/ space)
 - Hardcode paths or configuration values
 - Skip creating prompt files for tools
 - Ignore the plugin system (it's the intended extension mechanism)
@@ -833,12 +833,12 @@ For contribution guidelines, see `/a0/docs/contribution.md`. For plugin contribu
 
 | File | Purpose |
 |---|---|
-| `/a0/agent.py` | Core `Agent`, `AgentContext`, `AgentConfig` classes |
-| `/a0/helpers/tool.py` | `Tool` + `Response` base classes |
-| `/a0/helpers/extension.py` | `Extension` base + `@extensible` decorator |
-| `/a0/helpers/api.py` | `ApiHandler` base class |
-| `/a0/helpers/files.py` | File ops + prompt reading |
-| `/a0/helpers/plugins.py` | Plugin system manager |
-| `/a0/helpers/print_style.py` | Console output formatting |
-| `/a0/agents/_example/` | Reference example profile with tool + extension |
-| `/a0/prompts/agent.system.main.md` | Main system prompt entry point |
+| `/synapse/agent.py` | Core `Agent`, `AgentContext`, `AgentConfig` classes |
+| `/synapse/helpers/tool.py` | `Tool` + `Response` base classes |
+| `/synapse/helpers/extension.py` | `Extension` base + `@extensible` decorator |
+| `/synapse/helpers/api.py` | `ApiHandler` base class |
+| `/synapse/helpers/files.py` | File ops + prompt reading |
+| `/synapse/helpers/plugins.py` | Plugin system manager |
+| `/synapse/helpers/print_style.py` | Console output formatting |
+| `/synapse/agents/_example/` | Reference example profile with tool + extension |
+| `/synapse/prompts/agent.system.main.md` | Main system prompt entry point |

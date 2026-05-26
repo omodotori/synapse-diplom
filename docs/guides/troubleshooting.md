@@ -3,7 +3,7 @@ This page addresses frequently asked questions (FAQ) and provides troubleshootin
 
 ## Frequently Asked Questions
 **1. How do I ask Synapse to work directly on my files or dirs?**
-- Place the files/dirs in `/a0/usr`. Synapse will be able to perform tasks on them.
+- Place the files/dirs in `/synapse/usr`. Synapse will be able to perform tasks on them.
 
 **2. When I input something in the chat, nothing happens. What's wrong?**
 - Check if you have set up API keys in the Settings page. If not, the application cannot call LLM providers.
@@ -15,7 +15,7 @@ This page addresses frequently asked questions (FAQ) and provides troubleshootin
 - No. ChatGPT Plus does not include API credits. You must provide an OpenAI API key in Settings.
 
 **5. Where is chat history stored?**
-- Chat history lives at `/a0/usr/chats/` inside the container.
+- Chat history lives at `/synapse/usr/chats/` inside the container.
 
 **6. How do I integrate open-source models with Synapse?**
 Refer to the [Choosing your LLMs](../setup/installation.md#installing-and-using-ollama-local-models) section for configuring local models (Ollama, LM Studio, etc.).
@@ -24,16 +24,16 @@ Refer to the [Choosing your LLMs](../setup/installation.md#installing-and-using-
 > Some LLM providers offer free usage tiers, for example Groq, Mistral, SambaNova, or CometAPI.
 
 **7. How can I make Synapse retain memory between sessions?**
-Use **Settings → Backup & Restore** and avoid mapping the entire `/a0` directory. See [How to update Synapse](../setup/installation.md#how-to-update-agent-zero).
+Use **Settings → Backup & Restore** and avoid mapping the entire `/synapse` directory. See [How to update Synapse](../setup/installation.md#how-to-update-synapse).
 
 **8. My browser agent fails or says Playwright is missing. What now?**
-The built-in Browser Agent is a plugin that uses the Main Model from `_model_config`. **Docker:** the Chromium headless shell is shipped preinstalled (typically under `/a0/tmp/playwright`). **Local development:** if the binary is missing, `ensure_playwright_binary()` in `plugins/_browser_agent/helpers/playwright.py` runs `playwright install chromium --only-shell` into `tmp/playwright` on first Browser Agent use (you may see UI notifications). To install ahead of time, run `PLAYWRIGHT_BROWSERS_PATH=tmp/playwright playwright install chromium --only-shell` after `pip install -r requirements.txt`. If you prefer an external browser stack, use MCP alternatives such as Browser OS, Chrome DevTools, or Playwright MCP. See [MCP Setup](mcp-setup.md).
+The built-in Browser Agent is a plugin that uses the Main Model from `_model_config`. **Docker:** the Chromium headless shell is shipped preinstalled (typically under `/synapse/tmp/playwright`). **Local development:** if the binary is missing, `ensure_playwright_binary()` in `plugins/_browser_agent/helpers/playwright.py` runs `playwright install chromium --only-shell` into `tmp/playwright` on first Browser Agent use (you may see UI notifications). To install ahead of time, run `PLAYWRIGHT_BROWSERS_PATH=tmp/playwright playwright install chromium --only-shell` after `pip install -r requirements.txt`. If you prefer an external browser stack, use MCP alternatives such as Browser OS, Chrome DevTools, or Playwright MCP. See [MCP Setup](mcp-setup.md).
 
 **9. My secrets disappeared after a backup restore.**
-Secrets are stored in `/a0/usr/secrets.env` and are not always included in backup archives. Copy them manually.
+Secrets are stored in `/synapse/usr/secrets.env` and are not always included in backup archives. Copy them manually.
 
 **10. Where can I find more documentation or tutorials?**
-- Join the Synapse [Skool](https://www.skool.com/agent-zero) or [Discord](https://discord.gg/B8KZKNsPpj) community.
+- Join the Synapse [Skool](https://www.skool.com/synapse) or [Discord](https://discord.gg/B8KZKNsPpj) community.
 
 **11. How do I adjust API rate limits?**
 Use the model rate limit fields in Settings (Main Model and Utility Model sections) to set request/input/output limits. The Browser Agent inherits the Main Model limits. These map to the model config limits (for example `limit_requests`, `limit_input`, `limit_output`).
@@ -75,7 +75,7 @@ Queue an update for the next startup attempt with the recovery script in `/exe`:
 /exe/trigger_self_update.sh
 ```
 
-That default command writes `/exe/a0-self-update.yaml` with `main` and `latest`, so the next startup tries the newest release in the current installed major version. You can also specify the branch, version, and backup settings:
+That default command writes `/exe/synapse-self-update.yaml` with `main` and `latest`, so the next startup tries the newest release in the current installed major version. You can also specify the branch, version, and backup settings:
 
 ```bash
 /exe/trigger_self_update.sh ready latest
@@ -88,11 +88,11 @@ You can run the same commands directly from the host without opening a shell:
 ```bash
 docker exec -it <container> /exe/trigger_self_update.sh
 docker exec -it <container> /exe/trigger_self_update.sh ready latest
-docker exec -it <container> tail -n 200 /exe/a0-self-update.log
-docker exec -it <container> cat /exe/a0-self-update-status.yaml
+docker exec -it <container> tail -n 200 /exe/synapse-self-update.log
+docker exec -it <container> cat /exe/synapse-self-update-status.yaml
 ```
 
-The recovery command only schedules the update. Restart the container or let Synapse start again, then check `/exe/a0-self-update.log` and `/exe/a0-self-update-status.yaml` to see what happened.
+The recovery command only schedules the update. Restart the container or let Synapse start again, then check `/exe/synapse-self-update.log` and `/exe/synapse-self-update-status.yaml` to see what happened.
 
 * **Error Messages:** Pay close attention to the error messages displayed in the Web UI or terminal.  They often provide valuable clues for diagnosing the issue. Refer to the specific error message in online searches or community forums for potential solutions.
 

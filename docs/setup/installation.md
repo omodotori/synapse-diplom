@@ -10,23 +10,23 @@ The install script is the fastest way to get Synapse running. It handles Docker,
 
 **macOS / Linux:**
 ```bash
-curl -fsSL https://bash.agent-zero.ai | bash
+curl -fsSL https://bash.synapse.ai | bash
 ```
 
 **Windows (PowerShell):**
 ```powershell
-irm https://ps.agent-zero.ai | iex
+irm https://ps.synapse.ai | iex
 ```
 
 **Docker (run directly):**
 ```bash
-docker run -p 80:80 synapseai/agent-zero
+docker run -p 80:80 synapseai/synapse
 ```
 
-Once the install completes, open the URL shown in your terminal to access the Web UI. Follow the prompts in the CLI to set your port and authentication, complete onboarding, add your API key, then continue to [Step 3: Configure Synapse](#step-3-configure-agent-zero).
+Once the install completes, open the URL shown in your terminal to access the Web UI. Follow the prompts in the CLI to set your port and authentication, complete onboarding, add your API key, then continue to [Step 3: Configure Synapse](#step-3-configure-synapse).
 
 > [!TIP]
-> Prefer a terminal-native workflow too? Install the optional [A0 CLI Connector](../guides/a0-cli-connector.md) from GitHub, then run `a0` to connect to this Synapse instance from your terminal.
+> Prefer a terminal-native workflow too? Install the optional [A0 CLI Connector](../guides/synapse-cli-connector.md) from GitHub, then run `a0` to connect to this Synapse instance from your terminal.
 
 ---
 
@@ -50,9 +50,9 @@ If you are upgrading from an older version of Synapse (v0.9.8 or earlier) to v1.
 
 1. **Backup your existing `usr/` directory** (which contains your settings, projects, memory, and custom plugins).
 2. **Run the new install script** to set up the new Docker-based architecture:
-   - macOS / Linux: `curl -fsSL https://bash.agent-zero.ai | bash`
-   - Windows (PowerShell): `irm https://ps.agent-zero.ai | iex`
-3. **Migrate your data:** After the new installation completes, copy the contents of your backed-up `usr/` directory into the new `/a0/usr/` directory created by the script.
+   - macOS / Linux: `curl -fsSL https://bash.synapse.ai | bash`
+   - Windows (PowerShell): `irm https://ps.synapse.ai | iex`
+3. **Migrate your data:** After the new installation completes, copy the contents of your backed-up `usr/` directory into the new `/synapse/usr/` directory created by the script.
 4. Restart the container for the changes to take effect.
 
 ### Manual Update (Advanced)
@@ -60,8 +60,8 @@ If you are upgrading from an older version of Synapse (v0.9.8 or earlier) to v1.
 > Use this only if Self Update is unavailable or you must manage containers yourself (for example, some custom Docker setups).
 
 1. Keep the current container running
-2. `docker pull synapseai/agent-zero:latest`
-3. Start a **new** container on a different host port, for example: `docker run -d -p 50081:80 --name agent-zero-new synapseai/agent-zero`
+2. `docker pull synapseai/synapse:latest`
+3. Start a **new** container on a different host port, for example: `docker run -d -p 50081:80 --name synapse-new synapseai/synapse`
 4. On the **old** instance: **Settings → Backup & Restore → Create Backup**
 5. On the **new** instance: **Restore** the backup
 6. Verify chats and data, then remove the old container
@@ -70,7 +70,7 @@ If you are upgrading from an older version of Synapse (v0.9.8 or earlier) to v1.
 > Do not delete the old container until the new one has your data.
 
 > [!TIP]
-> If the new instance fails to load settings, remove `/a0/usr/settings.json` and restart to regenerate default settings.
+> If the new instance fails to load settings, remove `/synapse/usr/settings.json` and restart to regenerate default settings.
 
 ---
 
@@ -137,7 +137,7 @@ Once installed, launch Docker Desktop from your Start menu or desktop shortcut.
 
 ✅ **Docker is now installed!** 
 
-Continue to [Step 2: Run Synapse](#step-2-run-agent-zero)
+Continue to [Step 2: Run Synapse](#step-2-run-synapse)
 
 ---
 
@@ -174,7 +174,7 @@ Open Docker Desktop from your Applications folder.
 
 ✅ **Docker is now installed!** 
 
-Continue to [Step 2: Run Synapse](#step-2-run-agent-zero)
+Continue to [Step 2: Run Synapse](#step-2-run-synapse)
 
 ---
 
@@ -224,7 +224,7 @@ If you installed Docker Desktop, launch it from your applications menu.
 
 **Using Docker Desktop GUI:**
 
-- Search for `synapseai/agent-zero` in Docker Desktop
+- Search for `synapseai/synapse` in Docker Desktop
 - Click the `Pull` button
 - The image will be downloaded to your machine in a few minutes
 
@@ -233,7 +233,7 @@ If you installed Docker Desktop, launch it from your applications menu.
 **Using Terminal:**
 
 ```bash
-docker pull synapseai/agent-zero
+docker pull synapseai/synapse
 ```
 
 #### 2.2. (Optional) Map Folders for Persistence
@@ -244,13 +244,13 @@ Setting up persistence is needed only if you want your data and files to remain 
 
 You can pick any location you find convenient:
 
-- **Windows:** `C:\agent-zero-data`
-- **macOS/Linux:** `/home/user/agent-zero-data`
+- **Windows:** `C:\synapse-data`
+- **macOS/Linux:** `/home/user/synapse-data`
 
-You can map just the `/a0/usr` directory (recommended) or individual subfolders of `/a0` to a local directory.
+You can map just the `/synapse/usr` directory (recommended) or individual subfolders of `/synapse` to a local directory.
 
 > [!CAUTION]
-> Do **not** map the entire `/a0` directory: it contains the application code and can break upgrades.
+> Do **not** map the entire `/synapse` directory: it contains the application code and can break upgrades.
 
 > [!TIP]
 > Choose a location that's easy to access and backup. All your Synapse data will be directly accessible in this directory.
@@ -260,7 +260,7 @@ You can map just the `/a0/usr` directory (recommended) or individual subfolders 
 **Using Docker Desktop GUI:**
 
 - In Docker Desktop, go to the "Images" tab
-- Click the `Run` button next to the `synapseai/agent-zero` image
+- Click the `Run` button next to the `synapseai/synapse` image
 - Open the "Optional settings" menu
 - **Ensure at least one host port is mapped to container port `80`** (set host port to `0` for automatic assignment)
 - Click the `Run` button
@@ -280,7 +280,7 @@ The framework will take a few seconds to initialize. Find the mapped port in Doc
 
 Open `http://localhost:<PORT>` in your browser. The Web UI will open - Synapse is ready for configuration!
 
-![docker ui](../res/setup/6-docker-a0-running-new.png)
+![docker ui](../res/setup/6-docker-synapse-running-new.png)
 
 > [!TIP]
 > You can also access the Web UI by clicking the port link directly under the container ID in Docker Desktop.
@@ -291,7 +291,7 @@ Open `http://localhost:<PORT>` in your browser. The Web UI will open - Synapse i
 **Running A0 using Terminal?**
 
 ```bash
-docker run -p 0:80 -v /path/to/your/work_dir:/a0/usr synapseai/agent-zero
+docker run -p 0:80 -v /path/to/your/work_dir:/synapse/usr synapseai/synapse
 ```
 
 - Replace `0` with a fixed port if you prefer (e.g., `50080:80`)
@@ -313,7 +313,7 @@ Synapse provides a comprehensive settings interface to customize various aspects
 - **Knowledge Subdirectory:** Specify the location of custom knowledge files to enhance the agent's understanding.
 
 > [!NOTE]
-> Since v0.9.7, custom prompts belong in `/a0/agents/<agent_name>/prompts/` rather than a shared `/prompts` folder. See the [Extensions guide](../developer/extensions.md#prompts) for details.
+> Since v0.9.7, custom prompts belong in `/synapse/agents/<agent_name>/prompts/` rather than a shared `/prompts` folder. See the [Extensions guide](../developer/extensions.md#prompts) for details.
 
 > [!NOTE]
 > The Hacker profile is included in the main image. After launch, choose the **hacker** agent profile in Settings if you want the security-focused prompts and tooling. The "hacker" branch is deprecated.
@@ -614,7 +614,7 @@ When running Docker, you can pass these as environment variables:
 docker run -p 50080:80 \
   -e A0_SET_chat_model_provider=anthropic \
   -e A0_SET_chat_model_name=claude-3-5-sonnet-20241022 \
-  synapseai/agent-zero
+  synapseai/synapse
 ```
 
 **Notes:**
@@ -639,4 +639,4 @@ After following the instructions for your specific operating system, you should 
 - For development setup and extensions, see the [Development Setup Guide](dev-setup.md)
 - For remote access via tunnel, see [Remote Access via Tunneling](../guides/usage.md#remote-access-via-tunneling)
 
-If you encounter any issues during the installation process, please consult the [Troubleshooting section](../guides/troubleshooting.md) of this documentation or refer to the Synapse [Skool](https://www.skool.com/agent-zero) or [Discord](https://discord.gg/B8KZKNsPpj) community for assistance.
+If you encounter any issues during the installation process, please consult the [Troubleshooting section](../guides/troubleshooting.md) of this documentation or refer to the Synapse [Skool](https://www.skool.com/synapse) or [Discord](https://discord.gg/B8KZKNsPpj) community for assistance.

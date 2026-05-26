@@ -8,7 +8,7 @@ This tutorial will guide you through creating, configuring, and using projects e
 
 A project in Synapse is an isolated workspace that includes:
 
-- **Dedicated folder structure** under `/a0/usr/projects/<project_name>/`
+- **Dedicated folder structure** under `/synapse/usr/projects/<project_name>/`
 - **Custom instructions** automatically injected into the agent's system prompt
 - **Isolated or shared memory** to prevent context pollution
 - **Project-specific secrets and variables** for secure credential management
@@ -66,7 +66,7 @@ Synapse's **Git Projects** feature allows you to clone repositories directly int
 ![Git Clone Progress](../res/usage/projects/projects-gitprojects-clone.png)
 
 The cloning process:
-- Downloads the repository to `/a0/usr/projects/<project_name>/`
+- Downloads the repository to `/synapse/usr/projects/<project_name>/`
 - By default, clones the `main` branch
 - Supports authentication via token (stored securely, never in URLs)
 - You can ask the agent to checkout different branches later
@@ -301,7 +301,7 @@ The agent will understand the context based on the project's instructions and wo
 Understanding the project directory structure helps you work effectively:
 
 ```
-/a0/usr/projects/<project_name>/
+/synapse/usr/projects/<project_name>/
 ├── .a0proj/                    # Project metadata (hidden)
 │   ├── project.json            # Main configuration
 │   ├── variables.env           # Non-sensitive variables

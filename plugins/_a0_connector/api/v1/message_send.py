@@ -41,7 +41,7 @@ class MessageSend(connector_base.ProtectedConnectorApiHandler):
         attachment_paths: list[str] = []
         if isinstance(attachments_data, list) and attachments_data:
             upload_folder_ext = files.get_abs_path("usr/uploads")
-            upload_folder_int = "/a0/usr/uploads"
+            upload_folder_int = "/synapse/usr/uploads"
             os.makedirs(upload_folder_ext, exist_ok=True)
 
             for attachment in attachments_data:
@@ -61,7 +61,7 @@ class MessageSend(connector_base.ProtectedConnectorApiHandler):
                         handle.write(base64.b64decode(b64_content))
                     attachment_paths.append(os.path.join(upload_folder_int, safe_name))
                 except Exception as exc:
-                    PrintStyle.error(f"[a0-connector] attachment error: {exc}")
+                    PrintStyle.error(f"[synapse-connector] attachment error: {exc}")
 
         try:
             if context_id:
@@ -112,7 +112,7 @@ class MessageSend(connector_base.ProtectedConnectorApiHandler):
                 "response": result,
             }
         except Exception as exc:
-            PrintStyle.error(f"[a0-connector] message_send error: {exc}")
+            PrintStyle.error(f"[synapse-connector] message_send error: {exc}")
             return Response(
                 response=f'{{"error": "{str(exc)}"}}',
                 status=500,

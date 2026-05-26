@@ -1,6 +1,6 @@
 # Plugin Review Checklists
 
-Reference material for `a0-review-plugin`. Read specific sections as needed during the review.
+Reference material for `synapse-review-plugin`. Read specific sections as needed during the review.
 
 ---
 
@@ -314,7 +314,7 @@ always_enabled: false        # optional, framework use only
 
 ## Community Index: What CI Checks
 
-When submitting to https://github.com/synapseai/a0-plugins, CI validates:
+When submitting to https://github.com/synapseai/synapse-plugins, CI validates:
 
 **`index.yaml`** (in the index repo, NOT `plugin.yaml`):
 - Fields: `title` (max 50), `description` (max 500), `github` (required), `tags` (optional, max 5), `screenshots` (optional, max 5 URLs)

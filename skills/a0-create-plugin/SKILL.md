@@ -1,5 +1,5 @@
 ---
-name: a0-create-plugin
+name: synapse-create-plugin
 description: Create, extend, or modify Synapse plugins. Follows strict full-stack conventions (usr/plugins, plugin.yaml, Store Gating, AgentContext, plugin settings). Use for UI hooks, API handlers, lifecycle extensions, or plugin settings UI.
 version: 1.0.0
 tags: ["plugins", "create", "build", "develop", "extend"]
@@ -15,16 +15,16 @@ trigger_patterns:
 # Synapse Plugin Development
 
 > [!IMPORTANT]
-> Always create new plugins in `/a0/usr/plugins/<plugin_name>/`. The `/a0/plugins/` directory is reserved for core system plugins.
+> Always create new plugins in `/synapse/usr/plugins/<plugin_name>/`. The `/synapse/plugins/` directory is reserved for core system plugins.
 
-Related skills: `/a0/skills/a0-review-plugin/SKILL.md` | `/a0/skills/a0-contribute-plugin/SKILL.md` | `/a0/skills/a0-manage-plugin/SKILL.md`
+Related skills: `/synapse/skills/synapse-review-plugin/SKILL.md` | `/synapse/skills/synapse-contribute-plugin/SKILL.md` | `/synapse/skills/synapse-manage-plugin/SKILL.md`
 
 Primary references:
-- /a0/AGENTS.md (Full-stack architecture & AgentContext)
-- /a0/docs/agents/AGENTS.components.md (Component system deep dive)
-- /a0/docs/agents/AGENTS.modals.md (Modal system & CSS conventions)
-- /a0/docs/agents/AGENTS.plugins.md (Extension points, plugin.yaml, settings system, Plugin Index)
-- /a0/docs/developer/plugins.md (Developer lifecycle and publishing)
+- /synapse/AGENTS.md (Full-stack architecture & AgentContext)
+- /synapse/docs/agents/AGENTS.components.md (Component system deep dive)
+- /synapse/docs/agents/AGENTS.modals.md (Modal system & CSS conventions)
+- /synapse/docs/agents/AGENTS.plugins.md (Extension points, plugin.yaml, settings system, Plugin Index)
+- /synapse/docs/developer/plugins.md (Developer lifecycle and publishing)
 
 ---
 
@@ -34,8 +34,8 @@ Before starting, ask the user one question:
 
 > "Should this plugin be **local only** (stays in your Synapse installation) or a **community plugin** (published to the Plugin Index so others can install it)?"
 
-- **Local plugin**: Create it in `/a0/usr/plugins/<plugin_name>/`. No repository needed. Skip to the manifest section below.
-- **Community plugin**: The plugin must live in its own GitHub repository (runtime manifest at the repo root), and then a separate index submission PR is made to https://github.com/synapseai/a0-plugins. Guide the user through both steps.
+- **Local plugin**: Create it in `/synapse/usr/plugins/<plugin_name>/`. No repository needed. Skip to the manifest section below.
+- **Community plugin**: The plugin must live in its own GitHub repository (runtime manifest at the repo root), and then a separate index submission PR is made to https://github.com/synapseai/synapse-plugins. Guide the user through both steps.
 
 ---
 
@@ -102,7 +102,7 @@ Do **not** show errors or success via inline boxes (e.g. a red `<div>` bound to 
 - **Success**: `toastFrontendSuccess(message, "My Plugin")`
 - **Warnings/Info**: `toastFrontendWarning`, `toastFrontendInfo` from `/components/notifications/notification-store.js`
 
-Import and call from your store; do not render a dedicated error/success block in the template. See [Notifications](/a0/docs/developer/notifications.md) for the full API.
+Import and call from your store; do not render a dedicated error/success block in the template. See [Notifications](/synapse/docs/developer/notifications.md) for the full API.
 
 ---
 
@@ -180,7 +180,7 @@ save_plugin_config(
 
 ## Directory Layout
 ```
-/a0/usr/plugins/<name>/
+/synapse/usr/plugins/<name>/
   plugin.yaml           # Required manifest
   execute.py            # Optional user-triggered setup, post-install, or maintenance script
   hooks.py              # Optional framework runtime hook functions
@@ -333,7 +333,7 @@ Help the user create this repository and push the plugin files to it.
 
 ### 2. Index manifest (different from runtime manifest)
 
-The Plugin Index (`https://github.com/synapseai/a0-plugins`) uses a **separate `index.yaml`** file that only describes discoverability — it is NOT the same as the runtime `plugin.yaml` and has a different schema:
+The Plugin Index (`https://github.com/synapseai/synapse-plugins`) uses a **separate `index.yaml`** file that only describes discoverability — it is NOT the same as the runtime `plugin.yaml` and has a different schema:
 
 ```yaml
 title: My Plugin
@@ -347,13 +347,13 @@ screenshots:                # optional, up to 5 full image URLs
 ```
 
 Required fields: `title`, `description`, `github`. Optional: `tags` (up to 5), `screenshots` (up to 5 URLs).
-See the recommended tag list at https://github.com/synapseai/a0-plugins/blob/main/TAGS.md.
+See the recommended tag list at https://github.com/synapseai/synapse-plugins/blob/main/TAGS.md.
 
 > Important: CI also checks that your remote `plugin.yaml` contains a `name` field matching the index folder name exactly.
 
 ### 3. Submission steps
 
-1. Fork `https://github.com/synapseai/a0-plugins`.
+1. Fork `https://github.com/synapseai/synapse-plugins`.
 2. Create the folder `plugins/<your_plugin_name>/` in the fork.
    - Folder name: lowercase letters, numbers, underscores only (`^[a-z0-9_]+$`) - no hyphens
    - Must exactly match the `name` field in your remote `plugin.yaml`
@@ -367,12 +367,12 @@ Submission constraints:
 - `title` max 50 characters, `description` max 500 characters
 - `index.yaml` max 2000 characters total
 
-For a fully guided contribution flow (including git operations), read `/a0/skills/a0-contribute-plugin/SKILL.md`.
+For a fully guided contribution flow (including git operations), read `/synapse/skills/synapse-contribute-plugin/SKILL.md`.
 
 ---
 
 ## Plugin Index & Plugin Hub
 
-The **Plugin Index** is the community hub at https://github.com/synapseai/a0-plugins.
+The **Plugin Index** is the community hub at https://github.com/synapseai/synapse-plugins.
 
 Synapse now exposes indexed plugins through the built-in **Plugin Hub**. Users can open it from the **Plugins** dialog either through the **Browse** tab or through the **Install** button, then inspect plugin details and install directly from the UI.

@@ -41,7 +41,7 @@ class BackupService:
         include_patterns, exclude_patterns = self._parse_patterns(default_patterns)
 
         return {
-            "backup_name": f"agent-zero-backup-{timestamp[:10]}",
+            "backup_name": f"synapse-backup-{timestamp[:10]}",
             "include_hidden": True,
             "include_patterns": include_patterns,
             "exclude_patterns": exclude_patterns,
@@ -329,7 +329,7 @@ class BackupService:
         include_patterns: List[str],
         exclude_patterns: List[str],
         include_hidden: bool = True,
-        backup_name: str = "agent-zero-backup"
+        backup_name: str = "synapse-backup"
     ) -> str:
         """Create backup archive and return path to created file"""
 
@@ -519,7 +519,7 @@ class BackupService:
                     target_path = self._translate_restore_path(archive_path, original_backup_metadata)
 
                     # For pattern matching, we need to use the translated path (current system)
-                    # so that patterns like "/home/rafael/a0/data/**" can match files correctly
+                    # so that patterns like "/home/rafael/synapse/data/**" can match files correctly
                     translated_path_for_matching = target_path.lstrip('/')
 
                     # Check if file matches restore patterns
@@ -675,7 +675,7 @@ class BackupService:
                     target_path = self._translate_restore_path(archive_path, original_backup_metadata)
 
                     # For pattern matching, we need to use the translated path (current system)
-                    # so that patterns like "/home/rafael/a0/data/**" can match files correctly
+                    # so that patterns like "/home/rafael/synapse/data/**" can match files correctly
                     translated_path_for_matching = target_path.lstrip('/')
 
                     # Check if file matches restore patterns

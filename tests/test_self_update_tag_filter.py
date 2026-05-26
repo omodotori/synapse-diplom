@@ -575,7 +575,7 @@ def test_self_update_modal_uses_standard_select_and_manual_backup():
     assert "formatReleaseTimestamp($store.selfUpdateStore.mainBranchLatestReleasedAt)" in content
     assert "Latest version" in content
     assert "Docker update guide" in content
-    assert "https://www.agent-zero.ai/p/docs/get-started/" in content
+    assert "https://www.synapse.ai/p/docs/get-started/" in content
     assert "Version numbers use the format <code>vMAJOR.MINOR</code>" in content
     assert "requires a newer" in content
     assert "Docker image." in content
@@ -622,7 +622,7 @@ def test_self_update_recovery_script_and_docs_are_present():
     assert 'trigger-update "$@"' in script_content
     assert "/exe/trigger_self_update.sh" in docs_content
     assert "docker exec -it <container>" in docs_content
-    assert "/exe/a0-self-update.log" in docs_content
+    assert "/exe/synapse-self-update.log" in docs_content
     assert "reload the current browser window" in docs_content
     assert "main` and `latest`" in docs_content
     assert "/exe/trigger_self_update.sh" in dockerfile_content
@@ -760,13 +760,13 @@ def test_self_update_manager_latest_on_main_uses_current_major_release(monkeypat
     monkeypatch.setattr(
         manager,
         "fetch_branch_refs",
-        lambda repo_dir, branch, logger: "refs/remotes/a0-self-update/main",
+        lambda repo_dir, branch, logger: "refs/remotes/synapse-self-update/main",
     )
     monkeypatch.setattr(
         manager,
         "git_output",
         lambda repo_dir, *args: {
-            ("tag", "--merged", "refs/remotes/a0-self-update/main"): "v2.0\nv1.4\nv1.2\n",
+            ("tag", "--merged", "refs/remotes/synapse-self-update/main"): "v2.0\nv1.4\nv1.2\n",
             ("rev-parse", "refs/tags/v1.4^{commit}"): "deadbeef1234",
         }[args],
     )
@@ -872,14 +872,14 @@ def test_self_update_manager_latest_on_non_main_rejects_cross_major(monkeypatch)
     monkeypatch.setattr(
         manager,
         "fetch_branch_refs",
-        lambda repo_dir, branch, logger: "refs/remotes/a0-self-update/development",
+        lambda repo_dir, branch, logger: "refs/remotes/synapse-self-update/development",
     )
     monkeypatch.setattr(
         manager,
         "git_output",
         lambda repo_dir, *args: {
-            ("describe", "--tags", "--always", "refs/remotes/a0-self-update/development"): "v2.0-3-gabc1234",
-            ("rev-parse", "refs/remotes/a0-self-update/development"): "abc123456789",
+            ("describe", "--tags", "--always", "refs/remotes/synapse-self-update/development"): "v2.0-3-gabc1234",
+            ("rev-parse", "refs/remotes/synapse-self-update/development"): "abc123456789",
         }[args],
     )
 

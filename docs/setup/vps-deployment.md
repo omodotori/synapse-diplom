@@ -11,7 +11,7 @@
 
 1. [Prerequisites](#prerequisites)
 2. [Docker Installation](#docker-installation)
-3. [Synapse Container Deployment](#agent-zero-container-deployment)
+3. [Synapse Container Deployment](#synapse-container-deployment)
 4. [Apache Reverse Proxy Configuration](#apache-reverse-proxy-configuration)
 5. [SSL/TLS Configuration](#ssltls-configuration)
 6. [Authentication Setup](#authentication-setup)
@@ -124,7 +124,7 @@ docker run hello-world
 
 ```bash
 # Choose your installation path
-A0_NAME="a0-instance"  # Change this to your instance name
+A0_NAME="synapse-instance"  # Change this to your instance name
 A0_PATH="/opt/${A0_NAME}"
 
 # Create directories
@@ -165,15 +165,15 @@ EOF
 
 ```bash
 # Set variables
-A0_NAME="a0-instance"
+A0_NAME="synapse-instance"
 A0_PATH="/opt/${A0_NAME}"
 A0_PORT="50080"
 
 # Pull latest image
-docker pull synapseai/agent-zero:latest
+docker pull synapseai/synapse:latest
 
 # Run container
-docker run -d   --name ${A0_NAME}   --restart unless-stopped   -p ${A0_PORT}:80   -v ${A0_PATH}/.env:/a0/.env   -v ${A0_PATH}/usr:/a0/usr   synapseai/agent-zero:latest
+docker run -d   --name ${A0_NAME}   --restart unless-stopped   -p ${A0_PORT}:80   -v ${A0_PATH}/.env:/synapse/.env   -v ${A0_PATH}/usr:/synapse/usr   synapseai/synapse:latest
 ```
 
 ### Step 5: Verify Container
@@ -208,11 +208,11 @@ httpd -M | grep -E "proxy|rewrite|ssl"
 
 ### Configuration for Standard Apache (Debian/Ubuntu)
 
-Create `/etc/apache2/sites-available/a0-instance.conf`:
+Create `/etc/apache2/sites-available/synapse-instance.conf`:
 
 ```apache
 # Synapse Reverse Proxy Configuration
-# Instance: a0-instance
+# Instance: synapse-instance
 # Domain: a0.example.com
 
 # HTTP - Redirect to HTTPS
@@ -249,15 +249,15 @@ Create `/etc/apache2/sites-available/a0-instance.conf`:
     RewriteRule ^/?(.*) ws://127.0.0.1:50080/$1 [P,L]
 
     # Logging
-    ErrorLog ${APACHE_LOG_DIR}/a0-instance.error.log
-    CustomLog ${APACHE_LOG_DIR}/a0-instance.access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/synapse-instance.error.log
+    CustomLog ${APACHE_LOG_DIR}/synapse-instance.access.log combined
 </VirtualHost>
 ```
 
 Enable and restart:
 
 ```bash
-a2ensite a0-instance.conf
+a2ensite synapse-instance.conf
 apache2ctl configtest
 systemctl reload apache2
 ```
@@ -270,7 +270,7 @@ Edit `/etc/httpd/conf/extra/httpd-includes.conf`:
 
 ```apache
 # Synapse Proxy Configuration
-# Instance: a0-instance
+# Instance: synapse-instance
 # Domain: a0.example.com
 # Note: Use specific IP, not wildcards, for DirectAdmin compatibility
 
@@ -303,8 +303,8 @@ Edit `/etc/httpd/conf/extra/httpd-includes.conf`:
     RewriteCond %{HTTP:Connection} upgrade [NC]
     RewriteRule ^/?(.*) ws://127.0.0.1:50080/$1 [P,L]
 
-    ErrorLog /var/log/httpd/domains/a0.example.com.error.log
-    CustomLog /var/log/httpd/domains/a0.example.com.access.log combined
+    ErrorLog /var/log/httpd/domains/synapse.example.com.error.log
+    CustomLog /var/log/httpd/domains/synapse.example.com.access.log combined
 </VirtualHost>
 ```
 
@@ -379,15 +379,15 @@ If using DirectAdmin, SSL is typically managed automatically:
 Place certificates in secure location:
 
 ```bash
-mkdir -p /etc/ssl/a0
-chmod 700 /etc/ssl/a0
+mkdir -p /etc/ssl/synapse
+chmod 700 /etc/ssl/synapse
 
 # Copy your certificates
-cp certificate.crt /etc/ssl/a0/
-cp private.key /etc/ssl/a0/
-cp chain.crt /etc/ssl/a0/  # if applicable
+cp certificate.crt /etc/ssl/synapse/
+cp private.key /etc/ssl/synapse/
+cp chain.crt /etc/ssl/synapse/  # if applicable
 
-chmod 600 /etc/ssl/a0/*
+chmod 600 /etc/ssl/synapse/*
 ```
 
 ---
@@ -407,14 +407,14 @@ chmod 600 /etc/ssl/a0/*
 
 ```bash
 # Edit .env file
-vi /opt/a0-instance/.env
+vi /opt/synapse-instance/.env
 
 # Add/update these lines:
 AUTH_LOGIN=your_username
 AUTH_PASSWORD=your_secure_password
 
 # Restart container to apply
-docker restart a0-instance
+docker restart synapse-instance
 ```
 
 ### Password Requirements
@@ -432,7 +432,7 @@ To disable authentication (local/dev use only):
 # AUTH_LOGIN=
 # AUTH_PASSWORD=
 
-docker restart a0-instance
+docker restart synapse-instance
 ```
 
 ---
@@ -473,10 +473,10 @@ nslookup a0.example.com
 
 ```bash
 # 1. Verify Docker container is running
-docker ps | grep a0-instance
+docker ps | grep synapse-instance
 
 # 2. Check container logs for errors
-docker logs a0-instance --tail 50
+docker logs synapse-instance --tail 50
 
 # 3. Test local container access
 curl -I http://127.0.0.1:50080/
@@ -490,11 +490,11 @@ curl -I http://127.0.0.1:80 -H "Host: a0.example.com"
 curl -Ik https://127.0.0.1:443 -H "Host: a0.example.com"
 
 # 6. Test external HTTPS access
-curl -I https://a0.example.com/
+curl -I https://synapse.example.com/
 # Expected: HTTP/2 302 with Location: /login
 
 # 7. Test login page loads
-curl -s https://a0.example.com/login | grep -i "<title>"
+curl -s https://synapse.example.com/login | grep -i "<title>"
 # Expected: <title>Login - Synapse</title>
 ```
 
@@ -505,7 +505,7 @@ curl -s https://a0.example.com/login | grep -i "<title>"
 npm install -g wscat
 
 # Test WebSocket connection
-wscat -c wss://a0.example.com/ws
+wscat -c wss://synapse.example.com/ws
 ```
 
 ---
@@ -519,14 +519,14 @@ wscat -c wss://a0.example.com/ws
 **Fix:**
 ```bash
 # Verify .env inside container
-docker exec a0-instance cat /a0/.env
+docker exec synapse-instance cat /synapse/.env
 
 # Ensure format is:
 # AUTH_LOGIN=username  (NOT AUTH_LOGIN=true)
 # AUTH_PASSWORD=password
 
 # Restart after fixing
-docker restart a0-instance
+docker restart synapse-instance
 ```
 
 ### Issue: 403 Forbidden
@@ -552,13 +552,13 @@ systemctl restart httpd
 **Fix:**
 ```bash
 # Check container status
-docker ps -a | grep a0-instance
+docker ps -a | grep synapse-instance
 
 # If stopped, check logs
-docker logs a0-instance
+docker logs synapse-instance
 
 # Restart container
-docker start a0-instance
+docker start synapse-instance
 
 # Verify port binding
 netstat -tlnp | grep 50080
@@ -571,10 +571,10 @@ netstat -tlnp | grep 50080
 **Fix:**
 ```bash
 # Check container resource usage
-docker stats a0-instance --no-stream
+docker stats synapse-instance --no-stream
 
 # Restart container
-docker restart a0-instance
+docker restart synapse-instance
 
 # Check for memory issues
 free -h
@@ -617,10 +617,10 @@ journalctl -u docker --since "1 hour ago"
 
 **Fix:**
 ```bash
-docker restart a0-instance
+docker restart synapse-instance
 
 # Verify env is loaded
-docker exec a0-instance cat /a0/.env
+docker exec synapse-instance cat /synapse/.env
 ```
 
 ---
@@ -631,26 +631,26 @@ docker exec a0-instance cat /a0/.env
 
 ```bash
 # Pull latest image
-docker pull synapseai/agent-zero:latest
+docker pull synapseai/synapse:latest
 
 # Stop and remove old container (data persists in volumes)
-docker stop a0-instance
-docker rm a0-instance
+docker stop synapse-instance
+docker rm synapse-instance
 
 # Recreate with same settings
-docker run -d   --name a0-instance   --restart unless-stopped   -p 50080:80   -v /opt/a0-instance/.env:/a0/.env   -v /opt/a0-instance/usr:/a0/usr   -v /opt/agent-zero:latest
+docker run -d   --name synapse-instance   --restart unless-stopped   -p 50080:80   -v /opt/synapse-instance/.env:/synapse/.env   -v /opt/synapse-instance/usr:/synapse/usr   -v /opt/synapse:latest
 ```
 
 ### Backup Strategy
 
 ```bash
 # Backup all instance data
-tar -czvf a0-backup-$(date +%Y%m%d).tar.gz /opt/a0-instance/
+tar -czvf synapse-backup-$(date +%Y%m%d).tar.gz /opt/synapse-instance/
 
 # Key items to backup:
-# - /opt/a0-instance/.env (configuration)
-# - /opt/a0-instance/memory/ (agent memories)
-# - /opt/a0-instance/work_dir/ (working files)
+# - /opt/synapse-instance/.env (configuration)
+# - /opt/synapse-instance/memory/ (agent memories)
+# - /opt/synapse-instance/work_dir/ (working files)
 ```
 
 ### Monitoring
@@ -660,10 +660,10 @@ tar -czvf a0-backup-$(date +%Y%m%d).tar.gz /opt/a0-instance/
 docker ps --format "table {{.Names}}	{{.Status}}	{{.Ports}}"
 
 # View recent logs
-docker logs --tail 100 -f a0-instance
+docker logs --tail 100 -f synapse-instance
 
 # Resource usage
-docker stats a0-instance
+docker stats synapse-instance
 ```
 
 ### Docker Cleanup
@@ -684,11 +684,11 @@ docker system prune -f
 
 ```bash
 # Container Management
-docker start a0-instance
-docker stop a0-instance
-docker restart a0-instance
-docker logs a0-instance
-docker exec -it a0-instance bash
+docker start synapse-instance
+docker stop synapse-instance
+docker restart synapse-instance
+docker logs synapse-instance
+docker exec -it synapse-instance bash
 
 # Apache Management  
 systemctl restart httpd    # RHEL/AlmaLinux
@@ -704,11 +704,11 @@ curl -I https://your-domain.com/login
 
 | Component | Path |
 |-----------|----- |
-| Instance Data | `/opt/a0-instance/` |
-| Environment File | `/opt/a0-instance/.env` |
-| Memory Storage | `/opt/a0-instance/memory/` |
-| Work Directory | `/opt/a0-instance/work_dir/` |
-| Logs | `/opt/a0-instance/logs/` |
+| Instance Data | `/opt/synapse-instance/` |
+| Environment File | `/opt/synapse-instance/.env` |
+| Memory Storage | `/opt/synapse-instance/memory/` |
+| Work Directory | `/opt/synapse-instance/work_dir/` |
+| Logs | `/opt/synapse-instance/logs/` |
 | Apache Config (Standard) | `/etc/apache2/sites-available/` |
 | Apache Config (DirectAdmin) | `/etc/httpd/conf/extra/httpd-includes.conf` |
 | DirectAdmin SSL Certs | `/usr/local/directadmin/data/users/USER/domains/` |
@@ -744,16 +744,16 @@ AUTH_PASSWORD=your_secure_password
 For running multiple A0 instances on the same server:
 
 ```bash
-# Instance 1: a0-primary on port 50080
-mkdir -p /opt/a0-primary
+# Instance 1: synapse-primary on port 50080
+mkdir -p /opt/synapse-primary
 # ... create .env, run container on port 50080
 
-# Instance 2: a0-dev on port 50081  
-mkdir -p /opt/a0-dev
+# Instance 2: synapse-dev on port 50081  
+mkdir -p /opt/synapse-dev
 # ... create .env, run container on port 50081
 
-# Instance 3: a0-backup on port 50082
-mkdir -p /opt/a0-backup
+# Instance 3: synapse-backup on port 50082
+mkdir -p /opt/synapse-backup
 # ... create .env, run container on port 50082
 ```
 

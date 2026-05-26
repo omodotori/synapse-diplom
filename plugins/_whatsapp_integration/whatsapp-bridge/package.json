@@ -1,5 +1,5 @@
 {
-  "name": "a0-whatsapp-bridge",
+  "name": "synapse-whatsapp-bridge",
   "version": "1.0.0",
   "description": "WhatsApp bridge for Synapse using Baileys",
   "private": true,
