@@ -10,12 +10,7 @@
         <template x-if="$store.pluginListStore && $store.pluginListStore.selectedPlugin">
             <div class="plugin-info-view">
                 <div class="plugin-info-header">
-                    <template x-if="$store.pluginListStore.selectedPlugin.thumbnail_url">
-                        <div class="plugin-info-thumb">
-                            <img :src="$store.pluginListStore.selectedPlugin.thumbnail_url"
-                                :alt="$store.pluginListStore.selectedPlugin.display_name || $store.pluginListStore.selectedPlugin.name">
-                        </div>
-                    </template>
+
                     <div class="plugin-info-header-main">
                         <div class="plugin-info-heading">
                             <h2 class="plugin-info-title"

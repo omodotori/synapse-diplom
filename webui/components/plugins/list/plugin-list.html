@@ -86,12 +86,7 @@
                             }))" :key="plugin.path || plugin.name">
                                 <div class="plugin-card">
                                     <div class="plugin-header">
-                                        <template x-if="plugin.thumbnail_url">
-                                            <img class="plugin-thumb"
-                                                :src="plugin.thumbnail_url"
-                                                :alt="plugin.display_name || plugin.name"
-                                                loading="lazy">
-                                        </template>
+
                                         <div class="plugin-heading">
                                             <div class="plugin-title" x-text="plugin.display_name || plugin.name || '(unnamed plugin)'"></div>
                                             <code class="plugin-path" x-text="plugin.path"></code>
