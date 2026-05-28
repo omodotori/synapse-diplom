@@ -24,6 +24,26 @@ class ImageGet(ApiHandler):
         if not path:
             raise ValueError("No path provided")
 
+        # Resolve relative image paths that are not absolute
+        if not os.path.isabs(path) and not files.exists(path):
+            workdir_file = os.path.join("usr/workdir", path)
+            if files.exists(workdir_file):
+                path = workdir_file
+            else:
+                try:
+                    from agent import AgentContext
+                    ctx = AgentContext.current()
+                    if ctx:
+                        from helpers import projects
+                        project_name = projects.get_context_project_name(ctx)
+                        if project_name:
+                            proj_folder = projects.get_project_folder(project_name)
+                            proj_file = os.path.join(proj_folder, path)
+                            if files.exists(proj_file):
+                                path = proj_file
+                except Exception:
+                    pass
+
         # no real need to check, we have the extension filter in place
         # check if path is within base directory
         # if runtime.is_development():

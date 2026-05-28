@@ -607,7 +607,7 @@ def fix_dev_path(path: str):
 
     if is_development():
         if path.startswith("/synapse/"):
-            path = path.replace("/synapse/", "")
+            path = path.removeprefix("/synapse/")
     return get_abs_path(path)
 
 
