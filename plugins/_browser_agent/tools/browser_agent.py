@@ -376,7 +376,8 @@ class BrowserAgent(Tool):
                     )
                     files.make_dirs(path)
                     await page.screenshot(path=path, full_page=False, timeout=3000)
-                    result["screenshot"] = f"img://{path}&t={str(time.time())}"
+                    dockerized_path = files.get_abs_path_dockerized(path)
+                    result["screenshot"] = f"img://{dockerized_path}&t={str(time.time())}"
 
                 if self.state and self.state.task and not self.state.task.is_ready():
                     await self.state.task.execute_inside(_get_update)

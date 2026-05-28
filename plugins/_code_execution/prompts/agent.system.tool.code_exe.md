@@ -15,6 +15,7 @@ rules:
 - use `print()` or `console.log()` when you need explicit output
 - do not interleave other tools while waiting
 - ignore framework `[SYSTEM: ...]` info in output
+- for playwright scripts always use `runtime=terminal` and run with `/opt/venv-synapse/bin/python script.py`
 examples:
 1 terminal command
 ~~~json
