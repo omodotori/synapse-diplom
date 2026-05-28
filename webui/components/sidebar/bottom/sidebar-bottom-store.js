@@ -7,7 +7,7 @@ const model = {
 
   get versionLabel() {
     return this.versionNo && this.commitTime
-      ? `Version ${this.versionNo} ${this.commitTime}`
+      ? `Версия ${this.versionNo} ${this.commitTime}`
       : "";
   },
 

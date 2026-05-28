@@ -29,14 +29,14 @@ const model = {
     if (!this.microsoftLoginCode) return;
     navigator.clipboard.writeText(this.microsoftLoginCode).then(() => {
       this.codeCopied = true;
-      window.toastFrontendInfo("Login code copied to clipboard!", "Clipboard");
+      window.toastFrontendInfo("Код авторизации скопирован в буфер обмена!", "Буфер обмена");
       // Reset after 3 seconds
       setTimeout(() => {
         this.codeCopied = false;
       }, 3000);
     }).catch((err) => {
       console.error("Failed to copy code: ", err);
-      window.toastFrontendError("Failed to copy login code", "Clipboard Error");
+      window.toastFrontendError("Не удалось скопировать код авторизации", "Ошибка буфера обмена");
     });
   },
 
@@ -50,7 +50,7 @@ const model = {
           break;
         case "download_progress":
           if (n.data && n.data.percent !== undefined) {
-            this.loadingText = `Downloading: ${n.data.percent.toFixed(1)}%`;
+            this.loadingText = `Скачивание: ${n.data.percent.toFixed(1)}%`;
           } else {
             this.loadingText = n.message;
           }
@@ -67,14 +67,14 @@ const model = {
           if (n.data && n.data.code) {
             this.microsoftLoginCode = n.data.code;
             this.microsoftLoginUrl = n.data.url || "";
-            this.loadingText = "Waiting for Microsoft login...";
+            this.loadingText = "Ожидание входа Microsoft...";
           } else {
             this.loadingText = n.message;
           }
           break;
         case "error":
           this.hasError = true;
-          window.toastFrontendError(n.message, "Tunnel Error");
+          window.toastFrontendError(n.message, "Ошибка туннеля");
           this.stopNotificationPolling();
           break;
         case "tunnel_url":
@@ -145,7 +145,7 @@ const model = {
     } catch (error) {
       console.error("Error generating QR code:", error);
       qrContainer.innerHTML =
-        '<div class="qr-error">QR code generation failed</div>';
+        '<div class="qr-error">Не удалось сгенерировать QR-код</div>';
     }
   },
 
@@ -214,20 +214,20 @@ const model = {
     // Call generate but with a confirmation first
     if (
       confirm(
-        "Are you sure you want to generate a new tunnel URL? The old URL will no longer work."
+        "Вы уверены, что хотите сгенерировать новый URL-адрес туннеля? Старый URL-адрес перестанет работать."
       )
     ) {
 
       this.isLoading = true;
       this.hasError = false;
       this.clearMicrosoftLogin();
-      this.loadingText = "Refreshing tunnel...";
+      this.loadingText = "Обновление туннеля...";
 
       // Change refresh button appearance
       const refreshButton = document.querySelector("#tunnel-settings-section .refresh-link-button");
       const originalContent = refreshButton.innerHTML;
       refreshButton.innerHTML =
-        '<span class="icon material-symbols-outlined spin">progress_activity</span> Refreshing...';
+        '<span class="icon material-symbols-outlined spin">progress_activity</span> Обновление...';
       refreshButton.disabled = true;
       refreshButton.classList.add("refreshing");
 
@@ -252,7 +252,7 @@ const model = {
         await this.generateLink();
       } catch (error) {
         console.error("Error refreshing tunnel:", error);
-        window.toastFrontendError("Error refreshing tunnel", "Tunnel Error");
+        window.toastFrontendError("Ошибка обновления туннеля", "Ошибка туннеля");
         this.isLoading = false;
         this.loadingText = "";
       } finally {
@@ -281,12 +281,12 @@ const model = {
       // If no authentication is set, warn the user
       if (!hasAuth) {
         const proceed = confirm(
-          "WARNING: No authentication is configured for your Synapse instance.\n\n" +
-            "Creating a public tunnel without authentication means anyone with the URL " +
-            "can access your Synapse instance.\n\n" +
-            "It is recommended to set up authentication in the Settings > Authentication section " +
-            "before creating a public tunnel.\n\n" +
-            "Do you want to proceed anyway?"
+          "ВНИМАНИЕ: Авторизация для вашего экземпляра Synapse не настроена.\n\n" +
+            "Создание публичного туннеля без авторизации означает, что любой, у кого есть URL-адрес, " +
+            "сможет получить доступ к вашему экземпляру Synapse.\n\n" +
+            "Рекомендуется настроить авторизацию в разделе Настройки > Авторизация " +
+            "перед созданием публичного туннеля.\n\n" +
+            "Вы все равно хотите продолжить?"
         );
 
         if (!proceed) {
@@ -301,13 +301,13 @@ const model = {
     this.isLoading = true;
     this.hasError = false;
     this.clearMicrosoftLogin();
-    this.loadingText = "Starting tunnel...";
+    this.loadingText = "Запуск туннеля...";
 
     // Change create button appearance
     const createButton = document.querySelector("#tunnel-settings-section .tunnel-actions .btn-ok");
     if (createButton) {
       createButton.innerHTML =
-        '<span class="icon material-symbols-outlined spin">progress_activity</span> Creating...';
+        '<span class="icon material-symbols-outlined spin">progress_activity</span> Создание...';
       createButton.disabled = true;
       createButton.classList.add("creating");
     }
@@ -338,7 +338,7 @@ const model = {
       // Check for error
       if (!data.success && data.message) {
         this.hasError = true;
-        window.toastFrontendError(data.message, "Tunnel Error");
+        window.toastFrontendError(data.message, "Ошибка туннеля");
         console.error("Tunnel creation failed:", data);
         this.stopNotificationPolling();
         return;
@@ -357,12 +357,12 @@ const model = {
 
         // Show success message to confirm creation
         window.toastFrontendInfo(
-          "Tunnel created successfully",
-          "Tunnel Status"
+          "Туннель успешно создан",
+          "Статус туннеля"
         );
       }
     } catch (error) {
-      window.toastFrontendError("Error creating tunnel", "Tunnel Error");
+      window.toastFrontendError("Ошибка создания туннеля", "Ошибка туннеля");
       console.error("Error creating tunnel:", error);
     } finally {
       this.isLoading = false;
@@ -374,7 +374,7 @@ const model = {
       const createButton = document.querySelector("#tunnel-settings-section .tunnel-actions .btn-ok");
       if (createButton) {
         createButton.innerHTML =
-          '<span class="icon material-symbols-outlined">play_circle</span> Create Tunnel';
+          '<span class="icon material-symbols-outlined">play_circle</span> Создать туннель';
         createButton.disabled = false;
         createButton.classList.remove("creating");
       }
@@ -384,11 +384,11 @@ const model = {
   async stopTunnel() {
     if (
       confirm(
-        "Are you sure you want to stop the tunnel? The URL will no longer be accessible."
+        "Вы уверены, что хотите остановить туннель? URL-адрес больше не будет доступен."
       )
     ) {
       this.isLoading = true;
-      this.loadingText = "Stopping tunnel...";
+      this.loadingText = "Остановка туннеля...";
 
       try {
         // Call the backend to stop the tunnel
@@ -418,11 +418,11 @@ const model = {
           this.linkGenerated = false;
 
           window.toastFrontendInfo(
-            "Tunnel stopped successfully",
-            "Tunnel Status"
+            "Туннель успешно остановлен",
+            "Статус туннеля"
           );
         } else {
-          window.toastFrontendError("Failed to stop tunnel", "Tunnel Error");
+          window.toastFrontendError("Не удалось остановить туннель", "Ошибка туннеля");
 
           // Reset stop button
           stopButton.innerHTML = originalStopContent;
@@ -430,7 +430,7 @@ const model = {
           stopButton.classList.remove("stopping");
         }
       } catch (error) {
-        window.toastFrontendError("Error stopping tunnel", "Tunnel Error");
+        window.toastFrontendError("Ошибка остановки туннеля", "Ошибка туннеля");
         console.error("Error stopping tunnel:", error);
 
         // Reset stop button
@@ -455,13 +455,13 @@ const model = {
       .then(() => {
         // Update button to show success state
         copyButton.innerHTML =
-          '<span class="icon material-symbols-outlined">check</span> Copied!';
+          '<span class="icon material-symbols-outlined">check</span> Скопировано!';
         copyButton.classList.add("copy-success");
 
         // Show toast notification
         window.toastFrontendInfo(
-          "Tunnel URL copied to clipboard!",
-          "Clipboard"
+          "URL-адрес туннеля скопирован в буфер обмена!",
+          "Буфер обмена"
         );
 
         // Reset button after 2 seconds
@@ -473,13 +473,13 @@ const model = {
       .catch((err) => {
         console.error("Failed to copy URL: ", err);
         window.toastFrontendError(
-          "Failed to copy tunnel URL",
-          "Clipboard Error"
+          "Не удалось скопировать URL-адрес туннеля",
+          "Ошибка буфера обмена"
         );
 
         // Show error state
         copyButton.innerHTML =
-          '<span class="icon material-symbols-outlined">close</span> Failed';
+          '<span class="icon material-symbols-outlined">close</span> Ошибка';
         copyButton.classList.add("copy-error");
 
         // Reset button after 2 seconds

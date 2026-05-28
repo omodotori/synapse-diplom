@@ -22,7 +22,7 @@
                 class="chat-more-trigger"
                 @click.stop="$store.chatInput.toggleChatMoreMenu()"
                 :aria-expanded="$store.chatInput.chatMoreMenuOpen.toString()"
-                aria-label="More actions"
+                aria-label="Дополнительные действия"
             >
                 <span class="material-symbols-outlined" aria-hidden="true">add</span>
             </button>
@@ -42,14 +42,14 @@
                       @keydown.enter="if (!$event.shiftKey && !$event.isComposing && $event.keyCode !== 229) { $event.preventDefault(); $store.chatInput.sendMessage(); }"
                       @input="$store.chatInput.adjustTextareaHeight()"
                       x-model="$store.chatInput.message"></textarea>
-            <button id="expand-button" @click="$store.fullScreenInputModal.openModal()" aria-label="Expand input">
+            <button id="expand-button" @click="$store.fullScreenInputModal.openModal()" aria-label="Развернуть поле ввода">
                 <span class="material-symbols-outlined" aria-hidden="true">open_in_full</span>
             </button>
         </div>
 
         <div id="chat-buttons-wrapper">
             <!-- Send button -->
-            <button class="chat-button" id="send-button" aria-label="Send message"
+            <button class="chat-button" id="send-button" aria-label="Отправить сообщение"
                     @click="$store.chatInput.sendMessage()"
                     :class="$store.chatInput.sendButtonClass"
                     :title="$store.chatInput.sendButtonTitle">
@@ -57,7 +57,7 @@
             </button>
 
             <!-- Microphone button -->
-            <button class="chat-button mic-inactive" id="microphone-button" aria-label="Start/Stop recording"
+            <button class="chat-button mic-inactive" id="microphone-button" aria-label="Начать/остановить запись"
                     @click="$store.speech.handleMicrophoneClick()" x-effect="$store.speech.updateMicrophoneButtonUI()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 18" fill="currentColor">
                     <path d="m8,12c1.66,0,3-1.34,3-3V3c0-1.66-1.34-3-3-3s-3,1.34-3,3v6c0,1.66,1.34,3,3,3Zm-1,1.9c-2.7-.4-4.8-2.6-5-5.4H0c.2,3.8,3.1,6.9,7,7.5v2h2v-2c3.9-.6,6.8-3.7,7-7.5h-2c-.2,2.8-2.3,5-5,5.4h-2Z" />

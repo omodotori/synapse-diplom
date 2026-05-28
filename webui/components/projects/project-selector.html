@@ -54,7 +54,7 @@
 
           <template x-if="!$store.chats.selectedContext.project?.name">
             <span class="project-trigger-content">
-              <span>No project</span>
+              <span>Без проекта</span>
             </span>
           </template>
 
@@ -75,7 +75,7 @@
                     @click="$store.projects.openProjectsModal(); closeMenu()"
                     class="project-menu-item">
               <span class="icon material-symbols-outlined notranslate" translate="no">snippet_folder</span>
-              <span>Projects</span>
+              <span>Проекты</span>
             </button>
 
             <button type="button"
@@ -83,7 +83,7 @@
                     @click="$store.projects.editActiveProject(); closeMenu()"
                     class="project-menu-item">
               <span class="icon material-symbols-outlined notranslate" translate="no">edit</span>
-              <span>Edit <span x-text="$store.chats.selectedContext.project?.title"></span></span>
+              <span>Редактировать <span x-text="$store.chats.selectedContext.project?.title"></span></span>
             </button>
 
             <button type="button"
@@ -91,11 +91,11 @@
                     @click="$store.projects.deactivateProject(); closeMenu()"
                     class="project-menu-item">
               <span class="icon material-symbols-outlined notranslate" translate="no">close</span>
-              <span>Deactivate</span>
+              <span>Деактивировать</span>
             </button>
 
             <div x-show="$store.projects.projectList.length > 0" class="project-menu-separator"></div>
-            <div x-show="$store.projects.projectList.length > 0" class="project-menu-header">Switch Project</div>
+            <div x-show="$store.projects.projectList.length > 0" class="project-menu-header">Сменить проект</div>
 
             <template x-for="project in $store.projects.projectList" :key="project.name">
               <button type="button"

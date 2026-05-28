@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Sync Status</title>
+    <title>Статус синхронизации</title>
     <script type="module">
         import { store } from "/components/sync/sync-store.js";
     </script>
@@ -46,12 +46,12 @@
                 class="status-icon"
                 x-create="$store.sync.init()"
                 :title="$store.sync.mode === 'HEALTHY'
-                  ? 'Connected (push sync healthy)'
+                  ? 'Подключено (синхронизация активна)'
                   : $store.sync.mode === 'HANDSHAKE_PENDING'
-                    ? 'Connecting (waiting for state handshake)'
+                    ? 'Подключение (ожидание рукопожатия)'
                     : $store.sync.mode === 'DEGRADED'
-                      ? 'Degraded (polling fallback)'
-                      : 'Disconnected (waiting to reconnect)'"
+                      ? 'Ограничено (резервный опрос)'
+                      : 'Отключено (ожидание переподключения)'"
             >
                 <svg viewBox="0 0 30 30" width="20" height="20" aria-label="sync status">
                     <!-- HEALTHY (filled circle) -->

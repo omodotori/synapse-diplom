@@ -103,8 +103,8 @@ const model = {
         this._degradedToastShown = true;
         notificationStore
           .frontendWarning(
-            "WebSocket connection problems - using polling fallback",
-            "Connection",
+            "Проблемы с WebSocket-соединением - переключение на резервный опрос",
+            "Соединение",
             5,
             "sync-mode",
             undefined,
@@ -121,8 +121,8 @@ const model = {
       if (this._degradedToastShown) {
         notificationStore
           .frontendSuccess(
-            "WebSocket connection restored",
-            "Connection",
+            "WebSocket-соединение восстановлено",
+            "Соединение",
             4,
             "sync-mode",
             undefined,
@@ -222,8 +222,8 @@ const model = {
     try {
       if (pending === "restart") {
         await notificationStore.frontendSuccess(
-          "Restarted",
-          "System Restart",
+          "Перезапущено",
+          "Системный перезапуск",
           5,
           "restart",
           undefined,
@@ -232,8 +232,8 @@ const model = {
         return;
       }
       await notificationStore.frontendSuccess(
-        "Reconnected",
-        "Connection",
+        "Подключено повторно",
+        "Соединение",
         3,
         "reconnect",
         undefined,
@@ -293,7 +293,7 @@ const model = {
         this._suppressDisconnectToastOnce = false;
         if (this._seenFirstConnect && !restartToastActive && !suppressToast) {
           notificationStore
-            .frontendWarning("Disconnected", "Connection", 5, "reconnect", undefined, true)
+            .frontendWarning("Отключено", "Соединение", 5, "reconnect", undefined, true)
             .catch((error) => {
               console.error("[syncStore] disconnected toast failed:", error);
             });

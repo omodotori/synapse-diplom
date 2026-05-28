@@ -1,21 +1,21 @@
 <html>
   <head>
-    <title>Update Checker</title>
+    <title>Проверка обновлений</title>
   </head>
 
   <body>
     <div x-data="{ get settings() { return $store.settings.settings } }">
       <template x-if="settings">
         <div>
-          <div class="section-title">Update Checker</div>
+          <div class="section-title">Проверка обновлений</div>
           <div class="section-description">
-            Update checker periodically checks for new releases of Synapse and will notify when an update is recommended.<br>No personal data is sent to the update server, only randomized+anonymized unique ID and current version number, which help us evaluate the importance of the update in case of critical bug fixes etc.
+            Модуль проверки периодически ищет новые выпуски Synapse и уведомляет о возможности обновления.<br>Личные данные на сервер обновлений не отправляются, передаются только анонимный уникальный идентификатор и номер текущей версии. Это помогает нам оценивать важность обновлений при выпуске критических исправлений.
           </div>
 
           <div class="field">
             <div class="field-label">
-              <div class="field-title">Enable Update Checker</div>
-              <div class="field-description">Enable update checker to notify about newer versions of Synapse.</div>
+              <div class="field-title">Включить проверку обновлений</div>
+              <div class="field-description">Включите автоматическую проверку обновлений для уведомления о выходе новых версий Synapse.</div>
             </div>
             <div class="field-control">
               <label class="toggle">

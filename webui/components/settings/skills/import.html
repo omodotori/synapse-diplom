@@ -10,22 +10,22 @@
         <template x-if="$store.skillsImportStore">
             <div x-init="$store.skillsImportStore.init()" x-destroy="$store.skillsImportStore.onClose()">
 
-                <h3>Import Skills (SKILL.md)</h3>
+                <h3>Импорт навыков (SKILL.md)</h3>
 
                 <div class="upload-section">
                     <label for="skills-file" class="upload-label">
-                        Select Skills Pack (.zip)
+                        Выберите пакет навыков (.zip)
                     </label>
                     <input type="file" id="skills-file" accept=".zip"
                         @change="$store.skillsImportStore.handleFileUpload($event)">
                     <div class="upload-hint">
-                        Upload a repository/archive that contains SKILL.md skill folders (see agentskills.io).
+                        Загрузите репозиторий/архив, содержащий папки навыков с файлами SKILL.md (см. agentskills.io).
                     </div>
                 </div>
 
                 <div class="options" x-show="$store.skillsImportStore.skillsFile">
                     <label class="policy-label">
-                        <span class="policy-label-text">Limit to project:</span>
+                        <span class="policy-label-text">Ограничить проектом:</span>
                         <select x-model="$store.skillsImportStore.projectKey" class="policy-dropdown"
                             @change="$store.skillsImportStore.previewImport()">
                             <option value="">Все</option>
@@ -36,7 +36,7 @@
                     </label>
 
                     <label class="policy-label">
-                        <span class="policy-label-text">Limit to agent profile:</span>
+                        <span class="policy-label-text">Ограничить профилем агента:</span>
                         <select x-model="$store.skillsImportStore.agentProfileKey" class="policy-dropdown"
                             @change="$store.skillsImportStore.previewImport()">
                             <option value="">Все</option>
@@ -47,18 +47,18 @@
                     </label>
 
                     <label class="policy-label">
-                        <span class="policy-label-text">Namespace:</span>
+                        <span class="policy-label-text">Пространство имен:</span>
                         <input class="text-input" type="text" placeholder="напр. my-pack"
                             x-model="$store.skillsImportStore.namespace"
                             @change="$store.skillsImportStore.previewImport()">
                     </label>
 
                     <label class="policy-label">
-                        <span class="policy-label-text">Conflict policy:</span>
+                        <span class="policy-label-text">Политика конфликтов:</span>
                         <select x-model="$store.skillsImportStore.conflict" class="policy-dropdown"
                             @change="$store.skillsImportStore.previewImport()">
                             <option value="skip">Пропустить существующие</option>
-                            <option value="rename">Rename (add _2, _3...)</option>
+                            <option value="rename">Переименовать (добавить _2, _3...)</option>
                             <option value="overwrite">Перезаписать существующие</option>
                         </select>
                     </label>
@@ -72,7 +72,7 @@
                 </div>
 
                 <div x-show="$store.skillsImportStore.loading" class="loading">
-                    <span x-text="$store.skillsImportStore.loadingMessage || 'Processing...'"></span>
+                    <span x-text="$store.skillsImportStore.loadingMessage || 'Обработка...'"></span>
                 </div>
 
                 <div x-show="$store.skillsImportStore.error" class="error">
@@ -82,9 +82,9 @@
                 <div x-show="$store.skillsImportStore.preview" class="preview">
                     <h4>Предпросмотр</h4>
                     <div class="preview-meta">
-                        <div>Namespace: <code x-text="$store.skillsImportStore.preview?.namespace"></code></div>
-                        <div>Would import: <span x-text="$store.skillsImportStore.preview?.imported_count || 0"></span></div>
-                        <div>Would skip: <span x-text="$store.skillsImportStore.preview?.skipped_count || 0"></span></div>
+                        <div>Пространство имен: <code x-text="$store.skillsImportStore.preview?.namespace"></code></div>
+                        <div>Будет импортировано: <span x-text="$store.skillsImportStore.preview?.imported_count || 0"></span></div>
+                        <div>Будет пропущено: <span x-text="$store.skillsImportStore.preview?.skipped_count || 0"></span></div>
                     </div>
 
                     <textarea class="preview-list" readonly
@@ -92,13 +92,13 @@
                 </div>
 
                 <div x-show="$store.skillsImportStore.result" class="result">
-                    <h4>Import Complete</h4>
+                    <h4>Импорт завершен</h4>
                     <div class="preview-meta">
-                        <div>Imported: <span x-text="$store.skillsImportStore.result?.imported_count || 0"></span></div>
-                        <div>Skipped: <span x-text="$store.skillsImportStore.result?.skipped_count || 0"></span></div>
+                        <div>Импортировано: <span x-text="$store.skillsImportStore.result?.imported_count || 0"></span></div>
+                        <div>Пропущено: <span x-text="$store.skillsImportStore.result?.skipped_count || 0"></span></div>
                     </div>
                     <div class="note">
-                        Skills are indexed automatically. If you don’t see them immediately, use the Restart button in the left pane.
+                        Навыки индексируются автоматически. Если вы не видите их сразу, воспользуйтесь кнопкой перезапуска панели слева.
                     </div>
                 </div>
 

@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Task Scheduler</title>
+  <title>Планировщик</title>
   <script type="module">
     import { store } from "/components/modals/scheduler/scheduler-store.js";
   </script>
@@ -10,7 +10,7 @@
     <template x-if="$store.schedulerStore">
       <div class="scheduler-modal-content">
         <div id="scheduler-settings-root" class="scheduler-dashboard">
-          <div class="scheduler-dashboard-description">Manage scheduled tasks and automated processes for Synapse.</div>
+          <div class="scheduler-dashboard-description">Управление запланированными задачами и автоматизированными процессами в Synapse.</div>
           <x-component path="modals/scheduler/scheduler-task-editor.html"></x-component>
           <x-component path="modals/scheduler/scheduler-task-list.html"></x-component>
         </div>

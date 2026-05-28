@@ -8,12 +8,10 @@
 <body>
     <div x-data>
         <template x-if="$store.backupStore">
-            <div x-init="$store.backupStore.initRestore()" x-destroy="$store.backupStore.onClose()">
-
-                <!-- File Upload Section -->
+            <div x-init="$store.backupStore.initRestore()" x-destroy="$store.backupSt                 <!-- File Upload Section -->
                 <div class="upload-section">
                     <label for="backup-file" class="upload-label">
-                        Select Backup File (.zip)
+                        Выберите файл резервной копии (.zip)
                     </label>
                     <input type="file" id="backup-file" accept=".zip"
                            @change="$store.backupStore.handleFileUpload($event)">
@@ -22,18 +20,18 @@
                 <!-- Warning Message (only show when backup file is loaded) -->
                 <div x-show="$store.backupStore.backupMetadata" class="restore-warning">
                     <span class="warning-icon">⚠️</span>
-                    <span class="warning-text">After restoring a backup you will have to restart Agent-Zero to fully load the backed-up configuration (button in the left pane).</span>
+                    <span class="warning-text">После восстановления бэкапа вам нужно будет перезапустить Agent-Zero, чтобы полностью загрузить восстановленную конфигурацию (кнопка на левой панели).</span>
                     <span class="warning-icon">⚠️</span>
                 </div>
 
                 <!-- File Conflict Policy (Dropdown) -->
                 <div x-show="$store.backupStore.backupMetadata" class="overwrite-policy">
                     <label class="policy-label">
-                        <span class="policy-label-text">File Conflict Policy:</span>
+                        <span class="policy-label-text">Конфликты файлов:</span>
                         <select x-model="$store.backupStore.overwritePolicy" class="policy-dropdown">
-                            <option value="overwrite">Overwrite existing files</option>
-                            <option value="skip">Skip existing files</option>
-                            <option value="backup">Backup existing files (.backup.timestamp)</option>
+                            <option value="overwrite">Перезаписывать существующие файлы</option>
+                            <option value="skip">Пропускать существующие файлы</option>
+                            <option value="backup">Создавать резервные копии (.backup.timestamp)</option>
                         </select>
                     </label>
                 </div>
@@ -42,16 +40,16 @@
                 <div x-show="$store.backupStore.backupMetadata" class="clean-before-restore">
                     <label class="checkbox-label">
                         <input type="checkbox" x-model="$store.backupStore.cleanBeforeRestore">
-                        <span class="checkbox-text">Clean before restore (delete existing files matching original backup patterns)</span>
+                        <span class="checkbox-text">Очистить перед восстановлением (удалить существующие файлы по маскам бэкапа)</span>
                     </label>
                     <div class="clean-description">
-                        When enabled, all existing files matching the original backup patterns will be deleted before restoring files from the archive. This ensures a completely clean restore state.
+                        При включении этого параметра все существующие файлы, соответствующие исходным маскам резервного копирования, будут удалены перед восстановлением файлов из архива. Это гарантирует абсолютно чистое состояние после восстановления.
                     </div>
                 </div>
 
                 <!-- Loading indicator -->
                 <div x-show="$store.backupStore.loading" class="restore-loading">
-                    <span x-text="$store.backupStore.loadingMessage || 'Processing...'"></span>
+                    <span x-text="$store.backupStore.loadingMessage || 'Обработка...'"></span>
                 </div>
 
                 <!-- Error display -->
@@ -61,32 +59,32 @@
 
                 <!-- Success display -->
                 <div x-show="$store.backupStore.restoreResult" class="restore-result">
-                    <h4>Restore Complete</h4>
+                    <h4>Восстановление завершено</h4>
                     <div class="result-stats">
-                        <div x-show="$store.backupStore.restoreResult?.deleted_files?.length > 0">Deleted: <span x-text="$store.backupStore.restoreResult?.deleted_files?.length || 0"></span></div>
-                        <div>Restored: <span x-text="$store.backupStore.restoreResult?.restored_files?.length || 0"></span></div>
-                        <div>Skipped: <span x-text="$store.backupStore.restoreResult?.skipped_files?.length || 0"></span></div>
-                        <div>Errors: <span x-text="$store.backupStore.restoreResult?.errors?.length || 0"></span></div>
+                        <div x-show="$store.backupStore.restoreResult?.deleted_files?.length > 0">Удалено: <span x-text="$store.backupStore.restoreResult?.deleted_files?.length || 0"></span></div>
+                        <div>Восстановлено: <span x-text="$store.backupStore.restoreResult?.restored_files?.length || 0"></span></div>
+                        <div>Пропущено: <span x-text="$store.backupStore.restoreResult?.skipped_files?.length || 0"></span></div>
+                        <div>Ошибки: <span x-text="$store.backupStore.restoreResult?.errors?.length || 0"></span></div>
                     </div>
                 </div>
 
                 <!-- Header with buttons (following MCP servers pattern) -->
-                <h3 x-show="$store.backupStore.backupMetadata">Restore Configuration JSON
+                <h3 x-show="$store.backupStore.backupMetadata">JSON конфигурации восстановления
                     <button class="btn slim" style="margin-left: 0.5em;"
-                        @click="$store.backupStore.formatJson()">Format</button>
+                        @click="$store.backupStore.formatJson()">Форматировать</button>
                     <button class="btn slim" style="margin-left: 0.5em;"
-                        @click="$store.backupStore.resetToOriginalMetadata()">Reset</button>
+                        @click="$store.backupStore.resetToOriginalMetadata()">Сброс</button>
                     <button class="btn slim" style="margin-left: 0.5em;"
-                        @click="$store.backupStore.dryRun()" :disabled="$store.backupStore.loading">Dry Run</button>
+                        @click="$store.backupStore.dryRun()" :disabled="$store.backupStore.loading">Тестовый запуск</button>
                     <button class="btn slim primary" style="margin-left: 0.5em;"
-                        @click="$store.backupStore.performRestore()" :disabled="$store.backupStore.loading">Restore Files</button>
+                        @click="$store.backupStore.performRestore()" :disabled="$store.backupStore.loading">Восстановить файлы</button>
                 </h3>
 
                 <!-- JSON Editor (upper part) -->
                 <div x-show="$store.backupStore.backupMetadata" id="restore-metadata-editor"></div>
 
                 <!-- File Operations Display (lower part) -->
-                <h3 x-show="$store.backupStore.backupMetadata" id="restore-operations">File Operations</h3>
+                <h3 x-show="$store.backupStore.backupMetadata" id="restore-operations">Операции с файлами</h3>
 
                 <!-- File listing textarea -->
                 <div x-show="$store.backupStore.backupMetadata" class="file-operations-container">
@@ -94,6 +92,7 @@
                               x-model="$store.backupStore.fileOperationsLog"
                               readonly
                               placeholder="Операции с файлами будут отображаться здесь..."></textarea>
+                </div>�жаться здесь..."></textarea>
                 </div>
 
             </div>

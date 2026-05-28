@@ -1,37 +1,37 @@
 <html>
   <head>
-    <title>External MCP Servers</title>
+    <title>Внешние MCP-серверы</title>
   </head>
 
   <body>
     <div x-data="{ get settings() { return $store.settings.settings } }">
       <template x-if="settings">
         <div>
-          <div class="section-title">External MCP Servers</div>
+          <div class="section-title">Внешние MCP-серверы</div>
           <div class="section-description">
-            Synapse can use external MCP servers, local or remote as tools.
+            Synapse может использовать внешние локальные или удаленные MCP-серверы в качестве инструментов.
           </div>
 
           <div class="field">
             <div class="field-label">
-              <div class="field-title">MCP Servers Configuration</div>
-              <div class="field-description">External MCP servers can be configured here.</div>
+              <div class="field-title">Настройка MCP-серверов</div>
+              <div class="field-description">Внешние MCP-серверы можно настроить здесь.</div>
             </div>
             <div class="field-control">
               <button
                 class="btn btn-field"
                 @click="$store.settings.handleFieldButton({ id: 'mcp_servers_config' })"
               >
-                Open
+                Открыть
               </button>
             </div>
           </div>
 
           <div class="field">
             <div class="field-label">
-              <div class="field-title">MCP Client Init Timeout</div>
+              <div class="field-title">Таймаут инициализации MCP-клиента</div>
               <div class="field-description">
-                Timeout for MCP client initialization (in seconds). Higher values might be required for complex MCPs, but might also slowdown system startup.
+                Таймаут инициализации MCP-клиента (в секундах). Более высокие значения могут потребоваться для сложных MCP, но также могут замедлить запуск системы.
               </div>
             </div>
             <div class="field-control">
@@ -41,9 +41,9 @@
 
           <div class="field">
             <div class="field-label">
-              <div class="field-title">MCP Client Tool Timeout</div>
+              <div class="field-title">Таймаут выполнения инструментов MCP</div>
               <div class="field-description">
-                Timeout for MCP client tool execution. Higher values might be required for complex tools, but might also result in long responses with failing tools.
+                Таймаут для выполнения инструментов MCP-клиента. Более высокие значения могут потребоваться для сложных инструментов, но также могут приводить к долгим задержкам при сбоях в работе инструментов.
               </div>
             </div>
             <div class="field-control">

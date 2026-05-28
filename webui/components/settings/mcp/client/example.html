@@ -1,23 +1,22 @@
 <html>
 
 <head>
-    <title>Configuring MCP Servers</title>
+    <title>Настройка MCP-серверов</title>
 
 </head>
 
 <body>
     <div x-data>
-        <p>Synapse uses standard JSON configuration known from other AI applications.<br>
-            The configuration is a JSON object containing "mcpServers" object where each key is an individual MCP
-            server.<br>
-            Local servers are defined by a "command", "args", "env" variables.<br>
-            Remote servers are defined by a "url", "headers".<br>
-            "disabled" can be set to true to disable a server without removing config.<br>
-            Custom "description" can be set to provide additional information about the server to A0.<br>
-            All servers can also define "init_timeout" and "tool_timeout" which override global settings.</p>
+        <p>Synapse использует стандартную конфигурацию JSON, знакомую по другим ИИ-приложениям.<br>
+            Конфигурация представляет собой JSON-объект, содержащий объект "mcpServers", где каждый ключ — это отдельный MCP-сервер.<br>
+            Локальные серверы определяются переменными "command", "args", "env".<br>
+            Удаленные серверы определяются переменными "url", "headers".<br>
+            Для отключения сервера без удаления конфигурации можно установить "disabled" в значение true.<br>
+            Можно задать пользовательское описание "description", чтобы предоставить A0 дополнительную информацию о сервере.<br>
+            Все серверы также могут определять "init_timeout" и "tool_timeout", которые переопределяют глобальные настройки.</p>
 
 
-        <h3>Example MCP Servers Configuration JSON</h3>
+        <h3>Пример JSON конфигурации MCP-серверов</h3>
         <div id="mcp-servers-example"></div>
 
         <script>

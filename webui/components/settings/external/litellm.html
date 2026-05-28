@@ -7,16 +7,16 @@
     <div x-data="{ get settings() { return $store.settings.settings } }">
       <template x-if="settings">
         <div>
-          <div class="section-title">LiteLLM Global Settings</div>
+          <div class="section-title">Глобальные настройки LiteLLM</div>
           <div class="section-description">
-            Configure global parameters passed to LiteLLM for all providers.
+            Настройка глобальных параметров, передаваемых в LiteLLM для всех провайдеров.
           </div>
 
           <div class="field field-full">
             <div class="field-label">
-              <div class="field-title">LiteLLM global parameters</div>
+              <div class="field-title">Глобальные параметры LiteLLM</div>
               <div class="field-description">
-                Global LiteLLM params (e.g. timeout, stream_timeout) in .env format: one KEY=VALUE per line. Example: <code>stream_timeout=30</code>. Applied to all LiteLLM calls unless overridden. See <a href='https://docs.litellm.ai/docs/set_keys' target='_blank'>LiteLLM</a> and <a href='https://docs.litellm.ai/docs/proxy/timeout' target='_blank'>timeouts</a>.
+                Глобальные параметры LiteLLM (например, timeout, stream_timeout) в формате .env: по одной паре КЛЮЧ=ЗНАЧЕНИЕ на строку. Пример: <code>stream_timeout=30</code>. Применяется ко всем вызовам LiteLLM, если не переопределено. См. подробности в руководствах по <a href='https://docs.litellm.ai/docs/set_keys' target='_blank'>LiteLLM</a> и <a href='https://docs.litellm.ai/docs/proxy/timeout' target='_blank'>timeouts</a>.
               </div>
             </div>
             <div class="field-control">

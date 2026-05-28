@@ -623,15 +623,14 @@ const schedulerStoreModel = {
       this.isLoading = false;
     }
   },
-
   async saveTask() {
     if (!this.editingTask.name?.trim() || !this.editingTask.prompt?.trim()) {
-      window.alert("Task name and prompt are required");
+      window.alert("Имя задачи и промпт обязательны для заполнения");
       return;
     }
 
     if (!TASK_TYPES.includes(this.editingTask.type)) {
-      window.alert("Invalid task type");
+      window.alert("Неверный тип задачи");
       return;
     }
 
@@ -653,8 +652,8 @@ const schedulerStoreModel = {
       }
 
       const message = this.isCreating
-        ? "Task created successfully"
-        : "Task updated successfully";
+        ? "Задача успешно создана"
+        : "Задача успешно обновлена";
       this.notifySuccess(message);
 
       if (result.task) {
@@ -662,14 +661,14 @@ const schedulerStoreModel = {
           this.tasks = [...this.tasks, result.task];
         } else {
           this.tasks = this.tasks.map((task) =>
-            task.uuid === result.task.uuid ? result.task : task
+             task.uuid === result.task.uuid ? result.task : task
           );
         }
       } else {
         await this.fetchTasks({ manual: true });
       }
     } catch (error) {
-      this.notifyError(`Failed to save task: ${error.message}`);
+      this.notifyError(`Не удалось сохранить задачу: ${error.message}`);
       return;
     } finally {
       this.destroyFlatpickr("all");
@@ -684,7 +683,7 @@ const schedulerStoreModel = {
       const result = await schedulerApi.runTask(taskId);
       if (!result.ok) throw new Error(result.error);
       const warning = result.data?.warning;
-      const message = result.data?.message || "Task started successfully";
+      const message = result.data?.message || "Задача успешно запущена";
       if (warning) {
         this.notifyWarning(warning);
       } else {
@@ -692,18 +691,18 @@ const schedulerStoreModel = {
       }
       this.fetchTasks({ manual: true });
     } catch (error) {
-      this.notifyError(`Failed to run task: ${error.message}`);
+      this.notifyError(`Не удалось запустить задачу: ${error.message}`);
     }
   },
 
   async resetTaskState(taskId) {
     const task = this.tasks.find((t) => t.uuid === taskId);
     if (!task) {
-      this.notifyError("Task not found");
+      this.notifyError("Задача не найдена");
       return;
     }
     if (task.state === "idle") {
-      this.notifyInfo("Task is already in idle state");
+      this.notifyInfo("Задача уже находится в режиме ожидания");
       return;
     }
 
@@ -711,10 +710,10 @@ const schedulerStoreModel = {
     try {
       const result = await schedulerApi.updateTask({ task_id: taskId, state: "idle" });
       if (!result.ok) throw new Error(result.error);
-      this.notifySuccess("Task state reset to idle");
+      this.notifySuccess("Состояние задачи сброшено в режим ожидания");
       await this.fetchTasks({ manual: true });
     } catch (error) {
-      this.notifyError(`Failed to reset task state: ${error.message}`);
+      this.notifyError(`Не удалось сбросить состояние задачи: ${error.message}`);
     } finally {
       this.showLoadingState = false;
     }
@@ -732,14 +731,14 @@ const schedulerStoreModel = {
     try {
       const result = await schedulerApi.deleteTask(taskId);
       if (!result.ok) throw new Error(result.error);
-      this.notifySuccess("Task deleted successfully");
+      this.notifySuccess("Задача успешно удалена");
       this.tasks = this.tasks.filter((task) => task.uuid !== taskId);
       this.hasNoTasks = this.tasks.length === 0;
       if (this.selectedTaskForDetail?.uuid === taskId) {
         this.closeTaskDetail();
       }
     } catch (error) {
-      this.notifyError(`Failed to delete task: ${error.message}`);
+      this.notifyError(`Не удалось удалить задачу: ${error.message}`);
     }
   },
 
@@ -867,29 +866,29 @@ const schedulerStoreModel = {
   },
 
   formatDate(dateString) {
-    if (!dateString) return "Never";
+    if (!dateString) return "Никогда";
     return formatDateTime(dateString, "full");
   },
 
   formatPlan(task) {
-    if (!task || !task.plan) return "No plan";
+    if (!task || !task.plan) return "Нет плана";
     const todoCount = Array.isArray(task.plan.todo) ? task.plan.todo.length : 0;
-    const inProgress = task.plan.in_progress ? "Yes" : "No";
+    const inProgress = task.plan.in_progress ? "Да" : "Нет";
     const doneCount = Array.isArray(task.plan.done) ? task.plan.done.length : 0;
     let nextRun = "";
     if (Array.isArray(task.plan.todo) && task.plan.todo.length > 0) {
       const nextTime = new Date(task.plan.todo[0]);
       nextRun = Number.isNaN(nextTime.getTime())
-        ? "Invalid date"
+        ? "Неверная дата"
         : formatDateTime(nextTime, "short");
     } else {
-      nextRun = "None";
+      nextRun = "Нет";
     }
-    return `Next: ${nextRun}\nTodo: ${todoCount}\nIn Progress: ${inProgress}\nDone: ${doneCount}`;
+    return `След.: ${nextRun}\nПлан: ${todoCount}\nВ процессе: ${inProgress}\nЗавершено: ${doneCount}`;
   },
 
   formatSchedule(task) {
-    if (!task.schedule) return "None";
+    if (!task.schedule) return "Нет";
     if (typeof task.schedule === "string") return task.schedule;
     return `${task.schedule.minute || "*"} ${task.schedule.hour || "*"} ${
       task.schedule.day || "*"
@@ -898,9 +897,9 @@ const schedulerStoreModel = {
 
   formatTaskType(type) {
     const typeMap = {
-      scheduled: "Scheduled",
-      adhoc: "Ad-hoc",
-      planned: "Planned",
+      scheduled: "По расписанию",
+      adhoc: "Разовая",
+      planned: "Запланированная",
     };
     return typeMap[type] || type;
   },
@@ -925,12 +924,12 @@ const schedulerStoreModel = {
   },
 
   formatProjectName(project) {
-    if (!project) return "No Project";
-    return project.title || project.name || "No Project";
+    if (!project) return "Без проекта";
+    return project.title || project.name || "Без проекта";
   },
 
   formatProjectLabel(project) {
-    return `Project: ${this.formatProjectName(project)}`;
+    return `Проект: ${this.formatProjectName(project)}`;
   },
 
   formatTaskProject(task) {

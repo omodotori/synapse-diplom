@@ -1,24 +1,24 @@
 <html>
   <head>
-    <title>Development</title>
+    <title>Разработка</title>
   </head>
 
   <body>
     <div x-data>
       <template x-if="$store.settings.settings">
         <div>
-          <div class="section-title">Development</div>
+          <div class="section-title">Разработка</div>
           <div class="section-description">
-            Parameters for A0 framework development. RFCs (remote function calls) are used to call functions on another A0 instance. You can develop and debug A0 natively on your local system while redirecting some functions to A0 instance in docker. This is crucial for development as A0 needs to run in standardized environment to support all features.
+            Параметры для разработки фреймворка A0. RFC (удаленные вызовы функций) используются для вызова функций на другом экземпляре A0. Вы можете разрабатывать и отлаживать A0 локально на вашей системе, перенаправляя некоторые функции на экземпляр A0 в Docker. Это крайне важно для разработки, так как A0 должен работать в стандартизированной среде для поддержки всех функций.
           </div>
 
           <template x-if="!$store.settings.additional?.is_dockerized">
             <div>
               <div class="field">
                 <div class="field-label">
-                  <div class="field-title">RFC Destination URL</div>
+                  <div class="field-title">RFC URL назначения</div>
                   <div class="field-description">
-                    URL of dockerized A0 instance for remote function calls. Do not specify port here.
+                    URL-адрес контейнеризированного (Docker) экземпляра A0 для удаленных вызовов функций. Не указывайте здесь порт.
                   </div>
                 </div>
                 <div class="field-control">
@@ -30,9 +30,9 @@
 
           <div class="field">
             <div class="field-label">
-              <div class="field-title">RFC Password</div>
+              <div class="field-title">RFC Пароль</div>
               <div class="field-description">
-                Password for remote function calls. Passwords must match on both instances. RFCs can not be used with empty password.
+                Пароль для удаленных вызовов функций. Пароли должны совпадать на обоих экземплярах. RFC не могут быть использованы с пустым паролем.
               </div>
             </div>
             <div class="field-control">
@@ -44,8 +44,8 @@
             <div>
               <div class="field">
                 <div class="field-label">
-                  <div class="field-title">RFC HTTP port</div>
-                  <div class="field-description">HTTP port for dockerized instance of A0.</div>
+                  <div class="field-title">RFC HTTP-порт</div>
+                  <div class="field-description">HTTP-порт контейнеризированного экземпляра A0.</div>
                 </div>
                 <div class="field-control">
                   <input type="number" x-model.number="$store.settings.settings.rfc_port_http" />
@@ -57,9 +57,9 @@
 
           <div class="field">
             <div class="field-label">
-              <div class="field-title">Broadcast server restart event</div>
+              <div class="field-title">Транслировать событие перезапуска сервера</div>
               <div class="field-description">
-                Emit a fire-and-forget <code>server_restart</code> broadcast to clients after the server starts.
+                Отправлять клиентам широковещательное уведомление <code>server_restart</code> по принципу «выстрелил и забыл» после запуска сервера.
               </div>
             </div>
             <div class="field-control">
@@ -72,9 +72,9 @@
 
           <div class="field">
             <div class="field-label">
-              <div class="field-title">Enable uvicorn access logs</div>
+              <div class="field-title">Включить логи доступа uvicorn</div>
               <div class="field-description">
-                Temporarily enable uvicorn access logs for debugging WebSocket transport issues (default off).
+                Временно включить логи доступа uvicorn для отладки проблем с транспортом WebSocket (по умолчанию выключено).
               </div>
               <template
                 x-if="$store.settings.additional?.runtime_settings &&
@@ -82,7 +82,7 @@
                     $store.settings.additional.runtime_settings.uvicorn_access_logs_enabled"
               >
                 <div class="field-description">
-                  Applies after backend restart.
+                  Применяется после перезапуска бэкенда.
                 </div>
               </template>
             </div>
@@ -96,16 +96,16 @@
 
           <template x-if="!$store.settings.additional?.is_dockerized">
             <div>
-              <div class="section-title">Testing</div>
+              <div class="section-title">Тестирование</div>
               <div class="section-description">
-                Utilities for validating WebSocket infrastructure in development environments.
+                Утилиты для проверки инфраструктуры WebSocket в средах разработки.
               </div>
 
               <div class="field">
                 <div class="field-label">
-                  <div class="field-title">WebSocket Test Harness</div>
+                  <div class="field-title">Тестовый стенд WebSocket</div>
                   <div class="field-description">
-                    Open the developer harness to run automated and manual WebSocket validation suites.
+                    Открыть тестовый стенд разработчика для запуска автоматических и ручных наборов тестов проверки WebSocket.
                   </div>
                 </div>
                 <div class="field-control">
@@ -113,16 +113,16 @@
                     class="btn btn-field"
                     @click="openModal('settings/developer/websocket-tester.html');"
                   >
-                    Open Harness
+                    Открыть стенд
                   </button>
                 </div>
               </div>
 
               <div class="field">
                 <div class="field-label">
-                  <div class="field-title">WebSocket Event Console</div>
+                  <div class="field-title">Консоль событий WebSocket</div>
                   <div class="field-description">
-                    Inspect inbound and outbound envelopes and lifecycle events in real time (development only).
+                    Инспектировать входящие и исходящие конверты сообщений и жизненный цикл событий в реальном времени (только для разработки).
                   </div>
                 </div>
                 <div class="field-control">
@@ -130,7 +130,7 @@
                     class="btn btn-field"
                     @click="openModal('settings/developer/websocket-event-console.html');"
                   >
-                    Open Console
+                    Открыть консоль
                   </button>
                 </div>
               </div>

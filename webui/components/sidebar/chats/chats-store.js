@@ -114,10 +114,10 @@ const model = {
       this.contexts = [...updatedContexts];
 
       // Show success notification
-      justToast("Chat deleted successfully", "success", 1000, "chat-removal");
+      justToast("Чат успешно удален", "success", 1000, "chat-removal");
     } catch (e) {
       console.error("Error deleting chat:", e);
-      toastFetchError("Error deleting chat", e);
+      toastFetchError("Ошибка удаления чата", e);
     }
   },
 
@@ -154,7 +154,7 @@ const model = {
         globalThis.resetCounter = globalThis.resetCounter + 1;
       }      
     } catch (e) {
-      toastFetchError("Error resetting chat", e);
+      toastFetchError("Ошибка сброса чата", e);
     }
   },
 
@@ -173,7 +173,7 @@ const model = {
       }
 
     } catch (e) {
-      toastFetchError("Error creating new chat", e);
+      toastFetchError("Ошибка создания нового чата", e);
     }
   },
 
@@ -195,16 +195,16 @@ const model = {
       const response = await sendJsonData("/chat_load", { chats: fileContents });
 
       if (!response) {
-        toast("No response returned.", "error");
+        toast("Ответ не получен.", "error");
       } else {
         // Set context to first loaded chat
         if (response.ctxids?.[0]) {
           setContext(response.ctxids[0]);
         }
-        toast("Chats loaded.", "success");
+        toast("Чаты загружены.", "success");
       }
     } catch (e) {
-      toastFetchError("Error loading chats", e);
+      toastFetchError("Ошибка загрузки чатов", e);
     }
   },
 
@@ -215,13 +215,13 @@ const model = {
       const response = await sendJsonData("/chat_export", { ctxid: context });
 
       if (!response) {
-        toast("No response returned.", "error");
+        toast("Ответ не получен.", "error");
       } else {
         this.downloadFile(response.ctxid + ".json", response.content);
-        toast("Chat file downloaded.", "success");
+        toast("Файл чата скачан.", "success");
       }
     } catch (e) {
-      toastFetchError("Error saving chat", e);
+      toastFetchError("Ошибка сохранения чата", e);
     }
   },
 
@@ -304,8 +304,8 @@ const model = {
     const connectionStatus = getConnectionStatus();
     if (connectionStatus === false) {
       await notificationStore.frontendError(
-        "Backend disconnected, cannot restart.",
-        "Restart Error",
+        "Соединение с сервером потеряно, перезапуск невозможен.",
+        "Ошибка перезапуска",
       );
       return;
     }
@@ -313,8 +313,8 @@ const model = {
     // Create a backend notification first so other tabs have a chance to show it
     // before the process is replaced.
     const notificationId = await notificationStore.info(
-      "Restarting...",
-      "System Restart",
+      "Перезапуск...",
+      "Системный перезапуск",
       "",
       9999,
       "restart",

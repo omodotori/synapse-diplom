@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Create a new project</title>
+    <title>Создать новый проект</title>
     <script type="module">
         import { store } from "/components/projects/projects-store.js";
     </script>
@@ -17,8 +17,8 @@
                     </x-component>
 
                     <div class="projects-form-group">
-                        <label class="projects-form-label">Git Repository (optional)</label>
-                        <span class="projects-form-description">Clone from an existing git repository. Leave empty to create an empty project.</span>
+                        <label class="projects-form-label">Git-репозиторий (необязательно)</label>
+                        <span class="projects-form-description">Клонировать из существующего git-репозитория. Оставьте пустым, чтобы создать пустой проект.</span>
                         <input class="projects-form-input" type="text" 
                             x-model="$store.projects.selectedProject.git_url"
                             :disabled="$store.projects.selectedProject._cloning"
@@ -27,8 +27,8 @@
 
                     <template x-if="$store.projects.selectedProject.git_url && $store.projects.selectedProject.git_url.trim()">
                         <div class="projects-form-group">
-                            <label class="projects-form-label">Access Token (optional)</label>
-                            <span class="projects-form-description">For private repositories. Token is used only for cloning and will not be stored.</span>
+                            <label class="projects-form-label">Токен доступа (необязательно)</label>
+                            <span class="projects-form-description">Для приватных репозиториев. Токен используется только для клонирования и не будет сохранен.</span>
                             <input class="projects-form-input" type="password" 
                                 x-model="$store.projects.selectedProject.git_token"
                                 :disabled="$store.projects.selectedProject._cloning"
@@ -46,11 +46,11 @@
                             <template x-if="$store.projects.selectedProject._cloning">
                                 <span class="button-loading">
                                     <span class="spinner"></span>
-                                    <span>Cloning...</span>
+                                    <span>Клонирование...</span>
                                 </span>
                             </template>
                             <template x-if="!$store.projects.selectedProject._cloning">
-                                <span x-text="$store.projects.selectedProject.git_url ? 'Clone and continue' : 'Create and continue'"></span>
+                                <span x-text="$store.projects.selectedProject.git_url ? 'Клонировать и продолжить' : 'Создать и продолжить'"></span>
                             </template>
                         </button>
                     </div>

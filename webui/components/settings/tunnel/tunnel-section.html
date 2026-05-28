@@ -18,8 +18,7 @@
             <!-- Keep in mind that <template> can have only one root element inside -->
             <div id="tunnel-settings-section">
                 <div class="section-title">Туннель Flare</div>
-                <div class="section-description">Create a secure public URL to access your Synapse instance anytime,
-                    anywhere.</div>
+                <div class="section-description">Создайте безопасный публичный URL-адрес для доступа к вашему экземпляру Synapse в любое время и в любом месте.</div>
                 <!-- Tunnel content UI -->
                 <div class="tunnel-container">
                     <div class="field">
@@ -39,7 +38,7 @@
                     <!-- Loading spinner for tunnel operations -->
                     <div class="tunnel-loading-status" x-show="$store.tunnelStore.isLoading">
                         <span class="icon material-symbols-outlined spin">progress_activity</span>
-                        <span x-text="$store.tunnelStore.loadingText || 'Processing tunnel request...'"></span>
+                        <span x-text="$store.tunnelStore.loadingText || 'Обработка запроса туннеля...'"></span>
                     </div>
                     <!-- Microsoft login code display -->
                     <div class="microsoft-login-box" x-show="$store.tunnelStore.microsoftLoginCode" x-transition>
@@ -50,7 +49,7 @@
                         <div class="microsoft-login-steps">
                             <div class="microsoft-login-step">
                                 <span class="step-number">1</span>
-                                <span class="step-text">Open the authentication page:</span>
+                                <span class="step-text">Откройте страницу авторизации:</span>
                             </div>
                             <a class="microsoft-login-link" :href="$store.tunnelStore.microsoftLoginUrl" target="_blank">
                                 <span class="icon material-symbols-outlined">open_in_new</span>
@@ -58,19 +57,19 @@
                             </a>
                             <div class="microsoft-login-step">
                                 <span class="step-number">2</span>
-                                <span class="step-text">Enter this code:</span>
+                                <span class="step-text">Введите следующий код:</span>
                             </div>
                         </div>
                         <div class="microsoft-login-code-container">
                             <div class="microsoft-login-code" x-text="$store.tunnelStore.microsoftLoginCode"></div>
                             <button class="btn btn-copy-code" @click="$store.tunnelStore.copyLoginCode()" :class="$store.tunnelStore.codeCopied ? 'copied' : ''">
                                 <span class="icon material-symbols-outlined" x-text="$store.tunnelStore.codeCopied ? 'check' : 'content_copy'"></span>
-                                <span x-text="$store.tunnelStore.codeCopied ? 'Copied!' : 'Copy Code'"></span>
+                                <span x-text="$store.tunnelStore.codeCopied ? 'Скопировано!' : 'Скопировать код'"></span>
                             </button>
                         </div>
                         <div class="microsoft-login-footer">
                             <span class="icon material-symbols-outlined spin-slow">sync</span>
-                            <span>Waiting for authentication to complete...</span>
+                            <span>Ожидание завершения авторизации...</span>
                         </div>
                     </div>
 
@@ -83,12 +82,12 @@
                                     readonly>
                                 <div class="buttons-row">
                                     <button class="copy-link-button" @click="$store.tunnelStore.copyToClipboard()"
-                                        title="Copy to clipboard">
-                                        <span class="icon material-symbols-outlined">content_copy</span> Copy
+                                        title="Скопировать в буфер обмена">
+                                        <span class="icon material-symbols-outlined">content_copy</span> Копировать
                                     </button>
                                     <button class="refresh-link-button" @click="$store.tunnelStore.refreshLink()"
-                                        title="Generate new URL">
-                                        <span class="icon material-symbols-outlined">refresh</span> Refresh
+                                        title="Сгенерировать новый URL">
+                                        <span class="icon material-symbols-outlined">refresh</span> Обновить
                                     </button>
                                 </div>
                             </div>
@@ -99,21 +98,21 @@
                                 <div class="tunnel-qr-label">Отсканируйте с мобильного устройства</div>
                             </div>
                             <div class="tunnel-link-info">
-                                Share this URL to allow others to access your Synapse instance.
+                                Поделитесь этим URL-адресом, чтобы позволить другим получить доступ к вашему экземпляру Synapse.
                             </div>
                             <div class="tunnel-link-persistence">
-                                This URL will persist until you stop the tunnel or restart the Docker container.
+                                Этот URL-адрес будет активен до тех пор, пока вы не остановите туннель или не перезапустите контейнер Docker.
                             </div>
                             <div class="stop-tunnel-container">
                                 <button class="btn btn-danger" @click="$store.tunnelStore.stopTunnel()">
-                                    <span class="icon material-symbols-outlined">stop_circle</span> Stop Tunnel
+                                    <span class="icon material-symbols-outlined">stop_circle</span> Остановить туннель
                                 </button>
                             </div>
                         </div>
                         <!-- Generate tunnel button when no link exists -->
                         <div class="tunnel-actions" x-show="!$store.tunnelStore.linkGenerated">
                             <button class="btn btn-ok" @click="$store.tunnelStore.generateLink()">
-                                <span class="icon material-symbols-outlined">play_circle</span> Create Tunnel
+                                <span class="icon material-symbols-outlined">play_circle</span> Создать туннель
                             </button>
                         </div>
                     </div>

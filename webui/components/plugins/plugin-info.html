@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Plugin Info</title>
+    <title>Информация о плагине</title>
     <script type="module">
         import { store } from "/components/plugins/list/pluginListStore.js";
     </script>
@@ -16,57 +16,57 @@
                             <h2 class="plugin-info-title"
                                 x-text="$store.pluginListStore.selectedPlugin.display_name || $store.pluginListStore.selectedPlugin.name"></h2>
                             <div class="plugin-info-source"
-                                x-text="$store.pluginListStore.selectedPlugin.is_custom ? 'Custom plugin' : 'Builtin plugin'"></div>
+                                x-text="$store.pluginListStore.selectedPlugin.is_custom ? 'Пользовательский плагин' : 'Встроенный плагин'"></div>
                         </div>
 
                         <div class="plugin-info-description"
-                            x-text="$store.pluginListStore.selectedPlugin.description || 'No description provided.'"></div>
+                            x-text="$store.pluginListStore.selectedPlugin.description || 'Описание отсутствует.'"></div>
                     </div>
                 </div>
 
                 <div class="plugin-info-grid">
-                    <div class="plugin-info-label">Plugin ID:</div>
+                    <div class="plugin-info-label">ID плагина:</div>
                     <div class="plugin-info-value">
                         <code x-text="$store.pluginListStore.selectedPlugin.name"></code>
                     </div>
 
-                    <div class="plugin-info-label">Version:</div>
+                    <div class="plugin-info-label">Версия:</div>
                     <div class="plugin-info-value"
-                        x-text="$store.pluginListStore.selectedPlugin.version || 'n/a'"></div>
+                        x-text="$store.pluginListStore.selectedPlugin.version || 'н/д'"></div>
 
                     <template x-if="$store.pluginListStore.selectedPlugin.author && $store.pluginListStore.selectedPlugin.repo">
                         <div class="plugin-info-grid-pair">
-                            <div class="plugin-info-label">Repository:</div>
+                            <div class="plugin-info-label">Репозиторий:</div>
                             <div class="plugin-info-value">
                                 <code x-text="`${$store.pluginListStore.selectedPlugin.author}/${$store.pluginListStore.selectedPlugin.repo}`"></code>
                             </div>
                         </div>
                     </template>
 
-                    <div class="plugin-info-label">Path:</div>
+                    <div class="plugin-info-label">Путь:</div>
                     <div class="plugin-info-value">
                         <code x-text="$store.pluginListStore.selectedPlugin.path"></code>
                     </div>
 
-                    <div class="plugin-info-label">Settings sections:</div>
+                    <div class="plugin-info-label">Разделы настроек:</div>
                     <div class="plugin-info-value"
-                        x-text="($store.pluginListStore.selectedPlugin.settings_sections || []).length ? $store.pluginListStore.selectedPlugin.settings_sections.join(', ') : 'None'"></div>
+                        x-text="($store.pluginListStore.selectedPlugin.settings_sections || []).length ? $store.pluginListStore.selectedPlugin.settings_sections.join(', ') : 'Нет'"></div>
 
-                    <div class="plugin-info-label">Per-project config:</div>
+                    <div class="plugin-info-label">Настройка на проект:</div>
                     <div class="plugin-info-value"
-                        x-text="$store.pluginListStore.selectedPlugin.per_project_config ? 'Yes' : 'No'"></div>
+                        x-text="$store.pluginListStore.selectedPlugin.per_project_config ? 'Да' : 'Нет'"></div>
 
-                    <div class="plugin-info-label">Per-agent config:</div>
+                    <div class="plugin-info-label">Настройка на агента:</div>
                     <div class="plugin-info-value"
-                        x-text="$store.pluginListStore.selectedPlugin.per_agent_config ? 'Yes' : 'No'"></div>
+                        x-text="$store.pluginListStore.selectedPlugin.per_agent_config ? 'Да' : 'Нет'"></div>
 
-                    <div class="plugin-info-label">Main screen:</div>
+                    <div class="plugin-info-label">Главный экран:</div>
                     <div class="plugin-info-value"
-                        x-text="$store.pluginListStore.selectedPlugin.has_main_screen ? 'Available' : 'Not available'"></div>
+                        x-text="$store.pluginListStore.selectedPlugin.has_main_screen ? 'Доступен' : 'Недоступен'"></div>
 
-                    <div class="plugin-info-label">Config screen:</div>
+                    <div class="plugin-info-label">Экран настроек:</div>
                     <div class="plugin-info-value"
-                        x-text="$store.pluginListStore.selectedPlugin.has_config_screen ? 'Available' : 'Not available'"></div>
+                        x-text="$store.pluginListStore.selectedPlugin.has_config_screen ? 'Доступен' : 'Недоступен'"></div>
                 </div>
 
                 <div class="plugin-info-readme-section"
@@ -83,7 +83,7 @@
                     <div class="collapse" id="plugin-info-readme-collapse">
                         <div class="plugin-info-readme-body">
                             <div x-show="$store.pluginListStore.readmeLoading" class="plugin-info-loading-text">
-                                Loading readme...
+                                Загрузка readme...
                             </div>
                             <div x-show="$store.pluginListStore.readmeError && !$store.pluginListStore.readmeLoading"
                                 class="plugin-info-readme-error"
@@ -103,16 +103,16 @@
                     <div class="plugin-info-footer-left">
                         <button type="button"
                             class="button"
-                            title="Open plugin files"
+                            title="Открыть файлы плагина"
                             @click="$store.pluginListStore.openPluginFolder($store.pluginListStore.selectedPlugin)">
-                            <span class="icon material-symbols-outlined">folder_open</span> Files
+                            <span class="icon material-symbols-outlined">folder_open</span> Файлы
                         </button>
                         <template x-if="$store.pluginListStore.selectedPlugin.pluginHub?.key">
                             <button type="button"
                                 class="button"
-                                title="Open in Plugin Hub"
+                                title="Открыть в каталоге плагинов"
                                 @click="$store.pluginListStore.openPluginHub($store.pluginListStore.selectedPlugin)">
-                                <span class="icon material-symbols-outlined">storefront</span> Hub
+                                <span class="icon material-symbols-outlined">storefront</span> Каталог
                             </button>
                         </template>
                     </div>

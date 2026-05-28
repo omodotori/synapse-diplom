@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Create a new project</title>
+    <title>Инструкции проекта</title>
     <script type="module">
         import { store } from "/components/projects/projects-store.js";
     </script>
@@ -17,32 +17,30 @@
                     </div> -->
 
                 <div class="projects-form-group">
-                    <label class="projects-form-label">Description</label>
-                    <span class="projects-form-description">Describe the project. This helps both you and Synapse
-                        understand the project context.</span>
+                    <label class="projects-form-label">Описание</label>
+                    <span class="projects-form-description">Опишите проект. Это поможет как вам, так и Synapse понять контекст проекта.</span>
                     <textarea class="projects-form-textarea" x-model="$store.projects.selectedProject.description"
                         rows="5" placeholder="Введите описание проекта"></textarea>
                 </div>
 
                 <div class="projects-form-group">
-                    <label class="projects-form-label">Instructions</label>
-                    <span class="projects-form-description">Provide specific instructions for Synapse related to this
-                        project.</span>
+                    <label class="projects-form-label">Инструкции</label>
+                    <span class="projects-form-description">Предоставьте конкретные инструкции для Synapse, относящиеся к этому проекту.</span>
                     <textarea class="projects-form-textarea"
                         x-model="$store.projects.selectedProject.instructions" rows="15"
                         placeholder="Введите инструкции проекта"></textarea>
                 </div>
 
                 <div class="projects-form-group">
-                    <label class="projects-form-label">Instruction files</label>
+                    <label class="projects-form-label">Файлы инструкций</label>
                     <div class="projects-input-with-button-wrapper">
-                        <span class="projects-form-description">Additional instruction files in <strong><span
-                                    x-text="$store.projects.getSelectedAbsPath('.a0proj','instructions')"></span></strong>. Only text files are currently supported (txt, md, yaml, no PDFs or images).</span>
-                        <span class="projects-form-description">Currently there are <strong><span
-                                    x-text="$store.projects.selectedProject.instruction_files_count || 0"></span></strong> instruction files.</span>
+                        <span class="projects-form-description">Дополнительные файлы инструкций в <strong><span
+                                    x-text="$store.projects.getSelectedAbsPath('.a0proj','instructions')"></span></strong>. В настоящее время поддерживаются только текстовые файлы (txt, md, yaml; без PDF и изображений).</span>
+                        <span class="projects-form-description">В настоящее время добавлено файлов инструкций: <strong><span
+                                    x-text="$store.projects.selectedProject.instruction_files_count || 0"></span></strong>.</span>
                         <button class="button icon-button" x-on:click="$store.projects.browseInstructionFiles()">
                             <span class="icon material-symbols-outlined">folder</span>
-                            <span>Browse</span>
+                            <span>Обзор</span>
                         </button>
                     </div>
                 </div>

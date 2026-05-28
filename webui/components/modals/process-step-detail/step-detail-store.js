@@ -49,7 +49,7 @@ const model = {
   // Copy text to clipboard with toast feedback
   copyToClipboard(text) {
     navigator.clipboard.writeText(text)
-      .then(() => notificationStore.addFrontendToastOnly("success", "Copied to clipboard!", "", 3))
+      .then(() => notificationStore.addFrontendToastOnly("success", "Скопировано в буфер обмена!", "", 3))
       .catch((err) => console.error("Clipboard copy failed:", err));
   },
 
@@ -57,17 +57,17 @@ const model = {
   formatStepForCopy(step) {
     if (!step) return "";
     const lines = [];
-    lines.push(`Type: ${step.type || "unknown"}`);
+    lines.push(`Тип: ${step.type || "неизвестно"}`);
     const heading = this.cleanHeading(step.heading);
-    if (heading) lines.push(`Heading: ${heading}`);
+    if (heading) lines.push(`Заголовок: ${heading}`);
     if (step.timestamp) {
       const date = new Date(parseFloat(step.timestamp) * 1000);
-      lines.push(`Timestamp: ${date.toISOString()}`);
+      lines.push(`Время: ${date.toISOString()}`);
     }
-    if (step.durationMs) lines.push(`Duration: ${step.durationMs}ms`);
+    if (step.durationMs) lines.push(`Длительность: ${step.durationMs}мс`);
     if (step.kvps) {
       lines.push("");
-      lines.push("--- Data ---");
+      lines.push("--- Данные ---");
       const flattenedKvps = this.flattenKvps(step.kvps);
       for (const [key, value] of Object.entries(flattenedKvps)) {
         lines.push(this.buildKvpCopyText(key, value));
@@ -75,7 +75,7 @@ const model = {
     }
     if (step.content) {
       lines.push("");
-      lines.push("--- Content ---");
+      lines.push("--- Содержание ---");
       lines.push(step.content);
     }
     return lines.join("\n");
@@ -144,20 +144,20 @@ const model = {
   // Format step type for display
   formatStepType(type) {
     const typeMap = {
-      'agent': 'Generation',
-      'code_exe': 'Code Execution',
-      'tool': 'Tool Call',
-      'mcp': 'MCP Tool',
-      'browser': 'Browser',
-      'response': 'Response',
-      'info': 'Info',
-      'hint': 'Hint',
-      'warning': 'Warning',
-      'error': 'Error',
-      'util': 'Utility',
-      'progress': 'Progress'
+      'agent': 'Генерация',
+      'code_exe': 'Выполнение кода',
+      'tool': 'Вызов инструмента',
+      'mcp': 'Инструмент MCP',
+      'browser': 'Браузер',
+      'response': 'Ответ',
+      'info': 'Инфо',
+      'hint': 'Подсказка',
+      'warning': 'Предупреждение',
+      'error': 'Ошибка',
+      'util': 'Утилита',
+      'progress': 'Прогресс'
     };
-    return typeMap[type] || (type ? type.charAt(0).toUpperCase() + type.slice(1) : 'Unknown');
+    return typeMap[type] || (type ? type.charAt(0).toUpperCase() + type.slice(1) : 'Неизвестно');
   },
 
   // Format timestamp for display

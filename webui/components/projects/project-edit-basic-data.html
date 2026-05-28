@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Project basic data</title>
+    <title>Основные данные проекта</title>
     <script type="module">
         import { store } from "/components/projects/projects-store.js";
     </script>
@@ -14,24 +14,24 @@
 
                 <template x-if="!$store.projects.selectedProject._meta.creating">
                     <div class="projects-form-group">
-                        <label class="projects-form-label">Folder name</label>
-                        <span class="projects-form-description">Project files and settings are located in
+                        <label class="projects-form-label">Имя папки</label>
+                        <span class="projects-form-description">Файлы и настройки проекта находятся в
                             <strong><span
                                     x-text="$store.projects.getSelectedAbsPath()"></span></strong></span>
                         <div class="projects-input-with-button-wrapper">
                             <input class="projects-form-input projects-disabled" type="text" x-model="$store.projects.selectedProject.name" disabled>
                             <button class="button icon-button" @click="$store.projects.browseSelected()">
                                 <span class="icon material-symbols-outlined">folder</span>
-                                <span>Browse</span>
+                                <span>Обзор</span>
                             </button>
                         </div>
                     </div>
                 </template>
 
                 <div class="projects-form-group">
-                    <label class="projects-form-label">Title</label>
-                    <span class="projects-form-description">Title and description are visible to both you and Synapse
-                        and can help it understand the project.</span>
+                    <label class="projects-form-label">Название</label>
+                    <span class="projects-form-description">Название и описание видны как вам, так и Synapse,
+                        и могут помочь ему лучше понять проект.</span>
                     <input class="projects-form-input" type="text" x-model="$store.projects.selectedProject.title"
                         placeholder="Необязательный заголовок">
                 </div>
@@ -43,7 +43,7 @@
                 </div> -->
 
                 <div class="projects-form-group">
-                    <label class="projects-form-label">Color</label>
+                    <label class="projects-form-label">Цвет</label>
                     <div class="projects-color-row">
                         <div class="projects-color-ball projects-color-none"
                             :class="{'selected': !$store.projects.selectedProject.color}"
@@ -64,7 +64,7 @@
                     <div class="projects-form-group git-status-section">
                         <label class="projects-form-label">
                             <span class="material-symbols-outlined git-icon">commit</span>
-                            Git Status
+                            Статус Git
                         </label>
                         <div class="git-status-card">
                             <!-- Repository URL -->
@@ -72,11 +72,11 @@
                                 <div class="git-status-row">
                                     <span class="git-status-label">
                                         <span class="material-symbols-outlined">link</span>
-                                        Repository
+                                        Репозиторий
                                     </span>
                                     <div class="git-status-value-with-action">
                                         <span class="git-status-value git-url" x-text="$store.projects.selectedProject.git_status.remote_url"></span>
-                                        <a class="git-action-link" :href="$store.projects.selectedProject.git_status.remote_url" target="_blank" rel="noopener noreferrer" title="Open in browser">
+                                        <a class="git-action-link" :href="$store.projects.selectedProject.git_status.remote_url" target="_blank" rel="noopener noreferrer" title="Открыть в браузере">
                                             <span class="material-symbols-outlined">open_in_new</span>
                                         </a>
                                     </div>
@@ -87,7 +87,7 @@
                             <div class="git-status-row">
                                 <span class="git-status-label">
                                     <span class="material-symbols-outlined">fork_right</span>
-                                    Branch
+                                    Ветка
                                 </span>
                                 <span class="git-status-value git-branch" x-text="$store.projects.selectedProject.git_status.current_branch"></span>
                             </div>
@@ -96,18 +96,18 @@
                             <div class="git-status-row">
                                 <span class="git-status-label">
                                     <span class="material-symbols-outlined">info</span>
-                                    Status
+                                    Статус
                                 </span>
                                 <span class="git-status-value" 
                                     :class="$store.projects.selectedProject.git_status.is_dirty ? 'git-dirty' : 'git-clean'">
                                     <template x-if="!$store.projects.selectedProject.git_status.is_dirty">
-                                        <span>✓ Clean</span>
+                                        <span>✓ Чистый</span>
                                     </template>
                                     <template x-if="$store.projects.selectedProject.git_status.is_dirty">
                                         <span>
-                                            ● Has uncommitted changes
+                                            ● Есть незакоммиченные изменения
                                             <template x-if="$store.projects.selectedProject.git_status.untracked_count > 0">
-                                                <span x-text="'(' + $store.projects.selectedProject.git_status.untracked_count + ' untracked)'"></span>
+                                                <span x-text="'(' + $store.projects.selectedProject.git_status.untracked_count + ' неотслеживаемых)'"></span>
                                             </template>
                                         </span>
                                     </template>
@@ -119,14 +119,14 @@
                                 <div class="git-status-row">
                                     <span class="git-status-label">
                                         <span class="material-symbols-outlined">history</span>
-                                        Last Commit
+                                        Последний коммит
                                     </span>
                                     <div class="git-commit-info">
                                         <span class="git-commit-hash" x-text="$store.projects.selectedProject.git_status.last_commit.hash"></span>
                                         <span class="git-commit-message" x-text="$store.projects.selectedProject.git_status.last_commit.message"></span>
                                         <span class="git-commit-meta">
-                                            by <span x-text="$store.projects.selectedProject.git_status.last_commit.author"></span>
-                                            on <span x-text="$store.projects.selectedProject.git_status.last_commit.date"></span>
+                                            автор: <span x-text="$store.projects.selectedProject.git_status.last_commit.author"></span>, 
+                                            дата: <span x-text="$store.projects.selectedProject.git_status.last_commit.date"></span>
                                         </span>
                                     </div>
                                 </div>

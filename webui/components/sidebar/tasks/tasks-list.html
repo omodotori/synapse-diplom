@@ -31,13 +31,13 @@
                         <div class="task-title-line">
                           <span :class="{'project-color-ball': true, 'heartbeat': task.running}" :style="task.project?.color ? { backgroundColor: task.project.color } : { border: '1px solid var(--color-border)' }"></span>
                           <span class="task-name"
-                            x-text="(task.task_name || `Task #${task.no}`)"
+                            x-text="(task.task_name || `Задача #${task.no}`)"
                             :data-task-id="task.id"></span>
                         </div>
                       <div class="task-info-line">
                         <span class="scheduler-status-badge scheduler-status-badge-small"
                               :class="task.state ? `scheduler-status-${task.state}` : 'scheduler-status-idle'"
-                              x-text="task.state || 'idle'"></span>
+                              x-text="task.state || 'ожидание'"></span>
                         <div class="task-actions">
                           <button class="btn-icon-action"
                                   @click.stop="$store.tasks.openDetail(task.id)"

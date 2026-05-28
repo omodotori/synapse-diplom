@@ -54,10 +54,10 @@ const model = {
 
   // Width presets: { label, value in em }
   chatWidthOptions: [
-    { label: "MIN", value: "40" },
-    { label: "WIDE", value: "55" },
+    { label: "МИН", value: "40" },
+    { label: "ШИР", value: "55" },
     { label: "2X", value: "80" },
-    { label: "FULL", value: "full" },
+    { label: "ПОЛН", value: "full" },
   ],
 
   // Detail mode for process groups/steps expansion
@@ -72,10 +72,10 @@ const model = {
 
   // Detail mode options for UI sidebar
   detailModeOptions: [
-    { label: "NO", value: "collapsed", title: "All collapsed" },
-    { label: "LIST", value: "list", title: "Steps collapsed" },
-    { label: "STEP", value: "current", title: "Current step only" },
-    { label: "ALL", value: "expanded", title: "All expanded" },
+    { label: "НЕТ", value: "collapsed", title: "Все свернуто" },
+    { label: "СПИСОК", value: "list", title: "Шаги свернуты" },
+    { label: "ШАГ", value: "current", title: "Только текущий шаг" },
+    { label: "ВСЕ", value: "expanded", title: "Все развернуто" },
   ],
 
   // Initialize preferences and apply current state

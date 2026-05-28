@@ -50,7 +50,13 @@ class ImageGet(ApiHandler):
             if runtime.is_development():
                 # Convert /synapse/... Docker paths to local absolute paths
                 local_path = files.fix_dev_path(path)
-                if files.exists(local_path):
+                
+                # Also check the raw absolute path as-is (e.g. if volume-mounted path is directly accessible)
+                raw_exists = os.path.isabs(path) and os.path.exists(path)
+                
+                if raw_exists:
+                    response = send_file(path)
+                elif files.exists(local_path):
                     response = send_file(local_path)
                 else:
                     # Try fetching from Docker via RFC as fallback
@@ -70,8 +76,12 @@ class ImageGet(ApiHandler):
                                 download_name=filename,
                             )
                         else:
+                            from helpers.print_style import PrintStyle
+                            PrintStyle.warning(f"Image not found in Docker: {path}")
                             response = _send_fallback_icon("image")
-                    except Exception:
+                    except Exception as e:
+                        from helpers.print_style import PrintStyle
+                        PrintStyle.error(f"RFC image fetch failed for {path}: {e}")
                         response = _send_fallback_icon("image")
             else:
                 if files.exists(path):

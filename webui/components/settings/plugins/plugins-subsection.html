@@ -17,13 +17,13 @@
                  x-destroy="context.cleanup()">
                 <template x-if="context.loading || context.plugins.length > 0">
                     <div>
-                        <div class="section-title">Plugins</div>
+                        <div class="section-title">Плагины</div>
                         <div class="section-description">
-                            Plugin-specific settings for this tab.
+                            Настройки для этой вкладки, специфичные для плагина.
                         </div>
 
                         <div x-show="context.loading" class="loading">
-                            <span>Loading plugins...</span>
+                            <span>Загрузка плагинов...</span>
                         </div>
 
                         <div class="plugins-list">
@@ -31,19 +31,19 @@
                                 <div class="plugin-card">
                                     <div class="plugin-header">
                                         <div class="plugin-heading">
-                                            <div class="plugin-title" x-text="plugin.display_name || plugin.name || '(unnamed plugin)'"></div>
+                                            <div class="plugin-title" x-text="plugin.display_name || plugin.name || '(плагин без названия)'"></div>
                                             <code class="plugin-path" x-text="plugin.path"></code>
                                         </div>
                                         <div class="plugin-actions">
                                             <button type="button"
                                                 class="button"
-                                                title="Config"
+                                                title="Настройки"
                                                 @click="context.openPluginConfig(plugin)">
-                                                <span class="icon material-symbols-outlined">settings</span> Config
+                                                <span class="icon material-symbols-outlined">settings</span> Настройки
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="plugin-description" x-text="plugin.description || 'No description provided.'"></div>
+                                    <div class="plugin-description" x-text="plugin.description || 'Описание не предоставлено.'"></div>
                                 </div>
                             </template>
                         </div>

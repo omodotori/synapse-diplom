@@ -1,21 +1,21 @@
 <html>
   <head>
-    <title>Backup & Restore</title>
+    <title>Резервное копирование и восстановление</title>
   </head>
 
   <body>
     <div x-data>
       <div>
-        <div class="section-title">Backup &amp; Restore</div>
+        <div class="section-title">Резервное копирование и восстановление</div>
         <div class="section-description">
-          Backup and restore Synapse data and configurations using glob pattern-based file selection.
+          Резервное копирование и восстановление данных и конфигураций Synapse с выбором файлов по маскам поиска (glob).
         </div>
 
         <div class="field">
           <div class="field-label">
-            <div class="field-title">Создать бэкап</div>
+            <div class="field-title">Создать резервную копию</div>
             <div class="field-description">
-              Create a backup archive of selected files and configurations using customizable patterns.
+              Создать архивную резервную копию выбранных файлов и конфигураций по настраиваемым маскам.
             </div>
           </div>
           <div class="field-control">
@@ -23,16 +23,16 @@
               class="btn btn-field"
               @click="window.openModal('settings/backup/backup.html')"
             >
-              Create Backup
+              Создать бэкап
             </button>
           </div>
         </div>
 
         <div class="field">
           <div class="field-label">
-            <div class="field-title">Restore from Backup</div>
+            <div class="field-title">Восстановить из копии</div>
             <div class="field-description">
-              Restore files and configurations from a backup archive with pattern-based selection.
+              Восстановить файлы и конфигурации из архивной резервной копии с выбором по маскам.
             </div>
           </div>
           <div class="field-control">
@@ -40,7 +40,7 @@
               class="btn btn-field"
               @click="window.openModal('settings/backup/restore.html')"
             >
-              Restore Backup
+              Восстановить бэкап
             </button>
           </div>
         </div>

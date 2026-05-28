@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Self Update</title>
+    <title>Обновление</title>
     <script type="module">
       import { store } from "/components/settings/external/self-update-store.js";
     </script>
@@ -10,17 +10,17 @@
     <div x-data="{ get settings() { return $store.settings.settings } }">
       <template x-if="settings">
         <div>
-        <div class="section-title">Self Update</div>
+        <div class="section-title">Самообновление</div>
 
         <div class="field">
           <div class="field-label">
-            <div class="field-title">Open Self Update</div>
+            <div class="field-title">Открыть обновление</div>
             <div class="field-description">
-              Choose the target branch and tag, decide whether to zip <code>/a0/usr</code> first, and review the durable trigger, status, and log file locations used across restarts.
+              Выберите целевую ветку и тег, решите, нужно ли сначала упаковать в zip <code>/a0/usr</code>, и просмотрите постоянный триггер, статус и расположение лог-файлов, используемых между перезапусками.
             </div>
             <template x-if="!$store.settings.additional?.is_dockerized">
               <div class="field-description">
-                This action is currently available only in dockerized installs.
+                Это действие в настоящее время доступно только для установок в Docker.
               </div>
             </template>
           </div>
@@ -30,16 +30,16 @@
               @click="$store.selfUpdateStore.openModal()"
               :disabled="!$store.settings.additional?.is_dockerized"
             >
-              Open Self Update
+              Открыть обновление
             </button>
           </div>
         </div>
 
         <div class="field">
           <div class="field-label">
-            <div class="field-title">Enable Update Checker</div>
+            <div class="field-title">Включить проверку обновлений</div>
             <div class="field-description">
-              Periodically check for newer Synapse releases and show a notification when an update is recommended.
+              Периодически проверять наличие новых выпусков Synapse и показывать уведомление, когда рекомендуется обновление.
             </div>
           </div>
           <div class="field-control">

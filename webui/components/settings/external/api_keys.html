@@ -1,16 +1,16 @@
 <html>
   <head>
-    <title>API Keys</title>
+    <title>API Ключи</title>
   </head>
 
   <body>
     <div x-data>
       <template x-if="$store.settings.settings">
         <div>
-          <div class="section-title">API Keys</div>
+          <div class="section-title">API Ключи</div>
           <div class="section-description">
-            API keys for model providers and services used by Synapse. You can set multiple API keys separated by a comma (,). They will be used in round-robin fashion.<br>
-            For more information about Synapse Venice provider, see <a href="http://agent-zero.ai/?community/api-dashboard/about" target="_blank">Synapse Venice</a>.
+            API-ключи для провайдеров моделей и сервисов, используемых Synapse. Вы можете указать несколько API-ключей через запятую (,). Они будут использоваться по круговому циклу (round-robin).<br>
+            Для получения дополнительной информации о провайдере Synapse Venice см. <a href="http://agent-zero.ai/?community/api-dashboard/about" target="_blank">Synapse Venice</a>.
           </div>
 
           <template x-for="provider in $store.settings.apiKeyProviders" :key="provider.value">

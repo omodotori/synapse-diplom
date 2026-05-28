@@ -1,21 +1,21 @@
 <html>
 
 <head>
-    <title>Synapse External API Examples</title>
+    <title>Примеры внешнего API Synapse</title>
 </head>
 
 <body>
     <div x-data>
-        <p>Synapse provides external API endpoints for integration with other applications.</p>
-        <p>These endpoints use API key authentication and support text messages and file attachments.</p>
+        <p>Synapse предоставляет конечные точки внешнего API для интеграции с другими приложениями.</p>
+        <p>Эти конечные точки используют аутентификацию по API-ключу и поддерживают текстовые сообщения и вложения файлов.</p>
 
         <!-- API Token Information -->
         <div style="background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px; margin: 16px 0;">
-            <h4 style="margin: 0 0 8px 0; color: var(--color-text-primary);">API Token Information</h4>
+            <h4 style="margin: 0 0 8px 0; color: var(--color-text-primary);">Информация об API-токене</h4>
             <p style="margin: 0; color: var(--color-text-secondary); font-size: 14px;">
-                The API token is automatically generated from your username and password.
-                This same token is used for both MCP server connections and external API endpoints.
-                The token changes when you update your credentials.
+                API-токен генерируется автоматически на основе вашего имени пользователя и пароля.
+                Этот же токен используется как для подключений к MCP-серверу, так и для конечных точек внешнего API.
+                Токен изменяется при обновлении ваших учетных данных.
             </p>
         </div>
 
@@ -23,38 +23,38 @@
         <div class="api-section">
             <h2>POST /api_message</h2>
             <p style="margin: 0 0 16px 0; color: var(--color-text-secondary); font-size: 14px;">
-                Send messages to Synapse and receive responses. Supports text messages, file attachments, and conversation continuity.
+                Отправляйте сообщения в Synapse и получайте ответы. Поддерживает текстовые сообщения, вложения файлов и сохранение непрерывности диалога.
             </p>
 
             <!-- API Reference -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">API Reference</h3>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Справка по API</h3>
             <div style="background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px; margin: 0 0 20px 0;">
                 <p style="margin: 0 0 8px 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Parameters:</strong><br>
-                    • <code>context_id</code> (string, optional): Existing chat context ID<br>
-                    • <code>message</code> (string, required): The message to send<br>
-                    • <code>attachments</code> (array, optional): Array of {filename, base64} objects<br>
-                    • <code>lifetime_hours</code> (number, optional): Chat lifetime in hours (default: 24)<br>
-                    • <code>project_name</code> (string, optional): Project name to activate (only on first message)
+                    <strong>Параметры:</strong><br>
+                    • <code>context_id</code> (string, необязательный): Идентификатор существующего контекста чата<br>
+                    • <code>message</code> (string, обязательный): Отправляемое сообщение<br>
+                    • <code>attachments</code> (array, необязательный): Массив объектов {filename, base64}<br>
+                    • <code>lifetime_hours</code> (number, необязательный): Время жизни чата в часах (по умолчанию: 24)<br>
+                    • <code>project_name</code> (string, необязательный): Имя активируемого проекта (только в первом сообщении)
                 </p>
                 <p style="margin: 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Headers:</strong> <code>X-API-KEY</code> (required), <code>Content-Type: application/json</code>
+                    <strong>Заголовки:</strong> <code>X-API-KEY</code> (обязательный), <code>Content-Type: application/json</code>
                 </p>
             </div>
 
             <!-- JavaScript Examples -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">JavaScript Examples</h3>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Примеры на JavaScript</h3>
 
-            <h4>Basic Usage Example</h4>
+            <h4>Пример базового использования</h4>
             <div id="api-basic-example"></div>
 
-            <h4>Conversation Continuation Example</h4>
+            <h4>Пример продолжения диалога</h4>
             <div id="api-continuation-example"></div>
 
-            <h4>File Attachment Example</h4>
+            <h4>Пример с вложением файла</h4>
             <div id="api-attachment-example"></div>
 
-            <h4>Project Usage Example</h4>
+            <h4>Пример работы с проектом</h4>
             <div id="api-project-example"></div>
         </div>
 
@@ -62,29 +62,29 @@
         <div class="api-section">
             <h2>GET/POST /api_log_get</h2>
             <p style="margin: 0 0 16px 0; color: var(--color-text-secondary); font-size: 14px;">
-                Retrieve log data by context ID, limited to a specified number of entries from the newest.
+                Получение данных логов по идентификатору контекста (context_id), ограниченное указанным количеством последних записей.
             </p>
 
             <!-- API Reference -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">API Reference</h3>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Справка по API</h3>
             <div style="background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px; margin: 0 0 20px 0;">
                 <p style="margin: 0 0 8px 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Parameters:</strong><br>
-                    • <code>context_id</code> (string, required): Context ID to get logs from<br>
-                    • <code>length</code> (integer, optional): Number of log items to return from newest (default: 100)
+                    <strong>Параметры:</strong><br>
+                    • <code>context_id</code> (string, обязательный): Идентификатор контекста для получения логов<br>
+                    • <code>length</code> (integer, необязательный): Количество записей лога для возврата, начиная с самых новых (по умолчанию: 100)
                 </p>
                 <p style="margin: 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Headers:</strong> <code>X-API-KEY</code> (required), <code>Content-Type: application/json</code> (for POST)
+                    <strong>Заголовки:</strong> <code>X-API-KEY</code> (обязательный), <code>Content-Type: application/json</code> (для POST)
                 </p>
             </div>
 
             <!-- JavaScript Examples -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">JavaScript Examples</h3>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Примеры на JavaScript</h3>
 
-            <h4>GET Request Example</h4>
+            <h4>Пример GET-запроса</h4>
             <div id="api-log-get-example"></div>
 
-            <h4>POST Request Example</h4>
+            <h4>Пример POST-запроса</h4>
             <div id="api-log-post-example"></div>
         </div>
 
@@ -92,24 +92,24 @@
         <div class="api-section">
             <h2>POST /api_terminate_chat</h2>
             <p style="margin: 0 0 16px 0; color: var(--color-text-secondary); font-size: 14px;">
-                Terminate and remove a chat context to free up resources. Similar to the MCP finish_chat function.
+                Завершить сессию чата и удалить его контекст для освобождения ресурсов. Аналогично функции MCP finish_chat.
             </p>
 
             <!-- API Reference -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">API Reference</h3>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Справка по API</h3>
             <div style="background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px; margin: 0 0 20px 0;">
                 <p style="margin: 0 0 8px 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Parameters:</strong><br>
-                    • <code>context_id</code> (string, required): Context ID of the chat to terminate
+                    <strong>Параметры:</strong><br>
+                    • <code>context_id</code> (string, обязательный): Идентификатор контекста чата для завершения
                 </p>
                 <p style="margin: 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Headers:</strong> <code>X-API-KEY</code> (required), <code>Content-Type: application/json</code>
+                    <strong>Заголовки:</strong> <code>X-API-KEY</code> (обязательный), <code>Content-Type: application/json</code>
                 </p>
             </div>
 
             <!-- JavaScript Examples -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">JavaScript Examples</h3>
-            <h4>Basic Termination Examples</h4>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Примеры на JavaScript</h3>
+            <h4>Базовые примеры завершения</h4>
             <div id="api-terminate-example"></div>
         </div>
 
@@ -117,24 +117,24 @@
         <div class="api-section">
             <h2>POST /api_reset_chat</h2>
             <p style="margin: 0 0 16px 0; color: var(--color-text-secondary); font-size: 14px;">
-                Reset a chat context to clear conversation history while keeping the context_id alive for continued use.
+                Сбросить контекст чата для очистки истории диалога, сохраняя при этом context_id активным для дальнейшего использования.
             </p>
 
             <!-- API Reference -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">API Reference</h3>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Справка по API</h3>
             <div style="background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px; margin: 0 0 20px 0;">
                 <p style="margin: 0 0 8px 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Parameters:</strong><br>
-                    • <code>context_id</code> (string, required): Context ID of the chat to reset
+                    <strong>Параметры:</strong><br>
+                    • <code>context_id</code> (string, обязательный): Идентификатор контекста чата для сброса
                 </p>
                 <p style="margin: 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Headers:</strong> <code>X-API-KEY</code> (required), <code>Content-Type: application/json</code>
+                    <strong>Заголовки:</strong> <code>X-API-KEY</code> (обязательный), <code>Content-Type: application/json</code>
                 </p>
             </div>
 
             <!-- JavaScript Examples -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">JavaScript Examples</h3>
-            <h4>Basic Reset Examples</h4>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Примеры на JavaScript</h3>
+            <h4>Базовые примеры сброса</h4>
             <div id="api-reset-example"></div>
         </div>
 
@@ -142,24 +142,24 @@
         <div class="api-section">
             <h2>POST /api_files_get</h2>
             <p style="margin: 0 0 16px 0; color: var(--color-text-secondary); font-size: 14px;">
-                Retrieve file contents by paths, returning files as base64 encoded data. Useful for retrieving uploaded attachments.
+                Получение содержимого файлов по их путям, возвращая файлы в виде данных в кодировке base64. Полезно для получения загруженных вложений.
             </p>
 
             <!-- API Reference -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">API Reference</h3>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Справка по API</h3>
             <div style="background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px; margin: 0 0 20px 0;">
                 <p style="margin: 0 0 8px 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Parameters:</strong><br>
-                    • <code>paths</code> (array, required): Array of file paths to retrieve (e.g., ["/a0/usr/uploads/file.txt"])
+                    <strong>Параметры:</strong><br>
+                    • <code>paths</code> (array, обязательный): Массив путей к извлекаемым файлам (например, ["/a0/usr/uploads/file.txt"])
                 </p>
                 <p style="margin: 0; color: var(--color-text-secondary); font-size: 14px;">
-                    <strong>Headers:</strong> <code>X-API-KEY</code> (required), <code>Content-Type: application/json</code>
+                    <strong>Заголовки:</strong> <code>X-API-KEY</code> (обязательный), <code>Content-Type: application/json</code>
                 </p>
             </div>
 
             <!-- JavaScript Examples -->
-            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">JavaScript Examples</h3>
-            <h4>File Retrieval Examples</h4>
+            <h3 style="margin: 20px 0 12px 0; color: var(--color-text-primary);">Примеры на JavaScript</h3>
+            <h4>Примеры извлечения файлов</h4>
             <div id="api-files-get-example"></div>
         </div>
 

@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>WebSocket Event Console</title>
+  <title>Консоль событий WebSocket</title>
   <script type="module">
     import { store as websocketEventConsoleStore } from "/components/settings/developer/websocket-event-console-store.js";
   </script>
@@ -13,10 +13,9 @@
         x-create="$store.websocketEventConsoleStore.onOpen()"
         x-destroy="$store.websocketEventConsoleStore.detach({ notify: false })"
       >
-        <h2>WebSocket Event Console</h2>
+        <h2>Консоль событий WebSocket</h2>
         <p class="ws-description">
-          Capture inbound/outbound WebSocket envelopes, lifecycle broadcasts, and diagnostic metadata while capture is enabled.
-          This modal is the display layer for the bounded in-memory buffer.
+          Перехватывайте входящие/исходящие конверты WebSocket, широковещательные рассылки жизненного цикла и диагностические метаданные во время активного захвата. Это модальное окно представляет собой слой отображения ограниченного буфера в оперативной памяти.
         </p>
 
         <div class="ws-controls">
@@ -25,29 +24,29 @@
             x-show="!$store.websocketEventConsoleStore.captureEnabled"
             @click="$store.websocketEventConsoleStore.startCapture()"
           >
-            Start capture
+            Начать захват
           </button>
           <button
             class="btn"
             x-show="$store.websocketEventConsoleStore.captureEnabled"
             @click="$store.websocketEventConsoleStore.stopCapture()"
           >
-            Stop capture
+            Остановить захват
           </button>
           <button
             class="btn"
             :disabled="!$store.websocketEventConsoleStore.captureEnabled"
             @click="$store.websocketEventConsoleStore.reconnect()"
           >
-            Resubscribe
+            Переподписаться
           </button>
-          <button class="btn" @click="$store.websocketEventConsoleStore.clear()">Clear</button>
+          <button class="btn" @click="$store.websocketEventConsoleStore.clear()">Очистить</button>
           <label class="ws-toggle">
             <input
               type="checkbox"
               x-model="$store.websocketEventConsoleStore.showHandledOnly"
             />
-            Show inbound events with handlers only
+            Показывать только входящие события с обработчиками
           </label>
         </div>
 
@@ -55,7 +54,7 @@
           <span
             class="badge"
             :class="($store.websocketEventConsoleStore.captureEnabled && $store.websocketEventConsoleStore.subscriptionActive) ? 'badge-success' : 'badge-warning'"
-            x-text="!$store.websocketEventConsoleStore.captureEnabled ? 'Capture OFF' : ($store.websocketEventConsoleStore.subscriptionActive ? 'Capture ON' : 'Capture ON (not subscribed)')"
+            x-text="!$store.websocketEventConsoleStore.captureEnabled ? 'Захват ВЫКЛ' : ($store.websocketEventConsoleStore.subscriptionActive ? 'Захват ВКЛ' : 'Захват ВКЛ (нет подписки)')"
           ></span>
           <span
             class="ws-error"
@@ -78,7 +77,7 @@
               <div class="ws-entry-body">
                 <div class="ws-row">
                   <div>
-                    <span class="ws-label">Correlation:</span>
+                    <span class="ws-label">Корреляция:</span>
                     <span x-text="entry.correlationId || '—'"></span>
                   </div>
                   <div>
@@ -86,14 +85,14 @@
                     <span x-text="entry.sid || (entry.targets && entry.targets.join(', ') ) || '—'"></span>
                   </div>
                   <div>
-                    <span class="ws-label">Handlers:</span>
+                    <span class="ws-label">Обработчики:</span>
                     <span
                       x-text="entry.resultSummary?.handlerCount ?? entry.resultSummary?.handlers?.length ?? 0"
                     ></span>
                     <template x-if="entry.resultSummary?.ok || entry.resultSummary?.error">
                       <span class="ws-inline-summary">
-                        <span>OK: <span x-text="entry.resultSummary.ok || 0"></span></span>
-                        <span>Errors: <span x-text="entry.resultSummary.error || 0"></span></span>
+                        <span>Успешно: <span x-text="entry.resultSummary.ok || 0"></span></span>
+                        <span>Ошибки: <span x-text="entry.resultSummary.error || 0"></span></span>
                       </span>
                     </template>
                   </div>
@@ -101,11 +100,11 @@
 
                 <div class="ws-json-grid">
                   <div>
-                    <h4>Payload Summary</h4>
+                    <h4>Сводка Payload</h4>
                     <pre x-text="JSON.stringify(entry.payloadSummary || {}, null, 2)"></pre>
                   </div>
                   <div>
-                    <h4>Result Summary</h4>
+                    <h4>Сводка результатов</h4>
                     <pre x-text="JSON.stringify(entry.resultSummary || {}, null, 2)"></pre>
                   </div>
                 </div>
@@ -118,9 +117,9 @@
 
     <template x-if="!window.runtimeInfo?.isDevelopment">
       <div class="ws-console ws-disabled">
-        <h2>WebSocket Event Console</h2>
+        <h2>Консоль событий WebSocket</h2>
         <p class="ws-description">
-          The event console is available only when Synapse runs in development mode.
+          Консоль событий доступна только в том случае, если Synapse запущен в режиме разработки.
         </p>
       </div>
     </template>

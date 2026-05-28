@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Plugins</title>
+    <title>Плагины</title>
     <script type="module">
         import { store } from "/components/plugins/list/pluginListStore.js";
     </script>
@@ -21,7 +21,7 @@
                             aria-controls="plugins-custom"
                             :aria-selected="$store.pluginListStore.activeTab === 'custom'"
                             @click="$store.pluginListStore.setTab('custom')">
-                            Custom
+                            Пользовательские
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -33,7 +33,7 @@
                             aria-controls="plugins-builtin"
                             :aria-selected="$store.pluginListStore.activeTab === 'builtin'"
                             @click="$store.pluginListStore.setTab('builtin')">
-                            Builtin
+                            Встроенные
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -45,7 +45,7 @@
                             aria-controls="plugins-plugin-hub"
                             :aria-selected="$store.pluginListStore.activeTab === 'pluginHub'"
                             @click="$store.pluginListStore.setTab('pluginHub')">
-                            <span class="material-symbols-outlined pi-tab-icon">store</span> Browse
+                            <span class="material-symbols-outlined pi-tab-icon">store</span> Обзор
                         </button>
                     </li>
                 </ul>
@@ -65,7 +65,7 @@
                                     title="Обновить"
                                     @click="$store.pluginListStore.refresh()"
                                     :disabled="$store.pluginListStore.loading">
-                                    <span class="icon material-symbols-outlined">refresh</span> Refresh
+                                    <span class="icon material-symbols-outlined">refresh</span> Обновить
                                 </button>
 
                                 <x-extension id="plugins-list-header-buttons"></x-extension>
@@ -73,7 +73,7 @@
                         </div>
 
                         <div x-show="$store.pluginListStore.loading" class="loading">
-                            <span>Loading plugins...</span>
+                            <span>Загрузка плагинов...</span>
                         </div>
 
                         <div class="plugins-list">
@@ -88,37 +88,37 @@
                                     <div class="plugin-header">
 
                                         <div class="plugin-heading">
-                                            <div class="plugin-title" x-text="plugin.display_name || plugin.name || '(unnamed plugin)'"></div>
+                                            <div class="plugin-title" x-text="plugin.display_name || plugin.name || '(безымянный плагин)'"></div>
                                             <code class="plugin-path" x-text="plugin.path"></code>
                                         </div>
                                         <div class="plugin-actions" x-data="{ actionsOpen: false }">
                                             <template x-if="plugin.has_main_screen">
                                                 <button type="button"
                                                     class="button"
-                                                    title="Open"
+                                                    title="Открыть"
                                                     @click="$store.pluginListStore.openPlugin(plugin)">
-                                                    <span class="icon material-symbols-outlined">dashboard</span> Open
+                                                    <span class="icon material-symbols-outlined">dashboard</span> Открыть
                                                 </button>
                                             </template>
                                             <template x-if="plugin.has_config_screen">
                                                 <button type="button"
                                                     class="button"
-                                                    title="Config"
+                                                    title="Настройки"
                                                     @click="$store.pluginListStore.openPluginConfig(plugin)">
-                                                    <span class="icon material-symbols-outlined">settings</span> Config
+                                                    <span class="icon material-symbols-outlined">settings</span> Настройки
                                                 </button>
                                             </template>
                                             <template x-if="plugin.has_execute_script">
                                                 <button type="button"
                                                     class="button"
-                                                    title="Execute"
+                                                    title="Запустить"
                                                     @click="$store.pluginListStore.openPluginExecute(plugin)">
-                                                    <span class="icon material-symbols-outlined">terminal</span> Execute
+                                                    <span class="icon material-symbols-outlined">terminal</span> Запустить
                                                 </button>
                                             </template>
                                             <button type="button"
                                                 class="button icon-button"
-                                                title="Info"
+                                                title="Информация"
                                                 aria-label="Info"
                                                 @click="$store.pluginListStore.openPluginInfo(plugin)">
                                                 <span class="icon material-symbols-outlined">info</span>
@@ -128,7 +128,7 @@
                                                 @keydown.escape.window="if (actionsOpen) actionsOpen = false">
                                                 <button type="button"
                                                     class="btn-icon-action dropdown-trigger"
-                                                    title="More actions"
+                                                    title="Ещё действия"
                                                     aria-label="More actions"
                                                     @click.stop="actionsOpen = !actionsOpen"
                                                     :aria-expanded="actionsOpen.toString()">
@@ -151,10 +151,10 @@
                                                     <template x-if="plugin.has_license">
                                                         <button type="button"
                                                             class="dropdown-item"
-                                                            title="License"
+                                                            title="Лицензия"
                                                             @click="$store.pluginListStore.openPluginDoc(plugin, 'license'); actionsOpen = false">
                                                             <span class="material-symbols-outlined">gavel</span>
-                                                            <span>License</span>
+                                                            <span>Лицензия</span>
                                                         </button>
                                                     </template>
                                                     <x-extension id="plugins-list-dropdown-end"></x-extension>
@@ -173,12 +173,12 @@
                                     </div>
 
                                     <div class="plugin-footer-row">
-                                        <div class="plugin-description" x-text="plugin.description || 'No description provided.'"></div>
+                                        <div class="plugin-description" x-text="plugin.description || 'Описание отсутствует.'"></div>
                                         <div class="plugin-status-group">
                                             <template x-if="plugin.toggle_state === 'advanced'">
                                                 <button type="button"
                                                         class="button icon-button"
-                                                        title="Open Advanced"
+                                                        title="Открыть расширенные"
                                                         @click="$store.pluginListStore.openPluginAdvancedToggle(plugin)">
                                                     <span class="icon material-symbols-outlined">rule_settings</span>
                                                 </button>
@@ -187,10 +187,10 @@
                                                 @change="$store.pluginListStore.updateToggle(plugin, $event.target.value)"
                                                 @click.stop
                                                 :disabled="plugin.always_enabled">
-                                                <option value="enabled" :selected="plugin.toggle_state === 'enabled'">ON</option>
-                                                <option value="disabled" :selected="plugin.toggle_state === 'disabled'">OFF</option>
+                                                <option value="enabled" :selected="plugin.toggle_state === 'enabled'">Вкл</option>
+                                                <option value="disabled" :selected="plugin.toggle_state === 'disabled'">Выкл</option>
                                                 <template x-if="plugin.per_project_config || plugin.per_agent_config">
-                                                    <option value="advanced" :selected="plugin.toggle_state === 'advanced'">Advanced</option>
+                                                    <option value="advanced" :selected="plugin.toggle_state === 'advanced'">Настроить</option>
                                                 </template>
                                             </select>
                                         </div>
