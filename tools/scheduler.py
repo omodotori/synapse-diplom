@@ -153,14 +153,21 @@ class SchedulerTool(Tool):
         prompt: str = kwargs.get("prompt", "")
         attachments: list[str] = kwargs.get("attachments", [])
         schedule: dict[str, str] = kwargs.get("schedule", {})
-        dedicated_context: bool = kwargs.get("dedicated_context", False)
+        dedicated_context: bool = kwargs.get("dedicated_context", True)
+
+        if not isinstance(schedule, dict):
+            schedule = {}
+
+        def _get_cron_part(key: str) -> str:
+            val = schedule.get(key)
+            return str(val) if val is not None else "*"
 
         task_schedule = TaskSchedule(
-            minute=schedule.get("minute", "*"),
-            hour=schedule.get("hour", "*"),
-            day=schedule.get("day", "*"),
-            month=schedule.get("month", "*"),
-            weekday=schedule.get("weekday", "*"),
+            minute=_get_cron_part("minute"),
+            hour=_get_cron_part("hour"),
+            day=_get_cron_part("day"),
+            month=_get_cron_part("month"),
+            weekday=_get_cron_part("weekday"),
         )
 
         # Validate cron expression, agent might hallucinate
@@ -189,7 +196,7 @@ class SchedulerTool(Tool):
         prompt: str = kwargs.get("prompt", "")
         attachments: list[str] = kwargs.get("attachments", [])
         token: str = str(random.randint(1000000000000000000, 9999999999999999999))
-        dedicated_context: bool = kwargs.get("dedicated_context", False)
+        dedicated_context: bool = kwargs.get("dedicated_context", True)
 
         project_slug, project_color = self._resolve_project_metadata()
 
@@ -212,7 +219,7 @@ class SchedulerTool(Tool):
         prompt: str = kwargs.get("prompt", "")
         attachments: list[str] = kwargs.get("attachments", [])
         plan: list[str] = kwargs.get("plan", [])
-        dedicated_context: bool = kwargs.get("dedicated_context", False)
+        dedicated_context: bool = kwargs.get("dedicated_context", True)
 
         # Convert plan to list of datetimes in UTC
         todo: list[datetime] = []

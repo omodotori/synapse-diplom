@@ -10,9 +10,9 @@ methods:
 - `scheduler:show_task`: `uuid`
 - `scheduler:run_task`: `uuid`, optional `context`
 - `scheduler:delete_task`: `uuid`
-- `scheduler:create_scheduled_task`: `name`, `system_prompt`, `prompt`, optional `attachments[]`, `schedule{minute,hour,day,month,weekday}`, optional `dedicated_context`
-- `scheduler:create_adhoc_task`: `name`, `system_prompt`, `prompt`, optional `attachments[]`, optional `dedicated_context`
-- `scheduler:create_planned_task`: `name`, `system_prompt`, `prompt`, optional `attachments[]`, `plan[]` iso datetimes like `2025-04-29T18:25:00`, optional `dedicated_context`
+- `scheduler:create_scheduled_task`: `name`, `system_prompt`, `prompt`, optional `attachments[]`, `schedule{minute,hour,day,month,weekday}`, optional `dedicated_context`. Use ONLY for recurring/periodic tasks.
+- `scheduler:create_adhoc_task`: `name`, `system_prompt`, `prompt`, optional `attachments[]`, optional `dedicated_context`. Use for webhook-triggered tasks.
+- `scheduler:create_planned_task`: `name`, `system_prompt`, `prompt`, optional `attachments[]`, `plan[]` iso datetimes like `2025-04-29T18:25:00`, optional `dedicated_context`. Use for ONE-OFF reminders or specific future dates instead of scheduled_task.
 - `scheduler:wait_for_task`: `uuid`; works for dedicated-context tasks
 example:
 ~~~json

@@ -359,7 +359,7 @@ class ScheduledTask(BaseTask):
             if next_run_seconds is None:
                 return False
 
-            return next_run_seconds < frequency_seconds
+            return next_run_seconds <= frequency_seconds
 
     def get_next_run(self) -> datetime | None:
         with self._lock:
