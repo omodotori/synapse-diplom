@@ -12,6 +12,8 @@ const model = {
   chatMoreMenuOpen: false,
   progressText: "",
   progressActive: false,
+  /** Bridged from chats store by x-effect in chat-bar-input.html */
+  _agentRunning: false,
 
   toggleChatMoreMenu() {
     this.chatMoreMenuOpen = !this.chatMoreMenuOpen;
@@ -24,7 +26,8 @@ const model = {
   _getSendState() {
     const hasInput = this.message.trim() || attachmentsStore?.attachments?.length > 0;
     const hasQueue = !!messageQueueStore?.hasQueue;
-    const running = !!chatsStore.selectedContext?.running;
+    // _agentRunning is kept in sync by x-effect in chat-bar-input.html
+    const running = !!this._agentRunning;
 
     if (hasQueue && !hasInput) return "all";
     if ((running || hasQueue) && hasInput) return "queue";
@@ -41,7 +44,6 @@ const model = {
     return "Type your message here...";
   },
 
-  // Computed: send button icon type
   get sendButtonIcon() {
     const state = this._getSendState();
     if (state === "all") return "send_and_archive";
@@ -49,7 +51,6 @@ const model = {
     return "send";
   },
 
-  // Computed: send button CSS class
   get sendButtonClass() {
     const state = this._getSendState();
     if (state === "all") return "send-queue send-all";
@@ -57,7 +58,6 @@ const model = {
     return "";
   },
 
-  // Computed: send button title
   get sendButtonTitle() {
     const state = this._getSendState();
     if (state === "all") return "Send all queued messages";

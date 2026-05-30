@@ -18,6 +18,7 @@ const model = {
   contexts: [],
   selected: "",
   selectedContext: null,
+  selectedRunning: false,
   loggedIn: false,
 
   // for convenience
@@ -64,6 +65,7 @@ const model = {
       const updated = this.contexts.find((ctx) => ctx.id === selectedId);
       if (updated) {
         this.selectedContext = updated;
+        this.selectedRunning = !!updated.running;
       }
     }
   },
@@ -291,6 +293,7 @@ const model = {
     this.selectedContext = this.contexts.find((ctx) => ctx.id === this.selected);
     // if not found in contexts, try to find in tasks < not nice, will need refactor later
     if(!this.selectedContext) this.selectedContext = tasksStore.tasks.find((ctx) => ctx.id === this.selected);
+    this.selectedRunning = !!this.selectedContext?.running;
     if (this.selected) {
       sessionStorage.setItem("lastSelectedChat", this.selected);
     } else {

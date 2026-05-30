@@ -951,6 +951,15 @@ class Agent:
 
                     if response.break_loop:
                         return response.message
+                except (InterventionException, HandledException, asyncio.CancelledError):
+                    raise
+                except Exception as e:
+                    error_detail = f"Error executing tool '{tool_name}': {e}"
+                    tmsg = self.hist_add_tool_result(tool_name=tool_name, tool_result=error_detail)
+                    PrintStyle(font_color="red", padding=True).print(error_detail)
+                    self.context.log.log(
+                        type="error", content=f"{self.agent_name}: {error_detail}", id=tmsg.id
+                    )
                 finally:
                     self.loop_data.current_tool = None
             else:

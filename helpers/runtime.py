@@ -61,7 +61,7 @@ def is_dockerized() -> bool:
 
 
 def is_development() -> bool:
-    return not is_dockerized()
+    return bool(get_arg("development"))
 
 
 def get_local_url():

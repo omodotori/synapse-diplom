@@ -18,10 +18,16 @@ class NotifyUserTool(Tool):
         except ValueError:
             return Response(message=f"Invalid notification type: {notification_type}", break_loop=False)
 
-        try:
-            priority = NotificationPriority(priority)
-        except ValueError:
-            return Response(message=f"Invalid notification priority: {priority}", break_loop=False)
+        if isinstance(priority, str):
+            try:
+                priority = NotificationPriority[priority.upper()]
+            except KeyError:
+                priority = NotificationPriority.NORMAL
+        else:
+            try:
+                priority = NotificationPriority(priority)
+            except ValueError:
+                priority = NotificationPriority.NORMAL
 
         if not message:
             return Response(message="Message is required", break_loop=False)

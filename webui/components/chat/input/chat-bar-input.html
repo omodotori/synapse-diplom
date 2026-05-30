@@ -8,7 +8,11 @@
     </script>
 </head>
 <body>
-    <div x-data>
+    <div x-data x-effect="
+        /* Bridge chats.selectedRunning into chatInput store so Alpine re-evaluates
+           send button bindings when agent running state changes */
+        $store.chatInput._agentRunning = !!$store.chats?.selectedRunning;
+    ">
         <x-extension id="chat-input-box-start"></x-extension>
         <div class="input-row">
         <!-- More actions (+): opens upward; content lives in bottom-actions.html -->
@@ -202,7 +206,7 @@
     /* Responsive tweaks */
     @media (max-width: 640px) {
       #chat-input { min-height: 5.3rem; align-content: start; }
-      #chat-buttons-wrapper { display: flex; gap: var(--spacing-xs); padding: 0 0 0 var(--spacing-sm) !important; width: 3.5rem; flex-wrap: wrap; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; }
+      #chat-buttons-wrapper { display: flex; gap: var(--spacing-xs); padding: 0 0 0 var(--spacing-sm) !important; width: auto; flex-wrap: nowrap; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; }
     }
     @media (min-width: 768px) { #chat-buttons-wrapper { flex-wrap: nowrap; -webkit-flex-wrap: nowrap; flex-wrap: nowrap; } }
     </style>

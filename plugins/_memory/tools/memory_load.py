@@ -7,9 +7,21 @@ DEFAULT_LIMIT = 10
 
 class MemoryLoad(Tool):
 
-    async def execute(self, query="", threshold=DEFAULT_THRESHOLD, limit=DEFAULT_LIMIT, filter="", **kwargs):
+    async def execute(self, query: str = "", threshold: float = DEFAULT_THRESHOLD, limit: int = DEFAULT_LIMIT, **kwargs):
+        search_filter = kwargs.get("filter", "")
         db = await Memory.get(self.agent)
-        docs = await db.search_similarity_threshold(query=query, limit=limit, threshold=threshold, filter=filter)
+        try:
+            limit = int(limit)
+            threshold = float(threshold)
+        except (TypeError, ValueError) as e:
+            raise ValueError(f"memory_load: invalid limit or threshold: {e}")
+
+        docs = await db.search_similarity_threshold(
+            query=query, 
+            limit=limit, 
+            threshold=threshold, 
+            filter=search_filter
+        )
 
         if len(docs) == 0:
             result = self.agent.read_prompt("fw.memories_not_found.md", query=query)

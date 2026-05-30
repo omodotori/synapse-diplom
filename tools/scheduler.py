@@ -177,6 +177,12 @@ class SchedulerTool(Tool):
 
         project_slug, project_color = self._resolve_project_metadata()
 
+        # Reload to ensure we have the latest task list before duplicate check
+        await TaskScheduler.get().reload()
+        existing_task = TaskScheduler.get().get_task_by_name(name)
+        if existing_task:
+            return Response(message=f"A task with the name '{name}' already exists (uuid: {existing_task.uuid}). Please delete it first or use a different name.", break_loop=False)
+
         task = ScheduledTask.create(
             name=name,
             system_prompt=system_prompt,
@@ -199,6 +205,12 @@ class SchedulerTool(Tool):
         dedicated_context: bool = kwargs.get("dedicated_context", True)
 
         project_slug, project_color = self._resolve_project_metadata()
+
+        # Reload to ensure we have the latest task list before duplicate check
+        await TaskScheduler.get().reload()
+        existing_task = TaskScheduler.get().get_task_by_name(name)
+        if existing_task:
+            return Response(message=f"A task with the name '{name}' already exists (uuid: {existing_task.uuid}). Please delete it first or use a different name.", break_loop=False)
 
         task = AdHocTask.create(
             name=name,
@@ -237,6 +249,12 @@ class SchedulerTool(Tool):
         )
 
         project_slug, project_color = self._resolve_project_metadata()
+
+        # Reload to ensure we have the latest task list before duplicate check
+        await TaskScheduler.get().reload()
+        existing_task = TaskScheduler.get().get_task_by_name(name)
+        if existing_task:
+            return Response(message=f"A task with the name '{name}' already exists (uuid: {existing_task.uuid}). Please delete it first or use a different name.", break_loop=False)
 
         # Create planned task with task plan
         task = PlannedTask.create(

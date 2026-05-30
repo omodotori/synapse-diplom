@@ -1,4 +1,4 @@
-# Synapse - Plugins Guide
+  # Synapse - Plugins Guide
 
 This guide covers the Python Backend and Frontend WebUI plugin architecture. Use this as the definitive reference for building and extending Synapse.
 

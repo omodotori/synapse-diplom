@@ -108,13 +108,23 @@ class TaskPlan(BaseModel):
         return self.todo[0] if self.todo else None
 
     def should_launch(self) -> datetime | None:
-        next_launch_time = self.get_next_launch_time()
-        if next_launch_time is None:
+        if not self.todo:
             return None
-        # return next launch time if current datetime utc is later than next launch time
-        if datetime.now(timezone.utc) > next_launch_time:
-            return next_launch_time
-        return None
+            
+        now = datetime.now(timezone.utc)
+        
+        # If the earliest todo is in the future, nothing to launch
+        if self.todo[0] > now:
+            return None
+            
+        # Find all past runs
+        past_runs = [dt for dt in self.todo if dt <= now]
+        
+        # If there are multiple missed past runs, keep only the latest one
+        if len(past_runs) > 1:
+            self.todo = [past_runs[-1]] + [dt for dt in self.todo if dt > now]
+            
+        return self.todo[0]
 
 
 class BaseTask(BaseModel):
@@ -703,6 +713,28 @@ class TaskScheduler:
         return self._tasks.find_task_by_name(name)
 
     async def tick(self):
+        # Recovery mechanism for tasks stuck in RUNNING state
+        await self._tasks.reload()
+        now = datetime.now(timezone.utc)
+        for task in self._tasks.tasks:
+            if task.state == TaskState.RUNNING:
+                # Make sure the task is actually not currently running in asyncio tasks (handled by _running_tasks set)
+                if task.uuid in self._running_tasks:
+                    # If it's in _running_tasks, it's currently executing in this process. Check timeout.
+                    if task.last_run:
+                        last_run_utc = task.last_run
+                        if last_run_utc.tzinfo is None:
+                            last_run_utc = pytz.timezone("UTC").localize(last_run_utc)
+                        if (now - last_run_utc).total_seconds() > 300:
+                            PrintStyle.warning(f"Task '{task.name}' has been executing for > 5 minutes. Resetting to IDLE.")
+                            await self.update_task(task.uuid, state=TaskState.IDLE, last_result="ERROR: Task timed out after 5 minutes in RUNNING state.")
+                            self._unregister_running_task(task.uuid)
+                else:
+                    # Not in _running_tasks, so it's a left-over from a crash/restart or a different process
+                    PrintStyle.warning(f"Task '{task.name}' is RUNNING but not executing. Resetting to IDLE.")
+                    await self.update_task(task.uuid, state=TaskState.IDLE, last_result="ERROR: Task was stuck in RUNNING state (likely due to server restart).")
+                    self._unregister_running_task(task.uuid)
+                    
         for task in await self._tasks.get_due_tasks():
             await self._run_task(task)
 
