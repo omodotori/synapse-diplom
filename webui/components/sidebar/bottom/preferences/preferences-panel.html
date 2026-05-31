@@ -20,13 +20,7 @@
           </h3>
           <ul class="config-list collapse" id="preferences-collapse"
               x-effect="(() => { const c = bootstrap.Collapse.getOrCreateInstance($el, { toggle: false }); $store.sidebar.isSectionOpen('preferences') ? c.show() : c.hide(); })()">
-            <li x-data>
-              <span class="switch-label">Тёмная тема</span>
-              <label class="switch">
-                <input type="checkbox" x-model="$store.preferences.darkMode">
-                <span class="slider"></span>
-              </label>
-            </li>
+
             <li x-data class="chat-width-setting">
               <span class="width-label">Ширина</span>
               <div class="width-buttons">

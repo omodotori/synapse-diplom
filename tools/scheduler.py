@@ -194,7 +194,7 @@ class SchedulerTool(Tool):
             project_color=project_color,
         )
         await TaskScheduler.get().add_task(task)
-        return Response(message=f"Scheduled task '{name}' created: {task.uuid}", break_loop=False)
+        return Response(message=f"Scheduled task '{name}' created: {task.uuid}", break_loop=True)
 
     async def create_adhoc_task(self, **kwargs) -> Response:
         name: str = kwargs.get("name", "")
@@ -223,7 +223,7 @@ class SchedulerTool(Tool):
             project_color=project_color,
         )
         await TaskScheduler.get().add_task(task)
-        return Response(message=f"Adhoc task '{name}' created: {task.uuid}", break_loop=False)
+        return Response(message=f"Adhoc task '{name}' created: {task.uuid}", break_loop=True)
 
     async def create_planned_task(self, **kwargs) -> Response:
         name: str = kwargs.get("name", "")
@@ -268,7 +268,7 @@ class SchedulerTool(Tool):
             project_color=project_color
         )
         await TaskScheduler.get().add_task(task)
-        return Response(message=f"Planned task '{name}' created: {task.uuid}", break_loop=False)
+        return Response(message=f"Planned task '{name}' created: {task.uuid}", break_loop=True)
 
     async def wait_for_task(self, **kwargs) -> Response:
         task_uuid: str = kwargs.get("uuid", "")

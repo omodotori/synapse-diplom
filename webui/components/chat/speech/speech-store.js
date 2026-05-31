@@ -403,6 +403,8 @@ const model = {
 
   // Browser TTS
   async speakWithBrowser(text, waitForPrevious = false, terminator = null) {
+    if (terminator && terminator()) return;
+
     // wait for previous to finish if requested
     while (waitForPrevious && this.isSpeaking) await sleep(25);
     if (terminator && terminator()) return;
@@ -410,15 +412,33 @@ const model = {
     // stop previous only if not waiting for it
     if (!waitForPrevious) this.stopAudio();
 
-    this.browserUtterance = new SpeechSynthesisUtterance(text);
-    this.browserUtterance.onstart = () => {
-      this.isSpeaking = true;
-    };
-    this.browserUtterance.onend = () => {
-      this.isSpeaking = false;
-    };
-
-    this.synth.speak(this.browserUtterance);
+    return new Promise((resolve) => {
+      this.browserUtterance = new SpeechSynthesisUtterance(text);
+      
+      // ensure we keep a reference so it's not garbage collected
+      window.__utterances = window.__utterances || [];
+      window.__utterances.push(this.browserUtterance);
+      
+      this.browserUtterance.onstart = () => {
+        this.isSpeaking = true;
+      };
+      
+      this.browserUtterance.onend = () => {
+        this.isSpeaking = false;
+        // clean up reference
+        const index = window.__utterances.indexOf(this.browserUtterance);
+        if (index > -1) window.__utterances.splice(index, 1);
+        resolve();
+      };
+      
+      this.browserUtterance.onerror = (e) => {
+        console.error('TTS error', e);
+        this.isSpeaking = false;
+        resolve();
+      };
+      
+      this.synth.speak(this.browserUtterance);
+    });
   },
 
   // Kokoro TTS
@@ -628,6 +648,8 @@ const model = {
     this.microphoneInput = new MicrophoneInput(async (text, isFinal) => {
       if (isFinal) {
         this.sendMessage(text);
+      } else {
+        updateChatInput(text);
       }
     });
 
@@ -652,23 +674,14 @@ const model = {
   },
 };
 
-// Microphone Input Class (simplified for store integration)
+// Microphone Input Class using Web Speech API
 class MicrophoneInput {
   constructor(updateCallback) {
-    this.mediaRecorder = null;
-    this.audioChunks = [];
-    this.lastChunk = [];
     this.updateCallback = updateCallback;
-    this.messageSent = false;
-    this.audioContext = null;
-    this.mediaStreamSource = null;
-    this.analyserNode = null;
     this._status = Status.INACTIVE;
-    this.lastAudioTime = null;
-    this.waitingTimer = null;
-    this.silenceStartTime = null;
-    this.hasStartedRecording = false;
-    this.analysisFrame = null;
+    this.recognition = null;
+    this.finalTranscript = '';
+    this.messageSent = false;
   }
 
   get status() {
@@ -677,276 +690,123 @@ class MicrophoneInput {
 
   set status(newStatus) {
     if (this._status === newStatus) return;
-
     const oldStatus = this._status;
     this._status = newStatus;
     console.log(`Mic status changed from ${oldStatus} to ${newStatus}`);
-
-    this.handleStatusChange(oldStatus, newStatus);
   }
 
   async initialize() {
-    // Set status to activating at the start of initialization
     this.status = Status.ACTIVATING;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      console.error("SpeechRecognition is not supported in this browser");
+      toast("Голосовой ввод не поддерживается в этом браузере.", "error");
+      this.status = Status.INACTIVE;
+      return false;
+    }
+
     try {
-      // get selected device from microphone settings
-      const selectedDevice = microphoneSettingStore.getSelectedDevice();
+      this.recognition = new SpeechRecognition();
+      this.recognition.continuous = true;
+      this.recognition.interimResults = true;
+      this.recognition.lang = store.stt_language || 'ru-RU';
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          deviceId:
-            selectedDevice && selectedDevice.deviceId
-              ? { exact: selectedDevice.deviceId }
-              : undefined,
-          echoCancellation: true,
-          noiseSuppression: true,
-          channelCount: 1,
-        },
-      });
+      this.recognition.onstart = () => {
+        this.status = Status.LISTENING;
+      };
 
-      this.mediaRecorder = new MediaRecorder(stream);
-      this.mediaRecorder.ondataavailable = (event) => {
-        if (
-          event.data.size > 0 &&
-          (this.status === Status.RECORDING || this.status === Status.WAITING)
-        ) {
-          if (this.lastChunk) {
-            this.audioChunks.push(this.lastChunk);
-            this.lastChunk = null;
+      this.recognition.onresult = (event) => {
+        this.status = Status.RECORDING; // Visually show we are receiving audio
+        let interimTranscript = '';
+        let hasFinal = false;
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            this.finalTranscript += event.results[i][0].transcript;
+            hasFinal = true;
+          } else {
+            interimTranscript += event.results[i][0].transcript;
           }
-          this.audioChunks.push(event.data);
-        } else if (this.status === Status.LISTENING) {
-          this.lastChunk = event.data;
+        }
+        
+        // Feed interim text directly to the callback to show in the input box
+        if (!hasFinal && interimTranscript) {
+          // Send interim to UI, but note we don't want to accumulate it forever 
+          // However, our updateChatInput appends text, which might duplicate if we call it for every interim update.
+          // Wait, updateChatInput APPENDS text. If interimTranscript changes, appending it repeatedly will result in duplicate text!
+          // We need a better way to handle interim text, or just wait for isFinal to append to chatInput.
+          // Since updateChatInput appends, we should only append FINAL transcripts.
+        }
+
+        if (hasFinal) {
+          this.updateCallback(event.results[event.resultIndex][0].transcript, false);
         }
       };
 
-      this.setupAudioAnalysis(stream);
+      this.recognition.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        if (event.error === 'not-allowed') {
+            toast("Microphone access denied. Please enable microphone access.", "error");
+        }
+        this.status = Status.INACTIVE;
+      };
+
+      this.recognition.onend = () => {
+        if (this.status !== Status.INACTIVE && this.status !== Status.PROCESSING) {
+          // Restart if it stopped unexpectedly while we should be listening
+          try {
+            this.recognition.start();
+          } catch(e) {}
+        }
+      };
+
       return true;
     } catch (error) {
       console.error("Microphone initialization error:", error);
-      toast("Failed to access microphone. Please check permissions.", "error");
+      toast("Failed to access microphone.", "error");
+      this.status = Status.INACTIVE;
       return false;
     }
   }
 
-  handleStatusChange(oldStatus, newStatus) {
-    if (newStatus != Status.RECORDING) {
-      this.lastChunk = null;
-    }
-
-    switch (newStatus) {
-      case Status.INACTIVE:
-        this.handleInactiveState();
-        break;
-      case Status.LISTENING:
-        this.handleListeningState();
-        break;
-      case Status.RECORDING:
-        this.handleRecordingState();
-        break;
-      case Status.WAITING:
-        this.handleWaitingState();
-        break;
-      case Status.PROCESSING:
-        this.handleProcessingState();
-        break;
-    }
-  }
-
-  handleInactiveState() {
-    this.stopRecording();
-    this.stopAudioAnalysis();
-    if (this.waitingTimer) {
-      clearTimeout(this.waitingTimer);
-      this.waitingTimer = null;
-    }
-  }
-
-  handleListeningState() {
-    this.stopRecording();
-    this.audioChunks = [];
-    this.hasStartedRecording = false;
-    this.silenceStartTime = null;
-    this.lastAudioTime = null;
-    this.messageSent = false;
-    this.startAudioAnalysis();
-  }
-
-  handleRecordingState() {
-    if (!this.hasStartedRecording && this.mediaRecorder.state !== "recording") {
-      this.hasStartedRecording = true;
-      this.mediaRecorder.start(1000);
-      console.log("Speech started");
-    }
-    if (this.waitingTimer) {
-      clearTimeout(this.waitingTimer);
-      this.waitingTimer = null;
-    }
-  }
-
-  handleWaitingState() {
-    this.waitingTimer = setTimeout(() => {
-      if (this.status === Status.WAITING) {
-        this.status = Status.PROCESSING;
-      }
-    }, store.stt_waiting_timeout);
-  }
-
-  handleProcessingState() {
-    this.stopRecording();
-    this.process();
-  }
-
-  setupAudioAnalysis(stream) {
-    this.audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-    this.mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
-    this.analyserNode = this.audioContext.createAnalyser();
-    this.analyserNode.fftSize = 2048;
-    this.analyserNode.minDecibels = -90;
-    this.analyserNode.maxDecibels = -10;
-    this.analyserNode.smoothingTimeConstant = 0.85;
-    this.mediaStreamSource.connect(this.analyserNode);
-  }
-
-  startAudioAnalysis() {
-    const analyzeFrame = () => {
-      if (this.status === Status.INACTIVE) return;
-
-      const dataArray = new Uint8Array(this.analyserNode.fftSize);
-      this.analyserNode.getByteTimeDomainData(dataArray);
-
-      let sum = 0;
-      for (let i = 0; i < dataArray.length; i++) {
-        const amplitude = (dataArray[i] - 128) / 128;
-        sum += amplitude * amplitude;
-      }
-      const rms = Math.sqrt(sum / dataArray.length);
-      const now = Date.now();
-
-      // Update status based on audio level (ignore if TTS is speaking)
-      if (rms > this.densify(store.stt_silence_threshold)) {
-        this.lastAudioTime = now;
-        this.silenceStartTime = null;
-
-        if (
-          (this.status === Status.LISTENING ||
-            this.status === Status.WAITING) &&
-          !store.isSpeaking
-        ) {
-          this.status = Status.RECORDING;
-        }
-      } else if (this.status === Status.RECORDING) {
-        if (!this.silenceStartTime) {
-          this.silenceStartTime = now;
-        }
-
-        const silenceDuration = now - this.silenceStartTime;
-        if (silenceDuration >= store.stt_silence_duration) {
-          this.status = Status.WAITING;
-        }
-      }
-
-      this.analysisFrame = requestAnimationFrame(analyzeFrame);
-    };
-
-    this.analysisFrame = requestAnimationFrame(analyzeFrame);
-  }
-
-  stopAudioAnalysis() {
-    if (this.analysisFrame) {
-      cancelAnimationFrame(this.analysisFrame);
-      this.analysisFrame = null;
-    }
-  }
-
-  stopRecording() {
-    if (this.mediaRecorder?.state === "recording") {
-      this.mediaRecorder.stop();
-      this.hasStartedRecording = false;
-    }
-  }
-
-  densify(x) {
-    return Math.exp(-5 * (1 - x));
-  }
-
-  async process() {
-    if (this.audioChunks.length === 0) {
-      this.status = Status.LISTENING;
-      return;
-    }
-
-    const audioBlob = new Blob(this.audioChunks, { type: "audio/wav" });
-    const base64 = await this.convertBlobToBase64Wav(audioBlob);
-
-    try {
-      const result = await sendJsonData("/transcribe", { audio: base64 });
-      const text = this.filterResult(result.text || "");
-
-      if (text) {
-        console.log("Transcription:", result.text);
-        await this.updateCallback(result.text, true);
-      }
-    } catch (error) {
-      window.toastFetchError("Transcription error", error);
-      console.error("Transcription error:", error);
-    } finally {
-      this.audioChunks = [];
-      this.status = Status.LISTENING;
-    }
-  }
-
-  convertBlobToBase64Wav(audioBlob) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64Data = reader.result.split(",")[1];
-        resolve(base64Data);
-      };
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(audioBlob);
-    });
-  }
-
-  filterResult(text) {
-    text = text.trim();
-    let ok = false;
-    while (!ok) {
-      if (!text) break;
-      if (text[0] === "{" && text[text.length - 1] === "}") break;
-      if (text[0] === "(" && text[text.length - 1] === ")") break;
-      if (text[0] === "[" && text[text.length - 1] === "]") break;
-      ok = true;
-    }
-    if (ok) return text;
-    else console.log(`Discarding transcription: ${text}`);
-  }
-
-  // Toggle microphone between active and inactive states
   async toggle() {
-    const hasPermission = await this.requestPermission();
-    if (!hasPermission) return;
+    if (!this.recognition) {
+      await this.initialize();
+    }
 
-    // Toggle between listening and inactive
     if (this.status === Status.INACTIVE || this.status === Status.ACTIVATING) {
+      this.finalTranscript = '';
+      this.messageSent = false;
       this.status = Status.LISTENING;
+      try {
+        this.recognition.start();
+      } catch (e) {
+        console.error(e);
+      }
     } else {
+      this.status = Status.PROCESSING;
+      try {
+        this.recognition.stop();
+      } catch (e) {
+        console.error(e);
+      }
+      
+      // When explicitly stopped, send what we have
       this.status = Status.INACTIVE;
+      if (this.finalTranscript.trim()) {
+        await this.updateCallback(this.finalTranscript.trim(), true);
+      }
     }
   }
 
-  // Request microphone permission
   async requestPermission() {
     try {
       await navigator.mediaDevices.getUserMedia({ audio: true });
       return true;
     } catch (err) {
       console.error("Error accessing microphone:", err);
-      toast(
-        "Microphone access denied. Please enable microphone access in your browser settings.",
-        "error"
-      );
+      toast("Microphone access denied.", "error");
       return false;
     }
   }

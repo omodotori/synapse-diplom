@@ -35,8 +35,31 @@ const model = {
     this.initialize();
   },
 
+  requestBrowserNotificationPermission() {
+    if ("Notification" in window) {
+      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          console.log("Browser notification permission:", permission);
+        });
+      }
+    }
+  },
+
+  showNativeNotification(title, message) {
+    if ("Notification" in window && Notification.permission === "granted") {
+      // Only show if the document is hidden (user is on another tab/window)
+      if (!document.hasFocus()) {
+        new Notification(title, {
+          body: message,
+          icon: "/favicon.ico"
+        });
+      }
+    }
+  },
+
   // Initialize the notification store
   initialize() {
+    this.requestBrowserNotificationPermission();
     this.loading = true;
     this.updateUnreadCount();
     // this.removeOldNotifications();
@@ -113,6 +136,8 @@ const model = {
 
   // NEW: Add notification to toast stack
   addToToastStack(notification) {
+    this.showNativeNotification(notification.title || "Synapse", notification.message);
+
     // If notification has a group, remove any existing toasts with the same group
     if (notification.group && notification.group.trim() !== "") {
       const existingToast = this.toastStack.find(
@@ -615,6 +640,8 @@ const model = {
 
     //adjust data before using
     this.adjustNotificationData(notification);
+
+    this.showNativeNotification(notification.title || "Synapse", notification.message);
 
     // If notification has a group, remove any existing toasts with the same group
     if (group && String(group).trim() !== "") {

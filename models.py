@@ -198,6 +198,10 @@ class ChatGenerationResult:
 rate_limiters: dict[str, RateLimiter] = {}
 api_keys_round_robin: dict[str, int] = {}
 
+# Global concurrency limiter: at most 2 parallel LLM calls
+import asyncio as _asyncio
+global_llm_semaphore = _asyncio.Semaphore(2)
+
 
 @extensible
 def get_api_key(service: str) -> str:
@@ -516,6 +520,7 @@ class LiteLLMChatWrapper(SimpleChatModel):
         while True:
             got_any_chunk = False
             try:
+              async with global_llm_semaphore:
                 # call model
                 _completion = await acompletion(
                     model=self.model_name,
@@ -587,7 +592,7 @@ class LiteLLMChatWrapper(SimpleChatModel):
                 if got_any_chunk or not _is_transient_litellm_error(e) or attempt >= max_retries:
                     raise
                 attempt += 1
-                await asyncio.sleep(retry_delay_s)
+                await asyncio.sleep(retry_delay_s * (2 ** (attempt - 1)))
 
 
 class LiteLLMEmbeddingWrapper(Embeddings):
