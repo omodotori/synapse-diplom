@@ -17,14 +17,18 @@ COPY ./fs/ /
 RUN bash /ins/pre_install.sh $SYNAPSE_BRANCH
 
 # Этап 2: Установка ядра приложения Synapse
-RUN bash /ins/install_synapse.sh $SYNAPSE_BRANCH
+ENV UV_HTTP_TIMEOUT=1000
+ENV UV_RETRIES=10
+RUN --mount=type=cache,target=/root/.cache/uv \
+    bash /ins/install_synapse.sh $SYNAPSE_BRANCH
 
 # Этап 3: Установка дополнительных компонентов
 RUN bash /ins/install_additional.sh $SYNAPSE_BRANCH
 
 # Этап 4: Инвалидация кэша сборки и повторная компиляция ядра Synapse
 ARG SYNAPSE_CACHE_DATE=none
-RUN echo "Очистка кэша: $SYNAPSE_CACHE_DATE" && bash /ins/install_synapse2.sh $SYNAPSE_BRANCH
+RUN --mount=type=cache,target=/root/.cache/uv \
+    echo "Очистка кэша: $SYNAPSE_CACHE_DATE" && bash /ins/install_synapse2.sh $SYNAPSE_BRANCH
 
 # Установка Playwright Chromium для браузерного агента
 RUN /opt/venv-synapse/bin/python -m playwright install chromium

@@ -34,4 +34,4 @@ uv pip install -r /git/synapse/requirements2.txt
 bash /ins/install_playwright.sh "$@"
 
 # Предварительная загрузка компонентов ядра Synapse
-python /git/synapse/preload.py --dockerized=true
+# python /git/synapse/preload.py --dockerized=true
