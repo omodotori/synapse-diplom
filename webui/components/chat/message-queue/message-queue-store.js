@@ -52,7 +52,7 @@ const model = {
   },
 
   async addToQueue(text, attachments = []) {
-    const context = globalThis.getContext?.();
+    const context = chatsStore.getSelectedChatId();
     if (!context) return false;
 
     // Generate a temporary ID for pending item
@@ -145,7 +145,7 @@ const model = {
   },
 
   async removeItem(itemId) {
-    const context = globalThis.getContext?.();
+    const context = chatsStore.getSelectedChatId();
     if (!context) return;
 
     const isPending = this.pendingItems.some((p) => p.id === itemId);
@@ -172,7 +172,7 @@ const model = {
   },
 
   async clearQueue() {
-    const context = globalThis.getContext?.();
+    const context = chatsStore.getSelectedChatId();
     if (!context) return;
     try {
       await api.callJsonApi("/message_queue_remove", { context });
@@ -182,7 +182,7 @@ const model = {
   },
 
   async sendItem(itemId) {
-    const context = globalThis.getContext?.();
+    const context = chatsStore.getSelectedChatId();
     if (!context) return;
     try {
       await api.callJsonApi("/message_queue_send", {
@@ -195,7 +195,7 @@ const model = {
   },
 
   async sendAll() {
-    const context = globalThis.getContext?.();
+    const context = chatsStore.getSelectedChatId();
     if (!context || !this.hasQueue) return;
 
     // check for pending uploads and notify user

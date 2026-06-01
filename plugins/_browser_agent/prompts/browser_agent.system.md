@@ -20,3 +20,6 @@ When you have completed the assigned task OR are waiting for further instruction
 - If you navigate to a website and no further actions are requested, call "Complete task" immediately
 - If you complete any requested interaction (clicking, typing, etc.), call "Complete task"
 - Never leave a task running indefinitely - always conclude with "Complete task"
+
+After navigating to the page, extract only the main article text 
+(ignore navigation, links, menus). Summarize the content in plain text.

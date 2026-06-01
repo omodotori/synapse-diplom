@@ -5,3 +5,5 @@ args: `message`, `reset`
 - `reset=true` starts a new browser session; `false` continues the current one
 - when continuing, refer to open pages instead of restarting
 downloads go to `/synapse/tmp/downloads`
+- ALWAYS use this tool for taking website screenshots, scraping, or any visual web inspection
+- NEVER use code_execution_tool with pyautogui, selenium, or any other library for web browsing or screenshots

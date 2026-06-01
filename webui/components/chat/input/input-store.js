@@ -92,7 +92,7 @@ const model = {
     const prev = this.paused;
     this.paused = paused;
     try {
-      const context = globalThis.getContext?.();
+      const context = shortcuts.getCurrentContextId();
       if (!globalThis.sendJsonData)
         throw new Error("sendJsonData not available");
       await globalThis.sendJsonData("/pause", { paused, context });
@@ -106,7 +106,7 @@ const model = {
 
   async nudge() {
     try {
-      const context = globalThis.getContext();
+      const context = shortcuts.getCurrentContextId();
       await globalThis.sendJsonData("/nudge", { ctxid: context });
     } catch (e) {
       if (globalThis.toastFetchError) {
@@ -178,7 +178,7 @@ const model = {
           formData.append("files[]", file);
         }
 
-        formData.append("ctxid", globalThis.getContext());
+        formData.append("ctxid", shortcuts.getCurrentContextId());
 
         const response = await globalThis.fetchApi("/import_knowledge", {
           method: "POST",

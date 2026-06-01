@@ -14,7 +14,7 @@ from helpers.persist_chat import (
 )
 from helpers.state_monitor_integration import mark_dirty_all
 
-MIN_COMPACTION_TOKENS = 1000
+MIN_COMPACTION_TOKENS = 100
 from plugins._model_config.helpers.model_config import (
     get_chat_model_config,
     get_utility_model_config,

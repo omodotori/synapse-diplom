@@ -93,9 +93,25 @@ export async function sendMessage() {
         // sleep one frame to render the message before upload starts - better UX
         sleep(0);
 
+        const chatHistoryEl = document.getElementById("chat-history");
+        const messagesArr = [];
+        if (chatHistoryEl) {
+          chatHistoryEl.querySelectorAll(".message-container").forEach(container => {
+            const isUser = container.parentElement && container.parentElement.classList.contains("message-group-right");
+            const contentEl = container.querySelector(".msg-content");
+            if (contentEl) {
+              messagesArr.push({
+                role: isUser ? "user" : "assistant",
+                content: contentEl.innerText
+              });
+            }
+          });
+        }
+
         const formData = new FormData();
         formData.append("text", message);
         formData.append("context", context);
+        formData.append("messages", JSON.stringify(messagesArr));
         formData.append("message_id", messageId);
 
         for (let i = 0; i < attachmentsWithUrls.length; i++) {
@@ -107,10 +123,26 @@ export async function sendMessage() {
           body: formData,
         });
       } else {
+        const chatHistoryEl = document.getElementById("chat-history");
+        const messagesArr = [];
+        if (chatHistoryEl) {
+          chatHistoryEl.querySelectorAll(".message-container").forEach(container => {
+            const isUser = container.parentElement && container.parentElement.classList.contains("message-group-right");
+            const contentEl = container.querySelector(".msg-content");
+            if (contentEl) {
+              messagesArr.push({
+                role: isUser ? "user" : "assistant",
+                content: contentEl.innerText
+              });
+            }
+          });
+        }
+
         // For text-only messages
         const data = {
           text: message,
           context,
+          messages: messagesArr,
           message_id: messageId,
         };
         response = await api.fetchApi("/message_async", {
@@ -169,7 +201,7 @@ globalThis.toastFetchError = toastFetchError;
 
 // Event listeners will be set up in DOMContentLoaded
 
-export function updateChatInput(text) {
+export function updateChatInput(text, replace = false) {
   const chatInputEl = document.getElementById("chat-input");
   if (!chatInputEl) {
     console.warn("`chatInput` element not found, cannot update.");
@@ -177,10 +209,14 @@ export function updateChatInput(text) {
   }
   console.log("updateChatInput called with:", text);
 
-  // Append text with proper spacing
-  const currentValue = chatInputEl.value;
-  const needsSpace = currentValue.length > 0 && !currentValue.endsWith(" ");
-  chatInputEl.value = currentValue + (needsSpace ? " " : "") + text + " ";
+  if (replace) {
+    chatInputEl.value = text;
+  } else {
+    // Append text with proper spacing
+    const currentValue = chatInputEl.value;
+    const needsSpace = currentValue.length > 0 && !currentValue.endsWith(" ");
+    chatInputEl.value = currentValue + (needsSpace ? " " : "") + text + " ";
+  }
 
   // Adjust height and trigger input event
   adjustTextareaHeight();

@@ -718,8 +718,8 @@ class TaskScheduler:
         now = datetime.now(timezone.utc)
         for task in self._tasks.tasks:
             if task.state == TaskState.RUNNING:
-                # Make sure the task is actually not currently running in asyncio tasks (handled by _running_tasks set)
-                if task.uuid in self._running_tasks:
+                # Make sure the task is actually not currently running in asyncio tasks (handled by _running_deferred_tasks dict)
+                if task.uuid in self._running_deferred_tasks:
                     # If it's in _running_tasks, it's currently executing in this process. Check timeout.
                     if task.last_run:
                         last_run_utc = task.last_run

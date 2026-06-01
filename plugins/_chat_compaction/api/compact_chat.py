@@ -29,18 +29,19 @@ class CompactChat(ApiHandler):
         if visible_count <= 1:
             return Response("Not enough messages to compact", 400)
 
-        # Gate both stats and compact — no point opening the modal for tiny chats
+        # Always return stats so the modal can open regardless of token count
         stats = await get_compaction_stats(context)
-        if stats["token_count"] < MIN_COMPACTION_TOKENS:
-            return {
-                "ok": False,
-                "message": f"Not enough content to compact (minimum {MIN_COMPACTION_TOKENS:,} tokens)",
-            }
 
         if action == "stats":
             return {"ok": True, "stats": stats}
 
         elif action == "compact":
+            if stats["token_count"] < MIN_COMPACTION_TOKENS:
+                return {
+                    "ok": False,
+                    "message": f"Not enough content to compact (minimum {MIN_COMPACTION_TOKENS:,} tokens)",
+                }
+
             use_chat_model = input.get("use_chat_model", True)
             preset_name = input.get("preset_name") or None
 

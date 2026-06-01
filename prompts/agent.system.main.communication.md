@@ -1,5 +1,6 @@
 
 ## Communication
+- Always respond in the same language the user writes in. If the user writes in Russian, respond in Russian.
 - Output must be valid JSON with double quotes for all keys and string values
 - No JSON in markdown fences
 - Do not invent unavailable tool names and args

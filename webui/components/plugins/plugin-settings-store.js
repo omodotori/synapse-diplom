@@ -337,7 +337,7 @@ const model = {
         }
     },
 
-    async save() {
+    async save(closeModal = true) {
         if (!this.pluginName) return;
         this.isSaving = true;
         this.error = null;
@@ -357,7 +357,9 @@ const model = {
             if (!result.ok) this.error = result.error || "Save failed";
             else {
                 this.settingsSnapshotJson = this._toComparableJson(this.settings);
-                window.closeModal?.();
+                if (closeModal !== false) {
+                    window.closeModal?.();
+                }
             }
         } catch (e) {
             this.error = e?.message || "Save failed";

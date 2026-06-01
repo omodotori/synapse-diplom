@@ -14,6 +14,16 @@
          await $store.modelConfig.refreshApiKeyStatus();
          $store.modelConfig.initConfigFields(config);
          $store.modelConfig.installSettingsHooks(context, config);
+
+         let timeout;
+         $watch('config', () => {
+             clearTimeout(timeout);
+             timeout = setTimeout(() => {
+                 if (context.hasUnsavedChanges && !context.isSaving && !context.isLoading) {
+                     context.save(false);
+                 }
+             }, 500);
+         }, { deep: true });
        ">
     <template x-if="config && $store.modelConfig._loaded">
       <div class="model-config-sections">

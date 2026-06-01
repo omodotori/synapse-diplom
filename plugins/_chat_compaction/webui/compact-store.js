@@ -13,7 +13,7 @@ export const store = createStore("compactStore", {
   selectedPresetName: "",
   useChatModel: true,
 
-  minTokens: 1000,
+  minTokens: 100,
 
   get canCompact() {
     return this.stats && this.stats.token_count >= this.minTokens;

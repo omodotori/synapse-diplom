@@ -65,7 +65,7 @@ const model = {
     microphoneButton.setAttribute("data-status", status);
   },
 
-  async handleMicrophoneClick() {
+  handleMicrophoneClick() {
     if (this.isProcessingClick) return;
     this.isProcessingClick = true;
     try {
@@ -78,11 +78,11 @@ const model = {
       }
 
       if (!this.microphoneInput) {
-        await this.initMicrophone();
+        this.initMicrophone();
       }
 
       if (this.microphoneInput) {
-        await this.microphoneInput.toggle();
+        this.microphoneInput.toggle();
       }
     } finally {
       setTimeout(() => {
@@ -414,7 +414,22 @@ const model = {
 
     return new Promise((resolve) => {
       this.browserUtterance = new SpeechSynthesisUtterance(text);
+      this.browserUtterance.lang = 'ru-RU';
       
+      const setVoice = () => {
+        const voices = this.synth.getVoices();
+        const ruVoice = voices.find(v => v.lang === 'ru-RU' || v.lang.includes('ru'));
+        if (ruVoice) {
+          this.browserUtterance.voice = ruVoice;
+        }
+      };
+
+      if (this.synth.getVoices().length === 0) {
+        this.synth.onvoiceschanged = () => setVoice();
+      } else {
+        setVoice();
+      }
+
       // ensure we keep a reference so it's not garbage collected
       window.__utterances = window.__utterances || [];
       window.__utterances.push(this.browserUtterance);
@@ -555,7 +570,7 @@ const model = {
 
       // Replace <pre> and <code> tags with placeholder before extracting text
       doc.querySelectorAll('pre, code').forEach(el => {
-        el.textContent = codePlaceholder;
+        el.replaceWith(codePlaceholder);
       });
 
       // Extract text content (this strips all HTML tags properly)
@@ -642,18 +657,18 @@ const model = {
   },
 
   // Initialize microphone input
-  async initMicrophone() {
+  initMicrophone() {
     if (this.microphoneInput) return this.microphoneInput;
 
-    this.microphoneInput = new MicrophoneInput(async (text, isFinal) => {
+    this.microphoneInput = new MicrophoneInput((text, isFinal) => {
       if (isFinal) {
         this.sendMessage(text);
       } else {
-        updateChatInput(text);
+        updateChatInput(text, true);
       }
     });
 
-    const initialized = await this.microphoneInput.initialize();
+    const initialized = this.microphoneInput.initialize();
     return initialized ? this.microphoneInput : null;
   },
 
@@ -695,13 +710,13 @@ class MicrophoneInput {
     console.log(`Mic status changed from ${oldStatus} to ${newStatus}`);
   }
 
-  async initialize() {
+  initialize() {
     this.status = Status.ACTIVATING;
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
       console.error("SpeechRecognition is not supported in this browser");
-      toast("Голосовой ввод не поддерживается в этом браузере.", "error");
+      if (window.toastFrontendError) window.toastFrontendError("Голосовой ввод не поддерживается в этом браузере.", "error");
       this.status = Status.INACTIVE;
       return false;
     }
@@ -710,7 +725,7 @@ class MicrophoneInput {
       this.recognition = new SpeechRecognition();
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
-      this.recognition.lang = store.stt_language || 'ru-RU';
+      this.recognition.lang = 'ru-RU';
 
       this.recognition.onstart = () => {
         this.status = Status.LISTENING;
@@ -740,14 +755,16 @@ class MicrophoneInput {
         }
 
         if (hasFinal) {
-          this.updateCallback(event.results[event.resultIndex][0].transcript, false);
+          this.updateCallback(this.finalTranscript, false);
         }
       };
 
       this.recognition.onerror = (event) => {
         console.error('Speech recognition error', event.error);
         if (event.error === 'not-allowed') {
-            toast("Microphone access denied. Please enable microphone access.", "error");
+            if (window.toastFrontendError) window.toastFrontendError("Microphone access denied. Please enable microphone access.", "error");
+        } else {
+            if (window.toastFrontendError) window.toastFrontendError(`Ошибка распознавания речи: ${event.error}`, "error");
         }
         this.status = Status.INACTIVE;
       };
@@ -764,15 +781,15 @@ class MicrophoneInput {
       return true;
     } catch (error) {
       console.error("Microphone initialization error:", error);
-      toast("Failed to access microphone.", "error");
+      if (window.toastFrontendError) window.toastFrontendError("Failed to access microphone.", "error");
       this.status = Status.INACTIVE;
       return false;
     }
   }
 
-  async toggle() {
+  toggle() {
     if (!this.recognition) {
-      await this.initialize();
+      if (!this.initialize()) return;
     }
 
     if (this.status === Status.INACTIVE || this.status === Status.ACTIVATING) {
@@ -795,7 +812,7 @@ class MicrophoneInput {
       // When explicitly stopped, send what we have
       this.status = Status.INACTIVE;
       if (this.finalTranscript.trim()) {
-        await this.updateCallback(this.finalTranscript.trim(), true);
+        this.updateCallback(this.finalTranscript.trim(), true);
       }
     }
   }

@@ -157,14 +157,14 @@ You're now ready to contribute to Synapse, create custom extensions, or modify t
 
 ## Configuration via Environment Variables
 
-For development and testing, you can override default settings using the `.env` file with `A0_SET_` prefixed variables:
+For development and testing, you can override default settings using the `.env` file with `SYNAPSE_SET_` prefixed variables:
 
 ```env
 # Add to your .env file
-A0_SET_chat_model_provider=ollama
-A0_SET_chat_model_name=llama3.2
-A0_SET_chat_model_api_base=http://localhost:11434
-A0_SET_memory_recall_interval=5
+SYNAPSE_SET_chat_model_provider=ollama
+SYNAPSE_SET_chat_model_name=llama3.2
+SYNAPSE_SET_chat_model_api_base=http://localhost:11434 / если запускаем в docker То Base URL: http://host.docker.internal:11434
+SYNAPSE_SET_memory_recall_interval=5
 ```
 
 These environment variables automatically override the hardcoded defaults in `get_default_settings()` without modifying code. Useful for testing different configurations or multi-environment setups.

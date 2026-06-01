@@ -26,6 +26,9 @@ RUN bash /ins/install_additional.sh $SYNAPSE_BRANCH
 ARG SYNAPSE_CACHE_DATE=none
 RUN echo "Очистка кэша: $SYNAPSE_CACHE_DATE" && bash /ins/install_synapse2.sh $SYNAPSE_BRANCH
 
+# Установка Playwright Chromium для браузерного агента
+RUN /opt/venv-synapse/bin/python -m playwright install chromium
+
 # Этап 5: Пост-установочные скрипты и очистка временных файлов
 RUN bash /ins/post_install.sh $SYNAPSE_BRANCH
 

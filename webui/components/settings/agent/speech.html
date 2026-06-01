@@ -28,7 +28,7 @@
               <div class="field-description">Выберите размер модели распознавания речи (Whisper)</div>
             </div>
             <div class="field-control">
-              <select x-model="$store.settings.settings.stt_model_size">
+              <select x-model="$store.settings.settings.stt_model_size" @change="if(['tiny', 'base', 'small', 'medium', 'large', 'turbo'].includes($event.target.value)) { $store.settings.settings.stt_language = 'ru'; }">
                 <template x-for="option in $store.settings.additional?.stt_models" :key="option.value">
                   <option :value="option.value" :selected="option.value === $store.settings.settings.stt_model_size" x-text="option.label"></option>
                 </template>

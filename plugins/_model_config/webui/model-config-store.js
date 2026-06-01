@@ -205,7 +205,7 @@ export const store = createStore("modelConfig", {
     if (!context || context.__modelConfigHooksInstalled) return;
 
     const originalSave = context.save.bind(context);
-    context.save = async () => {
+    context.save = async (closeModal = true) => {
       context.error = null;
       try {
         await this.persistApiKeysForConfig(config);
@@ -213,7 +213,7 @@ export const store = createStore("modelConfig", {
         context.error = e?.message || 'Failed to save API keys.';
         return;
       }
-      await originalSave();
+      await originalSave(closeModal);
     };
 
     const originalReset = context.resetToDefault.bind(context);

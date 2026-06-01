@@ -146,7 +146,7 @@ class MicrophoneInput {
         try {
             this.transcriber = await pipeline(
                 'automatic-speech-recognition',
-                `Xenova/whisper-${this.options.modelSize}.${this.options.language}`
+                `Xenova/whisper-${this.options.modelSize}`
             );
 
             const stream = await navigator.mediaDevices.getUserMedia({

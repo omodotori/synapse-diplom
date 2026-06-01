@@ -20,16 +20,16 @@ T = TypeVar('T')
 
 def get_default_value(name: str, value: T) -> T:
     """
-    Load setting value from .env with A0_SET_ prefix, falling back to default.
+    Load setting value from .env with SYNAPSE_SET_ prefix, falling back to default.
 
     Args:
-        name: Setting name (will be prefixed with A0_SET_)
+        name: Setting name (will be prefixed with SYNAPSE_SET_)
         value: Default value to use if env var not set
 
     Returns:
         Environment variable value (type-normalized) or default value
     """
-    env_value = dotenv.get_dotenv_value(f"A0_SET_{name}", dotenv.get_dotenv_value(f"A0_SET_{name.upper()}", None))
+    env_value = dotenv.get_dotenv_value(f"SYNAPSE_SET_{name}", dotenv.get_dotenv_value(f"SYNAPSE_SET_{name.upper()}", None))
 
     if env_value is None:
         return value
@@ -46,7 +46,7 @@ def get_default_value(name: str, value: T) -> T:
             return type(value)(env_value.strip())  # type: ignore
     except (ValueError, TypeError, json.JSONDecodeError) as e:
         PrintStyle(background_color="yellow", font_color="black").print(
-            f"Warning: Invalid value for A0_SET_{name}='{env_value}': {e}. Using default: {value}"
+            f"Warning: Invalid value for SYNAPSE_SET_{name}='{env_value}': {e}. Using default: {value}"
         )
         return value
 
@@ -197,10 +197,14 @@ def convert_out(settings: Settings) -> SettingsOutput:
             knowledge_subdirs=[{"value": subdir, "label": subdir}
                 for subdir in files.get_subdirectories("knowledge", exclude="default")],
             stt_models=[
-                {"value": "tiny", "label": "Tiny (39M, English)"},
-                {"value": "base", "label": "Base (74M, English)"},
-                {"value": "small", "label": "Small (244M, English)"},
-                {"value": "medium", "label": "Medium (769M, English)"},
+                {"value": "tiny.en", "label": "Tiny (39M, English)"},
+                {"value": "tiny", "label": "Tiny (39M, Multilingual)"},
+                {"value": "base.en", "label": "Base (74M, English)"},
+                {"value": "base", "label": "Base (74M, Multilingual)"},
+                {"value": "small.en", "label": "Small (244M, English)"},
+                {"value": "small", "label": "Small (244M, Multilingual)"},
+                {"value": "medium.en", "label": "Medium (769M, English)"},
+                {"value": "medium", "label": "Medium (769M, Multilingual)"},
                 {"value": "large", "label": "Large (1.5B, Multilingual)"},
                 {"value": "turbo", "label": "Turbo (Multilingual)"},
             ],
@@ -470,7 +474,7 @@ def get_default_settings() -> Settings:
         rfc_port_http=get_default_value("rfc_port_http", 55080),
         websocket_server_restart_enabled=get_default_value("websocket_server_restart_enabled", True),
         uvicorn_access_logs_enabled=get_default_value("uvicorn_access_logs_enabled", False),
-        stt_model_size=get_default_value("stt_model_size", "base"),
+        stt_model_size=get_default_value("stt_model_size", "base.en"),
         stt_language=get_default_value("stt_language", "en"),
         stt_silence_threshold=get_default_value("stt_silence_threshold", 0.3),
         stt_silence_duration=get_default_value("stt_silence_duration", 1000),
