@@ -42,10 +42,10 @@ const model = {
 
   // Lifecycle
   init() {
-    // Restore persisted tab
+    // Force active tab to "agent" since other tabs are commented out
+    this._activeTab = "agent";
     try {
-      const saved = localStorage.getItem(VIEW_MODE_STORAGE_KEY);
-      if (saved) this._activeTab = saved;
+      localStorage.setItem(VIEW_MODE_STORAGE_KEY, "agent");
     } catch {}
   },
 
