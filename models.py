@@ -199,8 +199,19 @@ rate_limiters: dict[str, RateLimiter] = {}
 api_keys_round_robin: dict[str, int] = {}
 
 # Global concurrency limiter: at most 2 parallel LLM calls
-import asyncio as _asyncio
-global_llm_semaphore = _asyncio.Semaphore(2)
+
+_global_llm_semaphore: "import('asyncio').Semaphore | None" = None
+
+def _get_llm_semaphore() -> "import('asyncio').Semaphore":
+    global _global_llm_semaphore
+    import asyncio
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+    if _global_llm_semaphore is None or getattr(_global_llm_semaphore, "_loop", None) is not loop:
+        _global_llm_semaphore = asyncio.Semaphore(2)
+    return _global_llm_semaphore
 
 
 @extensible
@@ -520,7 +531,7 @@ class LiteLLMChatWrapper(SimpleChatModel):
         while True:
             got_any_chunk = False
             try:
-              async with global_llm_semaphore:
+              async with _get_llm_semaphore():
                 # call model
                 _completion = await acompletion(
                     model=self.model_name,

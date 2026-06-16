@@ -27,7 +27,7 @@ function buildButton() {
 function injectButton(menu) {
   if (!(menu instanceof HTMLElement)) return;
   if (menu.querySelector(`#${BUTTON_ID}`)) return;
-  menu.appendChild(buildButton());
+  // menu.appendChild(buildButton());
 }
 
 function scan(root = document) {

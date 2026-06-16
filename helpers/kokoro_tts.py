@@ -99,6 +99,24 @@ async def synthesize_sentences(sentences: list[str]):
 
 
 async def _synthesize_sentences(sentences: list[str]):
+    import re
+    full_text = " ".join(sentences)
+    
+    # Use Microsoft Edge TTS for Russian text
+    if bool(re.search('[а-яА-ЯёЁ]', full_text)):
+        try:
+            import edge_tts
+            # You can also use "ru-RU-DmitryNeural" for a male voice
+            communicate = edge_tts.Communicate(full_text, "ru-RU-SvetlanaNeural")
+            audio_data = b""
+            async for chunk in communicate.stream():
+                if chunk["type"] == "audio":
+                    audio_data += chunk["data"]
+            return base64.b64encode(audio_data).decode("utf-8")
+        except Exception as e:
+            PrintStyle.error(f"Error in Edge TTS synthesis: {e}")
+            raise
+
     await _preload()
 
     combined_audio = []
@@ -124,4 +142,4 @@ async def _synthesize_sentences(sentences: list[str]):
 
     except Exception as e:
         PrintStyle.error(f"Error in Kokoro TTS synthesis: {e}")
-        raise    
+        raise

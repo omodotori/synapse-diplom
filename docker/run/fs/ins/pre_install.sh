@@ -3,6 +3,7 @@ set -e
 
 # Обновление списка пакетов apt
 apt-get update
+apt-get install -y cmake clang libclang-dev
 
 # Исправление прав доступа для файлов cron, если они существуют
 if [ -f /etc/cron.d/* ]; then

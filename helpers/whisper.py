@@ -1,6 +1,6 @@
 import base64
 import warnings
-#import whisper
+import whisper
 import tempfile
 import asyncio
 from helpers import runtime, rfc, settings, files

@@ -43,10 +43,12 @@ const model = {
   microphoneInput: null,
   isProcessingClick: false,
   selectedDevice: null,
+  _initializingMic: false,
+  _micStatusReactive: "inactive",
 
-  // Getter for micStatus - delegates to microphoneInput
+  // Getter for micStatus - uses reactive property for Alpine UI updates
   get micStatus() {
-    return this.microphoneInput?.status || Status.INACTIVE;
+    return this._micStatusReactive || Status.INACTIVE;
   },
 
   updateMicrophoneButtonUI() {
@@ -65,20 +67,27 @@ const model = {
     microphoneButton.setAttribute("data-status", status);
   },
 
-  handleMicrophoneClick() {
-    if (this.isProcessingClick) return;
+  async handleMicrophoneClick() {
+    if (this.isProcessingClick || this._initializingMic) return;
     this.isProcessingClick = true;
     try {
+      // Capture original text before starting a new recording
+      if (!this.microphoneInput || this.microphoneInput.status === Status.INACTIVE || this.microphoneInput.status === Status.ACTIVATING) {
+        const chatInputEl = document.getElementById("chat-input");
+        this._originalInputText = chatInputEl ? chatInputEl.value : "";
+      }
+
       // reset mic input if device has changed in settings
       const device = microphoneSettingStore.getSelectedDevice();
       if (device != this.selectedDevice) {
         this.selectedDevice = device;
         this.microphoneInput = null;
+        this._micStatusReactive = Status.INACTIVE;
         console.log("Device changed, microphoneInput reset");
       }
 
       if (!this.microphoneInput) {
-        this.initMicrophone();
+        await this.initMicrophone();
       }
 
       if (this.microphoneInput) {
@@ -656,47 +665,141 @@ const model = {
     return text;
   },
 
-  // Initialize microphone input
-  initMicrophone() {
+  // Initialize microphone input (Web Speech API or Whisper fallback)
+  async initMicrophone() {
     if (this.microphoneInput) return this.microphoneInput;
+    if (this._initializingMic) return null;
+    this._initializingMic = true;
 
-    this.microphoneInput = new MicrophoneInput((text, isFinal) => {
-      if (isFinal) {
-        this.sendMessage(text);
+    try {
+      const language = this.stt_language || 'ru';
+      // Map short language codes to BCP 47 tags for Web Speech API
+      const langMap = {
+        ru: 'ru-RU', en: 'en-US', fr: 'fr-FR', de: 'de-DE',
+        es: 'es-ES', zh: 'zh-CN', ja: 'ja-JP', ko: 'ko-KR',
+        uk: 'uk-UA', pt: 'pt-BR', it: 'it-IT', ar: 'ar-SA',
+      };
+      const speechLang = langMap[language] || language;
+
+      // Callback that updates the store's reactive status for Alpine UI
+      const onStatusChange = (newStatus) => {
+        this._micStatusReactive = newStatus;
+      };
+
+      const callback = (text, isFinal) => {
+        const orig = this._originalInputText || "";
+        const needsSpace = orig.length > 0 && !orig.endsWith(" ");
+        const previewText = orig + (needsSpace ? " " : "") + text;
+        
+        // Always replace the entire input with original + preview text
+        updateChatInput(previewText, true);
+
+        if (isFinal) {
+          if (this.microphoneInput && !this.microphoneInput.messageSent) {
+            this.microphoneInput.messageSent = true;
+          }
+        }
+      };
+
+      const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (SpeechRecognitionAPI) {
+        // Web Speech API (Chrome, Edge, Safari)
+        console.log('[Speech] Using Web Speech API, language:', speechLang);
+        this.microphoneInput = new MicrophoneInput(callback, {
+          language: speechLang,
+          onStatusChange,
+        });
+
+        if (!this.microphoneInput.initialize()) {
+          this.microphoneInput = null;
+          return null;
+        }
       } else {
-        updateChatInput(text, true);
+        // Fallback: Whisper via Transformers.js (Firefox, etc.)
+        console.log('[Speech] Web Speech API not available, loading Whisper fallback...');
+        this._micStatusReactive = Status.ACTIVATING;
+        try {
+          const { WhisperMicrophoneInput } = await import('/js/speech_browser.js');
+
+          const deviceId = this.selectedDevice || null;
+          this.microphoneInput = new WhisperMicrophoneInput(callback, {
+            modelSize: this.stt_model_size || 'tiny',
+            language: language,
+            silenceThreshold: this.stt_silence_threshold || 0.07,
+            silenceDuration: this.stt_silence_duration || 1000,
+            waitingTimeout: this.stt_waiting_timeout || 1500,
+            deviceId: deviceId,
+            onStatusChange,
+          });
+
+          const initialized = await this.microphoneInput.initialize();
+          if (!initialized) {
+            this.microphoneInput = null;
+            this._micStatusReactive = Status.INACTIVE;
+            return null;
+          }
+        } catch (error) {
+          console.error('[Speech] Failed to load Whisper fallback:', error);
+          if (window.toastFrontendError) {
+            window.toastFrontendError('Не удалось загрузить модуль распознавания речи.', 'Ошибка');
+          }
+          this.microphoneInput = null;
+          this._micStatusReactive = Status.INACTIVE;
+          return null;
+        }
       }
-    });
 
-    const initialized = this.microphoneInput.initialize();
-    return initialized ? this.microphoneInput : null;
-  },
-
-  async sendMessage(text) {
-    text = "(voice) " + text;
-    updateChatInput(text);
-    if (!this.microphoneInput.messageSent) {
-      this.microphoneInput.messageSent = true;
-      await sendMessage();
+      return this.microphoneInput;
+    } finally {
+      this._initializingMic = false;
     }
   },
 
-  // Request microphone permission - delegate to MicrophoneInput
+  async sendMessage(text) {
+    // This function is no longer used for voice input auto-sending
+    // but kept for backward compatibility if called from elsewhere.
+    text = "(voice) " + text;
+    updateChatInput(text);
+  },
+
+  // Request microphone permission
   async requestMicrophonePermission() {
-    return this.microphoneInput
-      ? this.microphoneInput.requestPermission()
-      : MicrophoneInput.prototype.requestPermission.call(null);
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      if (window.toastFrontendError) {
+        window.toastFrontendError('Микрофон недоступен. Для голосового ввода требуется HTTPS.', 'Ошибка');
+      }
+      return false;
+    }
+    if (this.microphoneInput) {
+      return this.microphoneInput.requestPermission();
+    }
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      return true;
+    } catch (err) {
+      console.error('Error accessing microphone:', err);
+      if (window.toastFrontendError) {
+        window.toastFrontendError('Доступ к микрофону запрещён.', 'Ошибка');
+      }
+      return false;
+    }
   },
 };
 
 // Microphone Input Class using Web Speech API
 class MicrophoneInput {
-  constructor(updateCallback) {
+  constructor(updateCallback, options = {}) {
     this.updateCallback = updateCallback;
     this._status = Status.INACTIVE;
     this.recognition = null;
     this.finalTranscript = '';
     this.messageSent = false;
+    this.options = {
+      language: 'ru-RU',
+      onStatusChange: null,
+      ...options
+    };
   }
 
   get status() {
@@ -708,6 +811,9 @@ class MicrophoneInput {
     const oldStatus = this._status;
     this._status = newStatus;
     console.log(`Mic status changed from ${oldStatus} to ${newStatus}`);
+    if (this.options.onStatusChange) {
+      this.options.onStatusChange(newStatus);
+    }
   }
 
   initialize() {
@@ -725,56 +831,58 @@ class MicrophoneInput {
       this.recognition = new SpeechRecognition();
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
-      this.recognition.lang = 'ru-RU';
+      this.recognition.lang = this.options.language;
 
       this.recognition.onstart = () => {
         this.status = Status.LISTENING;
+        console.log('[SpeechRecognition] Started, lang:', this.options.language);
       };
 
       this.recognition.onresult = (event) => {
-        this.status = Status.RECORDING; // Visually show we are receiving audio
+        this.status = Status.RECORDING;
         let interimTranscript = '';
-        let hasFinal = false;
 
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             this.finalTranscript += event.results[i][0].transcript;
-            hasFinal = true;
           } else {
             interimTranscript += event.results[i][0].transcript;
           }
         }
-        
-        // Feed interim text directly to the callback to show in the input box
-        if (!hasFinal && interimTranscript) {
-          // Send interim to UI, but note we don't want to accumulate it forever 
-          // However, our updateChatInput appends text, which might duplicate if we call it for every interim update.
-          // Wait, updateChatInput APPENDS text. If interimTranscript changes, appending it repeatedly will result in duplicate text!
-          // We need a better way to handle interim text, or just wait for isFinal to append to chatInput.
-          // Since updateChatInput appends, we should only append FINAL transcripts.
-        }
 
-        if (hasFinal) {
-          this.updateCallback(this.finalTranscript, false);
+        // Show accumulated final + current interim text in real-time
+        const displayText = this.finalTranscript + interimTranscript;
+        if (displayText) {
+          this.updateCallback(displayText, false);
         }
       };
 
       this.recognition.onerror = (event) => {
-        console.error('Speech recognition error', event.error);
+        console.error('Speech recognition error:', event.error);
         if (event.error === 'not-allowed') {
-            if (window.toastFrontendError) window.toastFrontendError("Microphone access denied. Please enable microphone access.", "error");
-        } else {
-            if (window.toastFrontendError) window.toastFrontendError(`Ошибка распознавания речи: ${event.error}`, "error");
+          if (window.toastFrontendError) {
+            window.toastFrontendError('Доступ к микрофону запрещён. Разрешите доступ в настройках браузера.', 'Ошибка');
+          }
+        } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
+          if (window.toastFrontendError) {
+            window.toastFrontendError(`Ошибка распознавания речи: ${event.error}`, 'Ошибка');
+          }
         }
         this.status = Status.INACTIVE;
       };
 
       this.recognition.onend = () => {
-        if (this.status !== Status.INACTIVE && this.status !== Status.PROCESSING) {
-          // Restart if it stopped unexpectedly while we should be listening
+        if (this.status === Status.PROCESSING) {
+          // Explicitly stopped by user — send accumulated text
+          this.status = Status.INACTIVE;
+          if (this.finalTranscript.trim()) {
+            this.updateCallback(this.finalTranscript.trim(), true);
+          }
+        } else if (this.status !== Status.INACTIVE) {
+          // Unexpected stop while listening — auto-restart
           try {
             this.recognition.start();
-          } catch(e) {}
+          } catch (e) {}
         }
       };
 
@@ -793,37 +901,42 @@ class MicrophoneInput {
     }
 
     if (this.status === Status.INACTIVE || this.status === Status.ACTIVATING) {
+      // Start listening
       this.finalTranscript = '';
       this.messageSent = false;
-      this.status = Status.LISTENING;
       try {
         this.recognition.start();
+        // Status will be set to LISTENING by onstart callback
       } catch (e) {
-        console.error(e);
+        console.error('Failed to start recognition:', e);
       }
     } else {
+      // Stop — set PROCESSING so onend sends the final text
       this.status = Status.PROCESSING;
       try {
         this.recognition.stop();
       } catch (e) {
-        console.error(e);
+        console.error('Failed to stop recognition:', e);
       }
-      
-      // When explicitly stopped, send what we have
-      this.status = Status.INACTIVE;
-      if (this.finalTranscript.trim()) {
-        this.updateCallback(this.finalTranscript.trim(), true);
-      }
+      // onend callback will handle sending text and setting INACTIVE
     }
   }
 
   async requestPermission() {
     try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        if (window.toastFrontendError) {
+          window.toastFrontendError('Микрофон недоступен. Для голосового ввода требуется HTTPS.', 'Ошибка');
+        }
+        return false;
+      }
       await navigator.mediaDevices.getUserMedia({ audio: true });
       return true;
     } catch (err) {
-      console.error("Error accessing microphone:", err);
-      toast("Microphone access denied.", "error");
+      console.error('Error accessing microphone:', err);
+      if (window.toastFrontendError) {
+        window.toastFrontendError('Доступ к микрофону запрещён.', 'Ошибка');
+      }
       return false;
     }
   }

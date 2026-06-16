@@ -25,6 +25,11 @@
                             :selected="option.deviceId === $store.microphoneSetting.selectedDevice"></option>
                     </template>
                 </select>
+                <div x-show="$store.microphoneSetting.devices.length > 0"
+                     style="margin-top: 6px; font-size: 0.8em; opacity: 0.6;">
+                    ⚠️ Выбор устройства работает только в режиме Whisper (Firefox).
+                    В Chrome/Edge используется устройство по умолчанию ОС.
+                </div>
                 <button class="btn btn-field" 
                     x-show="$store.microphoneSetting.devices.length == 0 && !$store.microphoneSetting.requestingPermission"
                     @click="$store.microphoneSetting.requestPermission()">Запросить разрешение на выбор устройства</button>

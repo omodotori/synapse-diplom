@@ -35,30 +35,31 @@
   animation: pulse 1.5s infinite;
 }
 
-
-.mic-inactive{
-    background-color: grey;
+#microphone-button.mic-inactive {
+    /* Uses default styles */
 }
 
-.mic-activating{
-    background-color: silver;
+#microphone-button.mic-activating {
+    background: rgba(192, 192, 192, 0.8) !important;
     animation: pulse 0.8s infinite;
 }
 
-.mic-listening {
-  background-color: red;
+#microphone-button.mic-listening {
+  background: rgba(255, 65, 54, 0.8) !important;
+  color: white !important;
 }
 
-.mic-recording {
-  background-color: green;
+#microphone-button.mic-recording {
+  background: rgba(46, 204, 64, 0.8) !important;
+  color: white !important;
 }
 
-.mic-waiting {
-  background-color: teal;
+#microphone-button.mic-waiting {
+  background: rgba(57, 204, 204, 0.8) !important;
 }
 
-.mic-processing {
-  background-color: darkcyan;
+#microphone-button.mic-processing {
+  background: rgba(0, 139, 139, 0.8) !important;
   animation: pulse 0.8s infinite;
   transform-origin: center;
 }
