@@ -56,7 +56,7 @@ const model = {
   chatWidthOptions: [
     { label: "МИН", value: "40" },
     { label: "ШИР", value: "55" },
-    { label: "2X", value: "80" },
+    // { label: "2X", value: "80" },
     { label: "ПОЛН", value: "full" },
   ],
 
@@ -74,7 +74,7 @@ const model = {
   detailModeOptions: [
     { label: "НЕТ", value: "collapsed", title: "Все свернуто" },
     { label: "СПИСОК", value: "list", title: "Шаги свернуты" },
-    { label: "ШАГ", value: "current", title: "Только текущий шаг" },
+    // { label: "ШАГ", value: "current", title: "Только текущий шаг" },
     { label: "ВСЕ", value: "expanded", title: "Все развернуто" },
   ],
 

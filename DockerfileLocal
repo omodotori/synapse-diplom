@@ -17,6 +17,7 @@ COPY ./docker/run/fs/ /
 COPY ./ /git/synapse
 
 # Этап 1: Предварительная настройка окружения
+ENV PLAYWRIGHT_DOWNLOAD_HOST="https://npmmirror.com/mirrors/playwright/"
 RUN bash /ins/pre_install.sh $SYNAPSE_BRANCH
 
 # Этап 2: Установка ядра Synapse
@@ -51,4 +52,4 @@ EXPOSE 22 80 9000-9009
 RUN chmod +x /exe/initialize.sh /exe/run_synapse.sh /exe/run_searxng.sh /exe/run_tunnel_api.sh
 
 # Инициализация среды и передача управления менеджеру процессов supervisord
-CMD ["/exe/initialize.sh", "$SYNAPSE_BRANCH"]
+CMD /exe/initialize.sh $SYNAPSE_BRANCH

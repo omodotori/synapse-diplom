@@ -123,8 +123,8 @@
                     <div class="field">
                       <div class="field-label">
                         <div class="field-title">Режим доставки</div>
-                        <div class="field-description">Polling is the simplest option. Webhook is for public HTTPS
-                          setups.</div>
+                        <div class="field-description">Опрос (polling) — самый простой вариант. Webhook предназначен для публичных HTTPS
+                          серверов.</div>
                       </div>
                       <div class="field-control">
                         <select x-model="bot.mode">
@@ -148,8 +148,8 @@
                     <div class="field">
                       <div class="field-label">
                         <div class="field-title">Разрешенные пользователи</div>
-                        <div class="field-description">Comma-separated @usernames or numeric IDs. Leave empty only if
-                          you truly want open access.</div>
+                        <div class="field-description">Разделенные запятыми @usernames или числовые ID. Оставьте пустым, только если вы
+                          действительно хотите открыть доступ всем.</div>
                       </div>
                       <div class="field-control">
                         <input type="text" :value="$store.telegramConfig.whitelistText(bot)"
@@ -295,8 +295,8 @@
                       <div class="field">
                         <div class="field-label">
                           <div class="field-title">Привязка пользователей к проектам</div>
-                          <div class="field-description">Map specific Telegram user IDs to projects with user_id=project
-                            entries.</div>
+                          <div class="field-description">Назначьте конкретные Telegram ID пользователей соответствующим
+                            проектам через записи формата user_id=project.</div>
                         </div>
                         <div class="field-control">
                           <input type="text" :value="$store.telegramConfig.userProjectsText(bot)"
@@ -308,8 +308,7 @@
                       <div class="field">
                         <div class="field-label">
                           <div class="field-title">Срок хранения файлов</div>
-                          <div class="field-description">How long to keep downloaded attachments. Use 0 to keep them
-                            forever.</div>
+                          <div class="field-description">Сколько времени хранить загруженные вложения. Укажите 0, чтобы хранить их бессрочно.</div>
                         </div>
                         <div class="field-control">
                           <input type="number" x-model.number="bot.attachment_max_age_hours" min="0" step="1"

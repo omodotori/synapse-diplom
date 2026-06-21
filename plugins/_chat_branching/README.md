@@ -31,4 +31,4 @@ Adds a **Branch** button to every chat message. Clicking it clones the current c
 
 - **Name**: `_chat_branching`
 - **Title**: `Chat Branching`
-- **Description**: Branch a chat from any message, creating a new chat with history up to that point.
+- **Description**: Создать отдельный чат из любого сообщения с сохранением всей истории до этого момента.

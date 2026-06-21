@@ -43,4 +43,4 @@ EXPOSE 22 80 9000-9009
 RUN chmod +x /exe/initialize.sh /exe/run_synapse.sh /exe/run_searxng.sh /exe/run_tunnel_api.sh /exe/trigger_self_update.sh
 
 # Инициализация среды и передача управления менеджеру процессов
-CMD ["/exe/initialize.sh", "$SYNAPSE_BRANCH"]
+CMD /exe/initialize.sh $SYNAPSE_BRANCH
