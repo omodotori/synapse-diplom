@@ -11,6 +11,7 @@
         <template x-if="$store.pluginListStore">
             <div x-init="$store.pluginListStore.init && $store.pluginListStore.init()">
 
+                <!--
                 <ul class="nav nav-tabs" id="plugin-list-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link"
@@ -49,9 +50,11 @@
                         </button>
                     </li>
                 </ul>
+                -->
 
                 <template x-if="$store.pluginListStore.activeTab !== 'pluginHub'">
                     <div>
+                        <!--
                         <div class="plugins-toolbar">
                             <div class="plugins-toolbar-search">
                                 <input type="text"
@@ -71,6 +74,7 @@
                                 <x-extension id="plugins-list-header-buttons"></x-extension>
                             </div>
                         </div>
+                        -->
 
                         <div x-show="$store.pluginListStore.loading" class="loading">
                             <span>Загрузка плагинов...</span>

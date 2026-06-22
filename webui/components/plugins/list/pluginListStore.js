@@ -31,7 +31,7 @@ const model = {
 
   async init() {
     this.loading = false;
-    // If a tab is already selected (e.g. via open()), use it. 
+    // If a tab is already selected (e.g. via open()), use it.
     // Otherwise default to custom -> builtin fallback.
     if (this.activeTab && this.activeTab !== "custom") {
       await this.setTab(this.activeTab);
@@ -48,7 +48,12 @@ const model = {
     this.selectedPlugin = null;
     try {
       const response = await api.callJsonApi("plugins_list", { filter });
-      this.plugins = Array.isArray(response.plugins) ? response.plugins : [];
+      let pluginsList = Array.isArray(response.plugins) ? response.plugins : [];
+      
+      // Keep only telegram plugin as requested
+      pluginsList = pluginsList.filter(p => p.name && p.name.includes('telegram'));
+      
+      this.plugins = pluginsList;
       void callJsExtensions("plugins_list_after_load", {
         filter: filter ? { ...filter } : null,
         plugins: this.plugins,
@@ -118,45 +123,51 @@ const model = {
     if (!plugin?.name) return;
     this.selectedPlugin = plugin;
     try {
-        if (!pluginToggleStore?.open) {
-            throw new Error("Plugin toggle store is unavailable.");
-        }
-        await pluginToggleStore.open(plugin);
-        window.openModal?.("components/plugins/toggle/plugin-toggle-advanced.html");
+      if (!pluginToggleStore?.open) {
+        throw new Error("Plugin toggle store is unavailable.");
+      }
+      await pluginToggleStore.open(plugin);
+      window.openModal?.(
+        "components/plugins/toggle/plugin-toggle-advanced.html",
+      );
     } catch (e) {
-        showErrorNotification(e, "Failed to open plugin switch");
+      showErrorNotification(e, "Failed to open plugin switch");
     }
   },
 
   async updateToggle(plugin, value) {
     if (!plugin?.name) return;
-    
-    if (value === 'advanced') {
-        await this.openPluginAdvancedToggle(plugin);
-        return; 
+
+    if (value === "advanced") {
+      await this.openPluginAdvancedToggle(plugin);
+      return;
     }
 
-    const enabled = value === 'enabled';
-    const clearOverrides = plugin.toggle_state === 'advanced';
-    if (clearOverrides && !window.confirm(
-        `"${plugin.display_name || plugin.name}" has per-scope activation rules that will be removed. Set globally to ${enabled ? 'ON' : 'OFF'}?`
-    )) return;
+    const enabled = value === "enabled";
+    const clearOverrides = plugin.toggle_state === "advanced";
+    if (
+      clearOverrides &&
+      !window.confirm(
+        `"${plugin.display_name || plugin.name}" has per-scope activation rules that will be removed. Set globally to ${enabled ? "ON" : "OFF"}?`,
+      )
+    )
+      return;
 
     this.loading = true;
     try {
-        const response = await api.callJsonApi("plugins", {
-            action: "toggle_plugin",
-            plugin_name: plugin.name,
-            enabled: enabled,
-            project_name: "",
-            agent_profile: "",
-            clear_overrides: clearOverrides,
-        });
-        if (response?.error) throw new Error(response.error);
-        await this.refresh();
+      const response = await api.callJsonApi("plugins", {
+        action: "toggle_plugin",
+        plugin_name: plugin.name,
+        enabled: enabled,
+        project_name: "",
+        agent_profile: "",
+        clear_overrides: clearOverrides,
+      });
+      if (response?.error) throw new Error(response.error);
+      await this.refresh();
     } catch (e) {
-        showErrorNotification(e, "Failed to toggle plugin");
-        this.loading = false;
+      showErrorNotification(e, "Failed to toggle plugin");
+      this.loading = false;
     }
   },
 
@@ -168,7 +179,8 @@ const model = {
         doc,
       });
       if (response?.error) throw new Error(response.error);
-      if (!markdownModalStore?.open) throw new Error("Markdown modal store unavailable.");
+      if (!markdownModalStore?.open)
+        throw new Error("Markdown modal store unavailable.");
       markdownModalStore.open(response.filename, response.content);
       window.openModal?.("components/modals/markdown/markdown-modal.html");
     } catch (e) {
@@ -216,9 +228,8 @@ const model = {
   async openPluginHub(plugin) {
     const pluginKey = (plugin?.pluginHub?.key || "").trim();
     if (!pluginKey) return;
-    const { store: pluginInstallStore } = await import(
-      "/plugins/_plugin_installer/webui/pluginInstallStore.js"
-    );
+    const { store: pluginInstallStore } =
+      await import("/plugins/_plugin_installer/webui/pluginInstallStore.js");
     await pluginInstallStore.openPluginHubDetailByKey(pluginKey);
   },
 
@@ -252,7 +263,7 @@ const model = {
 };
 
 function showErrorNotification(error, heading) {
-    const text = error.message || error.text || JSON.stringify(error);
+  const text = error.message || error.text || JSON.stringify(error);
   notificationStore.frontendError(
     text,
     heading,

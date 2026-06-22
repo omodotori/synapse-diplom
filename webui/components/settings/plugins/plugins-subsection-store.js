@@ -10,8 +10,8 @@ const model = {
 
   resolveTab(element) {
     const host =
-      element?.closest("x-component")
-      || element?.parentElement?.closest("x-component");
+      element?.closest("x-component") ||
+      element?.parentElement?.closest("x-component");
     return host?.getAttribute("data-tab") || "";
   },
 
@@ -39,6 +39,9 @@ const model = {
       });
       const plugins = Array.isArray(response?.plugins) ? response.plugins : [];
       this.plugins = plugins.filter((plugin) => {
+        // Keep only telegram plugin as requested
+        if (!plugin.name || !plugin.name.includes('telegram')) return false;
+
         const sections = Array.isArray(plugin?.settings_sections)
           ? plugin.settings_sections
           : [];
