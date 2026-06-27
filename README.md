@@ -38,7 +38,7 @@
 
 1. **Клонируйте репозиторий:**
    ```bash
-   git clone https://github.com/your-username/synapse.git
+   git clone https://github.com/omodotori/synapse-diplom.git synapse
    cd synapse
    ```
 
