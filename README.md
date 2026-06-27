@@ -106,7 +106,3 @@ synapse/
 pip install -r requirements.dev.txt
 pytest
 ```
-
-## 📜 Лицензия
-
-Проект распространяется под лицензией MIT. Подробнее см. файл `LICENSE`.
