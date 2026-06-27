@@ -205,6 +205,7 @@ class MemorizeMemories(Extension):
 
         except Exception as e:
             err = errors.format_error(e)
-            self.agent.context.log.log(
-                type="warning", heading="Memorize memories extension error", content=err
-            )
+            print(f"Memorize memories extension error: {err}")
+            # self.agent.context.log.log(
+            #     type="warning", heading="Memorize memories extension error", content=err
+            # )
