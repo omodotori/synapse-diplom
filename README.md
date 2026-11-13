@@ -5,7 +5,7 @@
 ![Framework](https://img.shields.io/badge/Framework-Flask%20%7C%20Alpine.js-lightgrey)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
 
-
+Demo: https://www.youtube.com/watch?v=vTMLUjTdLC4
 **Synapse** — это автономный агентный ИИ-фреймворк с открытым исходным кодом. 
 Он разработан для создания ИИ-ассистентов, способных взаимодействовать с операционной системой, выполнять код, управлять файлами и координировать работу с другими агентами (sub-agents) для решения сложных задач.
 
